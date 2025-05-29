@@ -24,7 +24,7 @@ const addressSchema = new mongoose.Schema({
         default: null
     }
 },{
-    timeseries:true
+    timestamps:true
 })
 
 const AddressModel = mongoose.model('address',addressSchema)
