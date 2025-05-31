@@ -126,7 +126,7 @@ export async function loginUser(req,res) {
         res.cookie('refreshToken',refreshToken,cookieOption)
 
         const date = Date.now();
-        const updateUser = await UserModel.updateOne(
+        const updateUser = await  UserModel.updateOne(
             {_id:user._id},
             { $set:
                 {last_login_date:date} 
@@ -149,6 +149,33 @@ export async function loginUser(req,res) {
             message:error.message||error,
             error:true,
             success:false
+        })
+    }
+}
+
+export async function logoutUser(req,res) {
+    try {
+        const userid = req.userId
+        const cookieOption = {
+            httpOnly:true,
+            secure:true,
+            sameSite:'None'
+        }
+        res.clearCookie('accessToken',cookieOption)
+        res.clearCookie('refreshToken',cookieOption)
+
+        const removereRefshToken = await UserModel.findByIdAndUpdate(userid,{refresh_token:''})
+
+        return res.status(200).json({
+            message:'logout successfully',
+            error:false,
+            success:true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
         })
     }
 }
