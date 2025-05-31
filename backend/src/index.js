@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
 
+import userRouter from './routes/user.routes.js'
+
 import './config/db.js';
 
 const app = express();
@@ -21,9 +23,7 @@ app.use(helmet({
     contentSecurityPolicy: false
 })); 
 
-app.get('/', (req, res) => {
-    res.send('Hello World! This is the backend server.');
-});
+app.use('/api/user',userRouter)
 
 app.listen(process.env.PORT || 5001, () => {
     console.log(`Server is running on port ${process.env.PORT || 5173}`);

@@ -39,10 +39,10 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: '',
   },
-  sattus: {
+  status: {
     type: String,
     enum: ["Active", "Inactive", "Suspended"],
-    default: "active",
+    default: "Active",
   },
   address_details: [
     {
@@ -73,7 +73,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String, 
     enum:['Admin','User'],
-    default:"USER"
+    default:"User"
   }
 }, {
   timestamps: true,
