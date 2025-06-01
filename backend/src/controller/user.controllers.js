@@ -425,7 +425,6 @@ export async function refreshToken(req, res) {
                 success: false
             })
         }
-        console.log("ref", reftoken)
         const checkToken = await jwt.verify(refreshToken, process.env.SECRET_KEY_REFRESH)
         if (!checkToken) {
             return res.status(400).json({
