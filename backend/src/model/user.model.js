@@ -22,10 +22,10 @@ const userSchema = new mongoose.Schema({
     default: ""
   },
   mobile: {
-    type: Number,
-    default: null,
+    type: String,
+    required: false,
     unique: true,
-    match: /^\d{10}$/,
+    sparse: true,
   },
   refresh_token: {
     type: String,
@@ -46,8 +46,8 @@ const userSchema = new mongoose.Schema({
   },
   address_details: [
     {
-        type:mongoose.Schema.Types.ObjectId,
-        ref: "address",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "address",
     }
   ],
   shopping_cart: [
@@ -64,20 +64,20 @@ const userSchema = new mongoose.Schema({
   ],
   forgot_password_otp: {
     type: String,
-    default:null
+    default: null
   },
   forgot_password_expiry: {
     type: Date,
-    default:""
+    default: ""
   },
   role: {
-    type: String, 
-    enum:['Admin','User'],
-    default:"User"
+    type: String,
+    enum: ['Admin', 'User'],
+    default: "User"
   }
 }, {
   timestamps: true,
 });
 
-const UserModel = mongoose.model("User", userSchema);
+const UserModel = mongoose.model("UserData", userSchema);
 export default UserModel;
