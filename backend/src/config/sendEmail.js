@@ -1,31 +1,40 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
 
-if (!process.env.RESEND_API) {
-  throw new Error('RESEND_API environment variable is not set');
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+  throw new Error('EMAIL_USER or EMAIL_PASS environment variables are not set');
 }
 
-const resend = new Resend(process.env.RESEND_API);
+const transporter = nodemailer.createTransport({
+  service: 'gmail', 
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
 
 const sendEmail = async ({ to, subject, html }) => {
-  if(!html){
+  if (!html) {
     throw new Error('Missing `html` content for email');
   }
-  try {
-    const { data, error } = await resend.emails.send({
-    from: 'Blinkyt <onboarding@resend.dev>',
+
+  const mailOptions = {
+    from: `Blinkyt <${process.env.EMAIL_USER}>`,
     to,
     subject,
     html,
-  });
-    if (error) {
-      throw new Error(`Failed to send email: ${error.message}`);
-    }
-    return data;
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent:', info.messageId);
+    return info;
   } catch (error) {
     console.error('Error sending email:', error);
     throw error;
   }
-}
+};
+
 export default sendEmail;
