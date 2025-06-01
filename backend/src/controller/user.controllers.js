@@ -425,14 +425,33 @@ export async function refreshToken(req, res) {
                 success: false
             })
         }
-        const checkToken = await jwt.verify(refreshToken, process.env.SECRET_KEY_REFRESH)
+        const checkToken = await jwt.verify(reftoken, process.env.SECRET_KEY_REFRESH)
         if (!checkToken) {
-            return res.status(400).json({
-                message: 'Invalid token, access denied',
+            return res.status(401).json({
+                message: 'token expired',
                 error: true,
                 success: false
             })
         }
+        const userId = checkToken?._id;
+        const newAccessToken = await generateAccessToken(userId)
+
+        const cookieOption =
+        {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None'
+        }
+        res.cookie('accessToken',newAccessToken,cookieOption)
+
+        return res.json({
+            message:'new access token generated',
+            error:false,
+            success:true,
+            data:{
+                accessToken:newAccessToken
+            }
+        })
 
     } catch (error) {
         return res.status(500).json({
