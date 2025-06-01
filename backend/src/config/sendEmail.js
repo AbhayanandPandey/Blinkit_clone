@@ -9,12 +9,15 @@ if (!process.env.RESEND_API) {
 const resend = new Resend(process.env.RESEND_API);
 
 const sendEmail = async ({ to, subject, html }) => {
+  if(!html){
+    throw new Error('Missing `html` content for email');
+  }
   try {
     const { data, error } = await resend.emails.send({
     from: 'Blinkyt <onboarding@resend.dev>',
-    to: to,
-    subject: subject,
-    html: html,
+    to,
+    subject,
+    html,
   });
     if (error) {
       throw new Error(`Failed to send email: ${error.message}`);
