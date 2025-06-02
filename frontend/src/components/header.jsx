@@ -2,9 +2,9 @@ import React from 'react'
 
 function header() {
   return (
-    <div>
-      
-    </div>
+    <header className='h-20 shadow-md'>
+        logo
+    </header>
   )
 }
 
