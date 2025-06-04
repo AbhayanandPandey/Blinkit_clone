@@ -1,4 +1,4 @@
-import logo from '../assets/logo1.jpg'
+import logo from '../assets/abc.jpg'
 import Search from './Search'
 import { Link, useLocation } from 'react-router-dom'
 import { FaRegCircleUser } from 'react-icons/fa6'
@@ -7,14 +7,13 @@ function header() {
   const [isMobile] = useMobile()
   const location = useLocation()
   const isSearchPage = location.pathname === '/search'
-  console.log('m', isMobile)
   return (
     <header className=' h-32 lg:h-20  sticky top-0 flex items-center flex-col lg:shadow  lg:pb-0'>
       {
         !(isSearchPage && isMobile) && (
           <div className='container mx-auto flex items-center h-full lg:p-4 justify-between pb-1 pt-0 pl-3 pr-3'>
-            <div className='h-full' >
-              <Link to={"/"} className='h-full flex justify-center items-center'>
+            <div className='' >
+              <Link to={"/"} className=' flex justify-center items-center'>
                 <img
                   src={logo}
                   width={130}
@@ -50,7 +49,7 @@ function header() {
       }
 
       <div className='w-full h-full bg-transparent flex justify-center items-center'>
-        <div className='container mx-auto px-2 lg:hidden '>
+        <div className='container mx-auto px-2 -mt-5 lg:hidden '>
           <Search />
         </div>
       </div>

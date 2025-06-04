@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { IoSearch } from 'react-icons/io5'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { TypeAnimation } from 'react-type-animation'
+import { FaArrowLeft } from 'react-icons/fa6'
+import useMobile from '../hooks/useMobile'
 const Search = () => {
     const navigae = useNavigate()
     const location = useLocation()
     const [isSearch, setIsSearch] = useState(false)
+    const [isMobile] = useMobile()
     useEffect(() => {
         const isSearcha = location.pathname === '/search'
         setIsSearch(isSearcha)
@@ -15,10 +18,22 @@ const Search = () => {
     }
     console.log("h", isSearch)
     return (
-        <div className='w-full min-w-[360px] lg:min-[420px] h-11 rounded-lg border border-gray-200 overflow-hidden flex items-center  text-neutral-500 bg-gray-100  group focus-within:border-amber-300 '>
-            <button className='flex justify-center items-center h-full p-3 cursor-pointer group-focus-within:text-amber-300'>
-                <IoSearch size={22} />
-            </button>
+        <div className='w-full min-w-[360px] lg:min-[420px] h-11 rounded-lg border border-gray-200 overflow-hidden flex items-center  text-neutral-500 bg-gray-100  group focus-within:border-green-400 '>
+            <div>
+                
+                {
+                    (isMobile&&isSearch)?(
+                        <Link to={'/'} className='flex justify-center items-center h-full p-2 cursor-pointer group-focus-within:text-green-400 bg-white rounded-full shadow-md m-1'>
+                    <FaArrowLeft size={20} />
+                </Link>
+                    ):(
+                        <button className='flex justify-center items-center h-full p-3 cursor-pointer group-focus-within:text-green-400'>
+                    <IoSearch size={22} />
+                </button>
+                    )
+                }
+                
+            </div>
             <div className='w-full h-full'>
                 {
                     !isSearch ? (
@@ -57,10 +72,10 @@ const Search = () => {
                                     type='text'
                                     placeholder='Search for Milk Bread and more...'
                                     autoFocus
-                                    className='bg-transparent w-full h-full outline-none' 
+                                    className='bg-transparent w-full h-full outline-none'
                                 />
                             </div>
-                    )
+                        )
                 }
             </div>
 
