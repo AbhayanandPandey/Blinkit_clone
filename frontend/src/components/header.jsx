@@ -1,11 +1,16 @@
 import logo from '../assets/logo1.jpg'
 import Search from './Search'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {FaRegCircleUser} from 'react-icons/fa6'
+import useMobile from '../hooks/useMobile'
 function header() {
+  const [isMobile] = useMobile()
+  const location  = useLocation()
+  const isSearchPage = location.pathname==='/search'
+  console.log('m',isMobile)
   return (
-    <header className=' h-30 lg:h-20 shadow-md sticky top-0 bg-red-500'>
-      <div className='container mx-auto flex items-center h-full p-4 justify-between'>
+    <header className=' h-auto lg:h-20  sticky top-0 flex items-center flex-col pb-3 lg:pb-0'>
+      <div className='container mx-auto flex items-center h-full lg:p-4 justify-between mt-0 pb-1 pt-4 pl-3 pr-3'>
         <div className='h-full' >
           <Link to={"/"} className='h-full flex justify-center items-center'>
             <img
@@ -39,8 +44,10 @@ function header() {
           </div>
         </div>
       </div>
-      <div className='container mx-auto px-2'>
+      <div className='w-full h-full bg-white'>
+        <div className='container mx-auto px-2 lg:hidden pb-2'>
         <Search />
+      </div>
       </div>
     </header>
   )
