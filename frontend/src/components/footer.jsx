@@ -3,8 +3,8 @@ import { FaFacebook, FaInstagram, FaGithub, FaGoogle, FaLinkedin } from 'react-i
 
 function footer() {
   return (
-    <footer className='border-t'>
-      <div className="container p-4 mx-auto text-center  flex flex-col lg:flex-row lg:justify-between gap-4">
+    <footer className='shadow-2xl'>
+      <div className="container p-4 mx-auto text-center  flex flex-col lg:flex-row lg:justify-between gap-4 shadow-2xl">
         <p>© All Rights reserved 2025 </p>
         <div className='flex item-center gap-4 justify-center text-2xl'>
           <a href="" className='text-blue-700 hover:-rotate-y-180 transition-transform'>

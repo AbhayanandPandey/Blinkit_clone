@@ -45,8 +45,8 @@ const Register = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-100 to-green-100 px-4">
-      <div className="w-full max-w-lg bg-white rounded-xl shadow-2xl p-8">
+    <section className="py-8 flex items-center justify-center bg-gradient-to-br from-yellow-100 to-green-100 px-4">
+      <div className="w-full max-w-lg bg-white rounded-xl shadow p-8">
         <h2 className="text-2xl font-bold text-center text-green-600">
           Welcome to <span className="text-emerald-700">Blinkyt</span>
         </h2>
