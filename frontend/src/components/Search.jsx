@@ -18,16 +18,16 @@ const Search = () => {
     }
     console.log("h", isSearch)
     return (
-        <div className='w-full min-w-[360px] lg:min-[420px] h-11 rounded-lg border border-gray-200 overflow-hidden flex items-center  text-neutral-500 bg-gray-100  group focus-within:border-green-400 '>
+        <div className='w-full min-w-[360px] lg:min-[420px] h-11 rounded-lg border border-gray-200 overflow-hidden flex items-center  text-neutral-500 bg-gray-100  group focus-within:border-yellow-500 '>
             <div>
                 
                 {
                     (isMobile&&isSearch)?(
-                        <Link to={'/'} className='flex justify-center items-center h-full p-2 cursor-pointer group-focus-within:text-green-400 bg-white rounded-full shadow-md m-1'>
+                        <Link to={'/'} className='flex justify-center items-center h-full p-2 cursor-pointer group-focus-within:text-yellow-400 bg-white rounded-full shadow-md m-1'>
                     <FaArrowLeft size={20} />
                 </Link>
                     ):(
-                        <button className='flex justify-center items-center h-full p-3 cursor-pointer group-focus-within:text-green-400'>
+                        <button className='flex justify-center items-center h-full p-3 cursor-pointer group-focus-within:text-yellow-400'>
                     <IoSearch size={22} />
                 </button>
                     )
