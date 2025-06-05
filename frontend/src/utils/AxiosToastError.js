@@ -1,7 +1,7 @@
 import toast from "react-hot-toast"
 const AxiosToastError =(error)=>{
     toast.error(
-        'provide name, emai and passwrd'
+        error?.response?.data?.message || error.message 
     )
 }
 export default AxiosToastError

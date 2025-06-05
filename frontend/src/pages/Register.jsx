@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaRegEye, FaRegEyeSlash, FaUser, FaLock, FaLockOpen } from 'react-icons/fa6';
 import { MdAlternateEmail } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
@@ -27,8 +27,10 @@ const Register = () => {
     confirmPassword: '',
   });
 
+  const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [showPass1, setShowPass1] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,13 +58,30 @@ const Register = () => {
     }
 
     try {
+      setLoading(true);
       const res = await Axios({
         ...Api.register,
-        data: data
-      })
-      toast.success("Registered successfully!");
+        data: data,
+      });
+
+      if (res.data.error) {
+        toast.error(res.data.message);
+      }
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setData({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        });
+        navigate('/login');
+      }
     } catch (error) {
-      AxiosToastError(error)
+      AxiosToastError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -127,7 +146,6 @@ const Register = () => {
                 {showPass ? <FaRegEye /> : <FaRegEyeSlash />}
               </span>
             </div>
-
             {data.password && (
               <div className="mt-1">
                 <div className="h-1 rounded-full"
@@ -151,12 +169,13 @@ const Register = () => {
           {/* Confirm Password */}
           <div>
             <label htmlFor="confirmPassword" className="block mb-1 font-medium text-gray-700">Confirm Password</label>
-            <div className={`flex items-center border rounded px-3 bg-gray-50 ${data.confirmPassword
+            <div className={`flex items-center border rounded px-3 bg-gray-50 ${
+              data.confirmPassword
                 ? passwordsMatch
                   ? 'border-green-500'
                   : 'border-red-500'
                 : 'border-gray-300'
-              }`}>
+            }`}>
               <FaLockOpen className="text-gray-400 mr-2" />
               <input
                 name="confirmPassword"
@@ -176,20 +195,20 @@ const Register = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className={`w-full py-3 font-semibold text-white rounded transition duration-200 ${isFormFilled ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-500 cursor-not-allowed'
-              }`}
+            disabled={loading}
+            className={`w-full py-3 font-semibold text-white rounded transition duration-200 ${
+              isFormFilled && !loading ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-500 cursor-not-allowed'
+            }`}
           >
-            Register
+            {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
 
         {/* Links */}
-        <div className="flex justify-between items-center mt-6 text-sm text-gray-600">
-          <Link to="/forgot-password" className="hover:text-green-700">
-            Forgot password?
-          </Link>
-          <Link to="/login" className="hover:text-green-700">
-            Already a user? Login
+        <div className="mt-6 text-sm text-gray-600">
+          Already a user?{' '}
+          <Link to="/login" className="text-green-700 hover:text-green-800">
+            Login
           </Link>
         </div>
       </div>
@@ -198,7 +217,6 @@ const Register = () => {
 };
 
 export default Register;
-
 
 
 
