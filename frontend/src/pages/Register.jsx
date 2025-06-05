@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { FaRegEye, FaRegEyeSlash, FaUser, FaLock, FaLockOpen } from 'react-icons/fa6';
 import { MdAlternateEmail } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import Axios from '../utils/Axios';
+import Api from '../config/Api';
+import AxiosToastError from '../utils/AxiosToastError';
 
 const getPasswordStrength = (password) => {
   let strength = 0;
@@ -34,19 +38,37 @@ const Register = () => {
     }));
   };
 
-  const validValue = Object.values(data).every((el) => el);
-  const passwordsMatch = data.password && data.confirmPassword && data.password === data.confirmPassword;
+  const passwordsMatch = data.password === data.confirmPassword;
   const passwordStrength = getPasswordStrength(data.password);
+  const isFormFilled = data.name && data.email && data.password && data.confirmPassword;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!passwordsMatch) return;
-    // Submit logic here
+
+    if (!isFormFilled) {
+      toast.error("All fields are required");
+      return;
+    }
+
+    if (!passwordsMatch) {
+      toast.error("Password and Confirm Password do not match");
+      return;
+    }
+
+    try {
+      const res = await Axios({
+        ...Api.register,
+        data: data
+      })
+      toast.success("Registered successfully!");
+    } catch (error) {
+      AxiosToastError(error)
+    }
   };
 
   return (
-    <section className="py-8 flex items-center justify-center bg-gradient-to-br from-yellow-100 to-green-100 px-4">
-      <div className="w-full max-w-lg bg-white rounded-xl shadow p-8">
+    <section className="py-10 flex items-center justify-center px-4 bg-gray-50">
+      <div className="w-full max-w-lg bg-white rounded-xl shadow-md p-8">
         <h2 className="text-2xl font-bold text-center text-green-600">
           Welcome to <span className="text-emerald-700">Blinkyt</span>
         </h2>
@@ -56,7 +78,7 @@ const Register = () => {
           {/* Name */}
           <div>
             <label htmlFor="name" className="block mb-1 font-medium text-gray-700">Name</label>
-            <div className="flex items-center rounded border border-gray-300 px-2 bg-gray-50 focus-within:border-emerald-500">
+            <div className="flex items-center border border-gray-300 rounded px-3 bg-gray-50 focus-within:border-green-500">
               <FaUser className="text-gray-400 mr-2" />
               <input
                 name="name"
@@ -65,7 +87,7 @@ const Register = () => {
                 value={data.name}
                 onChange={handleChange}
                 placeholder="Enter your name"
-                className="w-full h-[48px] bg-transparent outline-none border-none"
+                className="w-full h-12 bg-transparent outline-none"
               />
             </div>
           </div>
@@ -73,7 +95,7 @@ const Register = () => {
           {/* Email */}
           <div>
             <label htmlFor="email" className="block mb-1 font-medium text-gray-700">Email</label>
-            <div className="flex items-center rounded border border-gray-300 px-2 bg-gray-50 focus-within:border-emerald-500">
+            <div className="flex items-center border border-gray-300 rounded px-3 bg-gray-50 focus-within:border-green-500">
               <MdAlternateEmail className="text-gray-400 mr-2" />
               <input
                 name="email"
@@ -82,7 +104,7 @@ const Register = () => {
                 value={data.email}
                 onChange={handleChange}
                 placeholder="Enter your email"
-                className="w-full h-[48px] bg-transparent outline-none border-none"
+                className="w-full h-12 bg-transparent outline-none"
               />
             </div>
           </div>
@@ -90,9 +112,7 @@ const Register = () => {
           {/* Password */}
           <div>
             <label htmlFor="password" className="block mb-1 font-medium text-gray-700">Password</label>
-            <div className={`flex items-center rounded border px-2 bg-gray-50 ${
-              data.password ? `border-${passwordStrength.color}-500` : 'border-gray-300'
-            }`}>
+            <div className={`flex items-center border rounded px-3 bg-gray-50 ${data.password ? `border-${passwordStrength.color}-500` : 'border-gray-300'}`}>
               <FaLock className="text-gray-400 mr-2" />
               <input
                 name="password"
@@ -101,17 +121,27 @@ const Register = () => {
                 value={data.password}
                 onChange={handleChange}
                 placeholder="Enter your password"
-                className="w-full h-[48px] bg-transparent outline-none border-none"
+                className="w-full h-12 bg-transparent outline-none"
               />
-              <span onClick={() => setShowPass((prev) => !prev)} className="cursor-pointer px-2 text-gray-600">
+              <span onClick={() => setShowPass(!showPass)} className="cursor-pointer px-2 text-gray-600">
                 {showPass ? <FaRegEye /> : <FaRegEyeSlash />}
               </span>
             </div>
 
             {data.password && (
               <div className="mt-1">
-                <div className="h-1 rounded-full" style={{ backgroundColor: `${passwordStrength.color}`, width: passwordStrength.level === 'Weak' ? '33%' : passwordStrength.level === 'Medium' ? '66%' : '100%' }} />
-                <p className={`text-sm mt-1 text-${passwordStrength.color}-600`}>
+                <div className="h-1 rounded-full"
+                  style={{
+                    backgroundColor: passwordStrength.color,
+                    width:
+                      passwordStrength.level === 'Weak'
+                        ? '33%'
+                        : passwordStrength.level === 'Medium'
+                          ? '66%'
+                          : '100%',
+                  }}
+                />
+                <p className="text-sm mt-1" style={{ color: passwordStrength.color }}>
                   Password Strength: {passwordStrength.level}
                 </p>
               </div>
@@ -121,9 +151,12 @@ const Register = () => {
           {/* Confirm Password */}
           <div>
             <label htmlFor="confirmPassword" className="block mb-1 font-medium text-gray-700">Confirm Password</label>
-            <div className={`flex items-center rounded border px-2 bg-gray-50 ${
-              data.confirmPassword ? (passwordsMatch ? 'border-green-500' : 'border-red-500') : 'border-gray-300'
-            }`}>
+            <div className={`flex items-center border rounded px-3 bg-gray-50 ${data.confirmPassword
+                ? passwordsMatch
+                  ? 'border-green-500'
+                  : 'border-red-500'
+                : 'border-gray-300'
+              }`}>
               <FaLockOpen className="text-gray-400 mr-2" />
               <input
                 name="confirmPassword"
@@ -132,9 +165,9 @@ const Register = () => {
                 value={data.confirmPassword}
                 onChange={handleChange}
                 placeholder="Confirm your password"
-                className="w-full h-[48px] bg-transparent outline-none border-none"
+                className="w-full h-12 bg-transparent outline-none"
               />
-              <span onClick={() => setShowPass1((prev) => !prev)} className="cursor-pointer px-2 text-gray-600">
+              <span onClick={() => setShowPass1(!showPass1)} className="cursor-pointer px-2 text-gray-600">
                 {showPass1 ? <FaRegEye /> : <FaRegEyeSlash />}
               </span>
             </div>
@@ -143,12 +176,8 @@ const Register = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={!validValue || !passwordsMatch}
-            className={`w-full py-3 font-semibold text-white rounded transition ${
-              validValue && passwordsMatch
-                ? 'bg-green-600 hover:bg-green-700'
-                : 'bg-gray-400 cursor-not-allowed'
-            }`}
+            className={`w-full py-3 font-semibold text-white rounded transition duration-200 ${isFormFilled ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-500 cursor-not-allowed'
+              }`}
           >
             Register
           </button>
@@ -169,6 +198,7 @@ const Register = () => {
 };
 
 export default Register;
+
 
 
 

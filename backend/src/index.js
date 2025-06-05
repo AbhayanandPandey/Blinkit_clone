@@ -14,16 +14,16 @@ const app = express();
 
 app.use(cors({
     credentials: true,
-        origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
 }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(helmet({
     contentSecurityPolicy: false
-})); 
+}));
 
-app.use('/api/user',userRouter)
+app.use('/api/user', userRouter)
 
 app.listen(process.env.PORT || 5001, () => {
     console.log(`Server is running on port ${process.env.PORT || 5173}`);
