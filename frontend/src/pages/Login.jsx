@@ -48,6 +48,8 @@ const Login = () => {
 
       if (res.data.success) {
         toast.success(res.data.message || "Login successful!");
+        localStorage.setItem('accessToken',res.data.data.accessToken)
+        localStorage.setItem('refreshToken',res.data.data.refreshToken)
         setData({ email: '', password: '' });
         navigate('/');
       }
