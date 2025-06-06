@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FaRegEye, FaRegEyeSlash, FaLock } from 'react-icons/fa6';
 import { MdAlternateEmail } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -7,14 +6,9 @@ import Axios from '../utils/Axios';
 import Api from '../config/Api';
 import AxiosToastError from '../utils/AxiosToastError';
 
-const Login = () => {
-  const [data, setData] = useState({
-    email: '',
-    password: '',
-  });
-
-  const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading] = useState(false); // 👈 loader state
+const ForgotPassword = () => {
+  const [data, setData] = useState({ email: '' });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,7 +19,7 @@ const Login = () => {
     }));
   };
 
-  const isFormFilled = data.email && data.password;
+  const isFormFilled = data.email;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,26 +29,27 @@ const Login = () => {
       return;
     }
 
-    setLoading(true); // 👈 start loader
+    setLoading(true);
     try {
       const res = await Axios({
-        ...Api.login,
+        ...Api.forgot_password,
         data: data
       });
 
       if (res.data.error) {
-        toast.error(res.data.message || "Login failed");
+        toast.error(res.data.message);
       }
 
       if (res.data.success) {
-        toast.success(res.data.message || "Login successful!");
-        setData({ email: '', password: '' });
-        navigate('/');
+        toast.success(res.data.message);
+        localStorage.setItem("forgot_email", data.email);
+        setData({ email: '' });
+        navigate('/verify-otp');
       }
     } catch (error) {
       AxiosToastError(error);
     } finally {
-      setLoading(false); // 👈 stop loader
+      setLoading(false);
     }
   };
 
@@ -64,12 +59,11 @@ const Login = () => {
         <h2 className="text-2xl font-bold text-center text-green-600">
           Welcome to <span className="text-emerald-700">Blinkyt</span>
         </h2>
-        <p className="text-center text-gray-500 mb-6">Login to your account</p>
+        <p className="text-center text-gray-500 mb-6">Reset your password</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Email */}
           <div>
-            <label htmlFor="email" className="block mb-1 font-medium text-gray-700">
+            <label htmlFor="email" className="block mb-1 font-medium text-gray-700 ml-2">
               Email
             </label>
             <div className="flex items-center border rounded px-3 bg-gray-50 focus-within:border-green-500">
@@ -86,32 +80,6 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Password */}
-          <div>
-            <label htmlFor="password" className="block mb-1 font-medium text-gray-700">
-              Password
-            </label>
-            <div className="flex items-center border rounded px-3 bg-gray-50 focus-within:border-green-500">
-              <FaLock className="text-gray-400 mr-2" />
-              <input
-                name="password"
-                id="password"
-                type={showPass ? 'text' : 'password'}
-                value={data.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                className="w-full h-12 bg-transparent outline-none"
-              />
-              <span
-                onClick={() => setShowPass(!showPass)}
-                className="cursor-pointer px-2 text-gray-600"
-              >
-                {showPass ? <FaRegEye /> : <FaRegEyeSlash />}
-              </span>
-            </div>
-          </div>
-
-          {/* Submit Button with Loader */}
           <button
             type="submit"
             disabled={loading}
@@ -142,25 +110,19 @@ const Login = () => {
                     d="M4 12a8 8 0 018-8v8H4z"
                   ></path>
                 </svg>
-                Logging in...
+                Sending...
               </span>
             ) : (
-              'Login'
+              'Send OTP'
             )}
           </button>
         </form>
 
-        {/* Links */}
         <div className="flex justify-between items-center mt-6 text-sm text-gray-600">
           <p>
-            Don't have account?{' '}
-            <Link to="/register" className="text-green-700 hover:text-green-800">
-              Register
-            </Link>
-          </p>
-          <p>
-            <Link to="/forgot-password" className="hover:text-green-700">
-              Forgot password?
+            Already have account?{' '}
+            <Link to="/login" className="text-green-700 hover:text-green-800">
+              Login
             </Link>
           </p>
         </div>
@@ -169,4 +131,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;
