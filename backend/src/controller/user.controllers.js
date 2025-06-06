@@ -321,6 +321,8 @@ export async function verifyOtp(req, res) {
                 success: false
             });
         }
+        user.forgot_password_otp=''
+        user.save();
 
         return res.status(200).json({
             message: 'OTP verified successfully',
