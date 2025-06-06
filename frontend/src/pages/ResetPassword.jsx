@@ -12,7 +12,7 @@ const ResetPassword = () => {
     confirmPassword: ''
   });
 
-  const { newPassword, confirmPassword } = data; // ✅ Destructure here
+  const { newPassword, confirmPassword } = data;
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();

@@ -12,10 +12,8 @@ const VerifyOtp = () => {
   const inputsRef = useRef([]);
   const email = localStorage.getItem("forgot_email");
 
-  // ✅ Redirect if no email found (user refreshed the page)
   useEffect(() => {
     if (!email) {
-      toast.error("Session expired. Please re-enter your email.");
       navigate('/forgot-password');
     }
   }, [email, navigate]);
