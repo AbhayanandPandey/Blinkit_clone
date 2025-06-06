@@ -25,11 +25,22 @@ Axios.interceptors.request.use(
     async (error)=>{
         let originalReq = error.config
         if(error.res.status ===401 && !originalReq.retry){
-            
+            originalReq.retry=true
+            const refreshToken = localStorage.getItem('refreshToken')
+            if(refreshToken){
+
+            }
         }
     }
 
 )
 
+const refreshAccessToken = async()=>{
+    try {
+        const response = await Axios
+    } catch (error) {
+        
+    }
+}
 
 export default Axios
