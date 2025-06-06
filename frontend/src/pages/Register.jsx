@@ -94,7 +94,6 @@ const Register = () => {
         <p className="text-center text-gray-500 mb-6">Create your account</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Name */}
           <div>
             <label htmlFor="name" className="block mb-1 font-medium text-gray-700">Name</label>
             <div className="flex items-center border border-gray-300 rounded px-3 bg-gray-50 focus-within:border-green-500">
@@ -111,7 +110,6 @@ const Register = () => {
             </div>
           </div>
 
-          {/* Email */}
           <div>
             <label htmlFor="email" className="block mb-1 font-medium text-gray-700">Email</label>
             <div className="flex items-center border border-gray-300 rounded px-3 bg-gray-50 focus-within:border-green-500">
@@ -128,7 +126,6 @@ const Register = () => {
             </div>
           </div>
 
-          {/* Password */}
           <div>
             <label htmlFor="password" className="block mb-1 font-medium text-gray-700">Password</label>
             <div className={`flex items-center border rounded px-3 bg-gray-50 ${data.password ? `border-${passwordStrength.color}-500` : 'border-gray-300'}`}>
@@ -166,7 +163,6 @@ const Register = () => {
             )}
           </div>
 
-          {/* Confirm Password */}
           <div>
             <label htmlFor="confirmPassword" className="block mb-1 font-medium text-gray-700">Confirm Password</label>
             <div className={`flex items-center border rounded px-3 bg-gray-50 ${
@@ -192,7 +188,6 @@ const Register = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -204,7 +199,6 @@ const Register = () => {
           </button>
         </form>
 
-        {/* Links */}
         <div className="mt-6 text-sm text-gray-600">
           Already a user?{' '}
           <Link to="/login" className="text-green-700 hover:text-green-800">
@@ -217,133 +211,3 @@ const Register = () => {
 };
 
 export default Register;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from 'react'
-// import { FaRegEyeSlash } from 'react-icons/fa6'
-// import { FaRegEye } from 'react-icons/fa6'
-// import { Link } from 'react-router-dom'
-// const register = () => {
-//     const [data, setData] = useState({
-//         name: '',
-//         email: '',
-//         password: '',
-//         confirmPassword: ''
-//     })
-//     const [showPass, setShowPass] = useState(false)
-//     const [showPass1, setShowPass1] = useState(false)
-//     const handleChange = (e) => {
-//         const { name, value } = e.target
-//         setData((prev) => {
-//             return {
-//                 ...prev,
-//                 [name]: value
-//             }
-//         })
-//     }
-//     const validValue = Object.values(data).every(el=>el)
-//     const handleSubmit =(e)=>{
-//         e.preventDefault()
-//     }
-//     return (
-//         <section className='container w-full mx-auto px-2'>
-//             <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
-//                 <p>welcome to Blinkyt</p>
-//                 <form className='grid gap-4 mt-6' onSubmit={handleSubmit}>
-//                     <div className='grid gap-1'>
-//                         <label htmlFor="name">Name:</label>
-//                         <input
-//                             name='name'
-//                             id='name'
-//                             type="text"
-//                             autoFocus
-//                             className='bg-blue-50 p-2 border-2 rounded outline-none border-gray-300 focus-within:border-amber-400'
-//                             value={data.name}
-//                             placeholder='Enter your name'
-//                             onChange={handleChange}
-//                         />
-//                     </div>
-//                     <div className='grid gap-1'>
-//                         <label htmlFor="email">Email:</label>
-//                         <input
-//                             name='email'
-//                             id='email'
-//                             type="email"
-//                             className='bg-blue-50 p-2 border-2 rounded outline-none border-gray-300 focus-within:border-amber-400 '
-//                             value={data.email}
-//                             placeholder='Enyter your email'
-//                             onChange={handleChange}
-//                         />
-//                     </div>
-//                     <div className='grid gap-1'>
-//                         <label htmlFor="password">Password:</label>
-//                         <div className='bg-blue-50 p-2 border-2 border-gray-300 rounded flex items-center focus-within:border-amber-400'>
-//                             <input
-//                                 name='password'
-//                                 id='password'
-//                                 type={showPass ? 'text' : 'password'}
-//                                 className='w-full outline-none '
-//                                 value={data.password}
-//                                 placeholder='enter your password'
-//                                 onChange={handleChange}
-//                             />
-//                             <div onClick={()=>{setShowPass(prev=>!prev)}}  className='cursor-pointer'>
-//                                 {
-//                                     showPass ? (<FaRegEye /> ):
-//                                         (<FaRegEyeSlash />)
-
-//                                 }
-//                             </div>
-//                         </div>
-//                     </div>
-//                     <div className='grid gap-1'>
-//                         <label htmlFor="confirmPassword">Confirm Password:</label>
-//                         <div className='bg-blue-50 p-2 border-2 border-gray-300 rounded flex items-center focus-within:border-amber-400'>
-//                             <input
-//                                 name='confirmPassword'
-//                                 id='confirmPassword'
-//                                 type={showPass1 ? 'text' : 'password'}
-//                                 className='w-full outline-none '
-//                                 value={data.confirmPassword}
-//                                 placeholder='enter your confirm password'
-//                                 onChange={handleChange}
-//                             />
-//                             <div onClick={()=>{setShowPass1(prev=>!prev)}}  className='cursor-pointer'>
-//                                 {
-//                                     showPass1 ? (<FaRegEye /> ):
-//                                         (<FaRegEyeSlash />)
-
-//                                 }
-//                             </div>
-//                         </div>
-//                     </div>
-//                     <button className={` ${validValue ? 'bg-green-600 hover:bg-green-700':'bg-gray-500'}  text-white rounded font-semibold py-2 cursor-pointer my-3 tracking-wide`}>Register</button>
-//                 </form>
-//                 <div className='flex justify-between mt-2'>
-//                     <div>
-//                         <Link to="/forgot-password" > forgot password</Link>
-//                     </div>
-//                     <div>
-//                         <Link to="/forgot-password" > already user? login</Link>
-//                     </div>
-//                 </div>
-//             </div>
-//         </section>
-//     )
-// }
-
-// export default register
