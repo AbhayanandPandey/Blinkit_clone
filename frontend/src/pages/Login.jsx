@@ -14,7 +14,7 @@ const Login = () => {
   });
 
   const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading] = useState(false); // 👈 loader state
+  const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -35,7 +35,7 @@ const Login = () => {
       return;
     }
 
-    setLoading(true); // 👈 start loader
+    setLoading(true);
     try {
       const res = await Axios({
         ...Api.login,
@@ -54,7 +54,7 @@ const Login = () => {
     } catch (error) {
       AxiosToastError(error);
     } finally {
-      setLoading(false); // 👈 stop loader
+      setLoading(false);
     }
   };
 
@@ -67,7 +67,6 @@ const Login = () => {
         <p className="text-center text-gray-500 mb-6">Login to your account</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Email */}
           <div>
             <label htmlFor="email" className="block mb-1 font-medium text-gray-700">
               Email
@@ -86,7 +85,6 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Password */}
           <div>
             <label htmlFor="password" className="block mb-1 font-medium text-gray-700">
               Password
@@ -111,7 +109,6 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Submit Button with Loader */}
           <button
             type="submit"
             disabled={loading}
@@ -150,7 +147,6 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Links */}
         <div className="flex justify-between items-center mt-6 text-sm text-gray-600">
           <p>
             Don't have account?{' '}
