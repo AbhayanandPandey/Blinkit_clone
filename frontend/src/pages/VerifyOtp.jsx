@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
@@ -10,13 +10,18 @@ const VerifyOtp = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const inputsRef = useRef([]);
-  const email = localStorage.getItem("forgot_email");
+  const location = useLocation();
+
+  const email = location?.state?.email;
 
   useEffect(() => {
     if (!email) {
-      navigate('/forgot-password');
+      toast.error("Session expired. Please re-enter your email.");
+      navigate('/forgot-password', { replace: true });
     }
   }, [email, navigate]);
+
+  if (!email) return null;
 
   const handleChange = (e, i) => {
     const value = e.target.value;
@@ -53,7 +58,7 @@ const VerifyOtp = () => {
       if (res.data.success) {
         toast.success(res.data.message);
         setData(["", "", "", "", "", ""]);
-        navigate('/reset-password');
+        navigate('/reset-password', { state: { email } });
       } else {
         toast.error(res.data.message);
       }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { RiLockPasswordLine } from 'react-icons/ri';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
@@ -16,12 +16,17 @@ const ResetPassword = () => {
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const email = localStorage.getItem("forgot_email");
-useEffect(() => {
-  if (!email) {
-      navigate('/forgot-password');
+  const location = useLocation();
+  const email = location?.state?.email;
+
+  useEffect(() => {
+    if (!email) {
+      toast.error("Session expired. Please re-enter your email.");
+      navigate('/forgot-password', { replace: true });
     }
   }, [email, navigate]);
+
+  if (!email) return null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,12 +54,6 @@ useEffect(() => {
       return;
     }
 
-    if (!email) {
-      toast.error("Email not found. Please restart the process.");
-      navigate('/forgot-password');
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -69,15 +68,12 @@ useEffect(() => {
 
       if (res.data.success) {
         toast.success(res.data.message || "Password reset successful!");
-        localStorage.removeItem("forgot_email");
         navigate('/login');
       } else {
         toast.error(res.data.message || "Failed to reset password.");
-        localStorage.removeItem("forgot_email");
       }
     } catch (err) {
       AxiosToastError(err);
-        localStorage.removeItem("forgot_email");
     } finally {
       setLoading(false);
     }
