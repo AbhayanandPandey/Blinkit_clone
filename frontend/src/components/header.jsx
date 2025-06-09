@@ -5,12 +5,13 @@ import { FaRegCircleUser } from 'react-icons/fa6'
 import useMobile from '../hooks/useMobile'
 import { BsCart4 } from 'react-icons/bs'
 import { useSelector } from 'react-redux'
+import {GoTriangleDown, GoTriangleUp} from 'react-icons/go'
 function header() {
   const [isMobile] = useMobile()
   const location = useLocation()
   const navigate = useNavigate()
   const user = useSelector((state)=>state?.user)
-  console.log('user dtore',user)
+  console.log('user',user)
   const handleLogin = () => {
     navigate('/login')
   }
@@ -50,7 +51,23 @@ function header() {
                 <FaRegCircleUser size={26} />
               </button>
               <div className='hidden lg:flex items-center gap-6'>
-                <button onClick={handleLogin} className='cursor-pointer text-lg px-2'> Login</button>
+                {
+                  user?._id ? (
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <p>
+                          Account
+                          <GoTriangleDown/>
+                          {/* <GoTriangleUp /> */}
+                        </p>
+                        <p></p>
+                      </div>
+                    </div>
+                  ):(
+
+                    <button onClick={handleLogin} className='cursor-pointer text-lg px-2'> Login</button>
+                  )
+                }
                 <button className='flex items-center gap-2 bg-green-700 px-3 py-2 rounded text-white cursor-pointer hover:bg-green-600'>
                   <div className='cursor-pointer animate-bounce'>
                     <BsCart4 size={28} />
