@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { baseURL } from '../config/Api'
+import Api, { baseURL } from '../config/Api'
 const Axios = axios.create({
     baseURL:baseURL,
     withCredentials:true,
@@ -28,18 +28,34 @@ Axios.interceptors.request.use(
             originalReq.retry=true
             const refreshToken = localStorage.getItem('refreshToken')
             if(refreshToken){
+                const newAccessToken = await refreshAccessToken(refreshToken)
 
+                if(newAccessToken){
+                    originalReq.headers.Authorization = `Bearer ${newAccessToken}`
+                    return Axios(originalReq)
+                }
             }
         }
+        return Promise.reject(error)
     }
 
 )
 
-const refreshAccessToken = async()=>{
+const refreshAccessToken = async(refreshToken)=>{
     try {
-        const response = await Axios
+        const response = await Axios({
+            ...Api.refreshToken,
+            headers: {
+                Authorization: `Bearer ${refreshToken}`
+            }
+        })
+        const accessToken = response.data.data.accessToken
+        localStorage.setItem('accessToken', accessToken)
+        console.log('Access token refreshed successfully:', response.data)
+        return accessToken
     } catch (error) {
-        
+        console.error('Error refreshing access token:', error)
+        throw error
     }
 }
 
