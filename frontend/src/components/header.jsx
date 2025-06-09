@@ -4,10 +4,13 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FaRegCircleUser } from 'react-icons/fa6'
 import useMobile from '../hooks/useMobile'
 import { BsCart4 } from 'react-icons/bs'
+import { useSelector } from 'react-redux'
 function header() {
   const [isMobile] = useMobile()
   const location = useLocation()
   const navigate = useNavigate()
+  const user = useSelector((state)=>state?.user)
+  console.log('user dtore',user)
   const handleLogin = () => {
     navigate('/login')
   }
