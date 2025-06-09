@@ -5,13 +5,15 @@ import { FaRegCircleUser } from 'react-icons/fa6'
 import useMobile from '../hooks/useMobile'
 import { BsCart4 } from 'react-icons/bs'
 import { useSelector } from 'react-redux'
-import {GoTriangleDown, GoTriangleUp} from 'react-icons/go'
+import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
+import { useState } from 'react'
 function header() {
   const [isMobile] = useMobile()
   const location = useLocation()
   const navigate = useNavigate()
-  const user = useSelector((state)=>state?.user)
-  console.log('user',user)
+  const user = useSelector((state) => state?.user)
+  const [openUser, setOpenUser] = useState(false)
+  console.log('user', user)
   const handleLogin = () => {
     navigate('/login')
   }
@@ -52,18 +54,22 @@ function header() {
               </button>
               <div className='hidden lg:flex items-center gap-6'>
                 {
-                  user?._id ? (
-                    <div>
+                  user?.id ? (
+                    <div className=' relative'>
                       <div className='flex items-center gap-2'>
                         <p>
                           Account
-                          <GoTriangleDown/>
-                          {/* <GoTriangleUp /> */}
                         </p>
+                        <GoTriangleDown />
+                        {/* <GoTriangleUp /> */}
+
                         <p></p>
                       </div>
+                      <div className='absolute right-0 h-20 top-16'>
+                        user Details
+                      </div>
                     </div>
-                  ):(
+                  ) : (
 
                     <button onClick={handleLogin} className='cursor-pointer text-lg px-2'> Login</button>
                   )
