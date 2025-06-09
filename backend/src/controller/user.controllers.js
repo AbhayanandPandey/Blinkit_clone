@@ -322,6 +322,7 @@ export async function verifyOtp(req, res) {
             });
         }
         user.forgot_password_otp=''
+        user.forgot_password_expiry = null; 
         user.save();
 
         return res.status(200).json({
