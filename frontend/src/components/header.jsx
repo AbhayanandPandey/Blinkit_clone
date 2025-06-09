@@ -7,6 +7,7 @@ import { BsCart4 } from 'react-icons/bs'
 import { useSelector } from 'react-redux'
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
 import { useState } from 'react'
+import UserMenu from './UserMenu'
 function header() {
   const [isMobile] = useMobile()
   const location = useLocation()
@@ -56,18 +57,32 @@ function header() {
                 {
                   user?.id ? (
                     <div className=' relative'>
-                      <div className='flex items-center gap-2'>
+                      <div onClick={() => setOpenUser(preve => !preve)} className='flex items-center gap-2 cursor-pointer'>
                         <p>
                           Account
                         </p>
-                        <GoTriangleDown />
-                        {/* <GoTriangleUp /> */}
+                        {
+                          openUser ? (
+                            <GoTriangleUp size={22} />
+
+                          ) : (
+
+                            <GoTriangleDown size={22} />
+                          )
+                        }
 
                         <p></p>
                       </div>
-                      <div className='absolute right-0 h-20 top-16'>
-                        user Details
-                      </div>
+                      {
+                        openUser && (
+                          <div className='absolute right-0 h-20 top-12'>
+                            <div className='bg bg-white rounded p-4 min-w-52 lg:shadow-lg '>
+                              <UserMenu />
+                            </div>
+                          </div>
+                        )
+                      }
+
                     </div>
                   ) : (
 
