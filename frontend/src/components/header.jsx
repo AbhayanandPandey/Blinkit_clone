@@ -8,11 +8,14 @@ import { useSelector } from 'react-redux'
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
 import { useState } from 'react'
 import UserMenu from './UserMenu'
+import { useEffect } from 'react'
 function header() {
   const [isMobile] = useMobile()
   const location = useLocation()
   const navigate = useNavigate()
   const user = useSelector((state) => state?.user)
+
+
   const [openUser, setOpenUser] = useState(false)
   console.log('user', user)
   const handleLogin = () => {
