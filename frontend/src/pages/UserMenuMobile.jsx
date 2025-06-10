@@ -26,7 +26,6 @@ const UserMenuMobile = () => {
           <IoClose size={24} />
         </button>
 
-        {/* Content Container */}
         <div className="pt-10 pb-6 px-6 text-center">
           <UserMenu />
         </div>
