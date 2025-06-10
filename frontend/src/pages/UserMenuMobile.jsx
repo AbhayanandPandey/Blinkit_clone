@@ -17,7 +17,6 @@ const UserMenuMobile = () => {
   return (
     <section className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 p-4 animate-fadeIn">
       <div className="relative w-full max-w-sm bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* Close Button */}
         <button
           onClick={() => navigate('/')}
           aria-label="Close"
