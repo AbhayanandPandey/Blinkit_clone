@@ -25,6 +25,18 @@ function header() {
     setOpenUser(false)
   }
   const isSearchPage = location.pathname === '/search'
+
+  const handleMobile =() =>{
+    if(!user.id){
+      navigate('/login')
+      return 
+    }
+    if(user.id){
+      navigate('/user')
+      return 
+    }
+  }
+
   return (
     <header className=' h-28 lg:h-20  sticky top-0 flex items-center flex-col lg:shadow  lg:pb-0 bg-white'>
       {
@@ -56,7 +68,7 @@ function header() {
             </div>
 
             <div>
-              <button className='text-neutral-600 lg:hidden'>
+              <button className='text-neutral-600 lg:hidden' onClick={handleMobile}>
                 <FaRegCircleUser size={26} />
               </button>
               <div className='hidden lg:flex items-center gap-6'>

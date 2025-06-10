@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config();
 const isAuthenticate = (req, res, next) => {
     try {
-        const token = req.cookies.accessToken || req?.header?.authorization?.split(' ')[1]
+        const token = req.cookies.accessToken || req?.headers?.authorization?.split(' ')[1]
         if (!token) {
             return res.status(500).json({
                 message: 'invalid token',

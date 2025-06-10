@@ -423,7 +423,7 @@ export async function verifyEmail(req, res) {
 
 export async function refreshToken(req, res) {
     try {
-        const reftoken = req.cookies.refreshToken || req?.header?.authorization?.split(" ")[1];
+        const reftoken = req.cookies.refreshToken || req?.headers?.authorization?.split(" ")[1];
 
         if (!reftoken) {
             return res.status(400).json({

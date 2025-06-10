@@ -24,7 +24,7 @@ const Search = () => {
                 {
                     (isMobile&&isSearch)?(
                         <Link to={'/'} className='flex justify-center items-center h-full p-2 cursor-pointer group-focus-within:text-yellow-400 bg-white rounded-full shadow-md m-1'>
-                    <FaArrowLeft size={20} />
+                    <FaArrowLeft size={15} />
                 </Link>
                     ):(
                         <button className='flex justify-center items-center h-full p-3 cursor-pointer group-focus-within:text-yellow-400'>
