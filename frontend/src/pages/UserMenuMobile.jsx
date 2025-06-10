@@ -6,7 +6,6 @@ import { IoClose } from 'react-icons/io5'
 const UserMenuMobile = () => {
   const navigate = useNavigate()
 
-  // Prevent background scroll when modal is open
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => {
