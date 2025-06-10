@@ -1,24 +1,45 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Divider from './Divider'
 import { Link } from 'react-router-dom'
+import Axios from '../utils/Axios'
+import Api from '../config/Api'
+import { logout } from '../store/userSlice'
+import toast from 'react-hot-toast'
+import AxiosToastError from '../utils/AxiosToastError'
 
-const UserMenu = () => {
+const UserMenu = ({close}) => {
     const user = useSelector((state) => state?.user)
+    const dispatch = useDispatch()
 
     if (!user || !user.id) {
-        return null // Don’t render anything if user is not logged in
+        return null 
+    }
+    const handleLogout =async()=>{
+        try {
+            const response = await Axios ({
+                ...Api.logout
+            })
+            if(response.data.success){
+                close()
+                dispatch(logout())
+                localStorage.clear()
+                toast.success(response.data.message)
+            }
+        } catch (error) {
+            AxiosToastError(error)
+        }
     }
 
     return (
     <div>
         <div className="font-semibold">My Account</div>
-        <div className="text-sm">{user.name || user.mobile}</div>
+        <div className="text-sm pt-1">{user.name || user.mobile}</div>
         <Divider />
         <div className="text-sm grid gap-2 text-gray-600">
             <Link to={''} className='px-2'>My orders</Link>
             <Link to={''} className='px-2'>Save Address</Link>
-            <button className='text-left cursor-pointer px-2'>Log Out</button>
+            <button className='text-left cursor-pointer px-2' onClick={handleLogout}>Log Out</button>
         </div>
     </div>
   )

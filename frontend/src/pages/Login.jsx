@@ -6,6 +6,9 @@ import toast from 'react-hot-toast';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
 import AxiosToastError from '../utils/AxiosToastError';
+import fetchUserDetails from '../utils/fetchUserDetails';
+import { useDispatch } from 'react-redux';
+import { setUserDetails } from '../store/userSlice';
 
 const Login = () => {
   const [data, setData] = useState({
@@ -16,6 +19,7 @@ const Login = () => {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +54,8 @@ const Login = () => {
         toast.success(res.data.message || "Login successful!");
         localStorage.setItem('accessToken',res.data.data.accessToken)
         localStorage.setItem('refreshToken',res.data.data.refreshToken)
+        const userDet = await fetchUserDetails()
+        dispatch(setUserDetails(userDet.data));
         setData({ email: '', password: '' });
         navigate('/');
       }

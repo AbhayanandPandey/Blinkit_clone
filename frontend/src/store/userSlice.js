@@ -36,7 +36,7 @@ const userSlice = createSlice({
             state.createdAt = action.payload?.createdAt || '';
             state.updatedAt = action.payload?.updatedAt || '';
         },
-        clearUserDetails: (state) => {
+        logout: (state) => {
             state.id = '';
             state.name = '';
             state.email = '';
@@ -55,6 +55,6 @@ const userSlice = createSlice({
     }
 });
 
-export const { setUserDetails, clearUserDetails } = userSlice.actions;
+export const { setUserDetails, logout } = userSlice.actions;
 
 export default userSlice.reducer;

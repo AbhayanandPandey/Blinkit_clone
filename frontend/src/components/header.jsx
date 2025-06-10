@@ -14,12 +14,15 @@ function header() {
   const location = useLocation()
   const navigate = useNavigate()
   const user = useSelector((state) => state?.user)
-
-
   const [openUser, setOpenUser] = useState(false)
+
+
   console.log('user', user)
   const handleLogin = () => {
     navigate('/login')
+  }
+  const handleClose = ()=>{
+    setOpenUser(false)
   }
   const isSearchPage = location.pathname === '/search'
   return (
@@ -80,7 +83,7 @@ function header() {
                         openUser && (
                           <div className='absolute right-0 h-20 top-12'>
                             <div className='bg bg-white rounded p-4 min-w-52 lg:shadow-lg '>
-                              <UserMenu />
+                              <UserMenu close={handleClose} />
                             </div>
                           </div>
                         )
