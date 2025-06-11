@@ -16,7 +16,6 @@ const Search = () => {
     const redToSearch = () => {
         navigae('/search')
     }
-    console.log("h", isSearch)
     return (
         <div className='w-full min-w-[360px] lg:min-[420px] h-11 rounded-lg border border-gray-200 overflow-hidden flex items-center  text-neutral-500 bg-gray-100  group focus-within:border-yellow-500 '>
             <div>

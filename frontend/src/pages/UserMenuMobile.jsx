@@ -5,30 +5,17 @@ import { IoClose } from 'react-icons/io5'
 
 const UserMenuMobile = () => {
   const navigate = useNavigate()
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [])
-
   return (
-    <section className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 p-4 animate-fadeIn">
-      <div className="relative w-full max-w-sm bg-white rounded-xl shadow-lg overflow-hidden">
-        <button
-          onClick={() => navigate('/')}
-          aria-label="Close"
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
-        >
-          <IoClose size={24} />
-        </button>
-
-        <div className="pt-10 pb-6 px-6 text-center">
-          <UserMenu />
-        </div>
+     <div>
+      <section className="bg-white h-full w-full py-2">
+      <button onClick={()=>navigate('/')} className='text-neutral-800 block w-fit ml-auto'>
+        <IoClose size={25} />
+      </button>
+      <div className="container mx-auto px-3 pb-8">
+        <UserMenu />
       </div>
     </section>
+     </div>
   )
 }
 

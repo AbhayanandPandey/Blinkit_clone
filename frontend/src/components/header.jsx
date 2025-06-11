@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux'
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
 import { useState } from 'react'
 import UserMenu from './UserMenu'
-import { useEffect } from 'react'
 function header() {
   const [isMobile] = useMobile()
   const location = useLocation()
@@ -17,7 +16,6 @@ function header() {
   const [openUser, setOpenUser] = useState(false)
 
 
-  console.log('user', user)
   const handleLogin = () => {
     navigate('/login')
   }
@@ -31,10 +29,7 @@ function header() {
       navigate('/login')
       return 
     }
-    if(user.id){
       navigate('/user')
-      return 
-    }
   }
 
   return (
@@ -69,7 +64,7 @@ function header() {
 
             <div>
               <button className='text-neutral-600 lg:hidden' onClick={handleMobile}>
-                <FaRegCircleUser size={26} />
+                <FaRegCircleUser size={25} />
               </button>
               <div className='hidden lg:flex items-center gap-6'>
                 {
