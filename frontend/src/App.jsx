@@ -17,8 +17,6 @@ function App() {
     fetchUser()
   },[])
   return (
-
-
     <>
       <Header />
       <main className='min-h-[78vh]'>
