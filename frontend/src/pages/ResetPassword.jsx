@@ -11,7 +11,6 @@ const ResetPassword = () => {
     newPassword: '',
     confirmPassword: ''
   });
-
   const { newPassword, confirmPassword } = data;
 
   const [loading, setLoading] = useState(false);

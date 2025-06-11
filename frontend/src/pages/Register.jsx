@@ -165,13 +165,12 @@ const Register = () => {
 
           <div>
             <label htmlFor="confirmPassword" className="block mb-1 font-medium text-gray-700">Confirm Password</label>
-            <div className={`flex items-center border rounded px-3 bg-gray-50 ${
-              data.confirmPassword
+            <div className={`flex items-center border rounded px-3 bg-gray-50 ${data.confirmPassword
                 ? passwordsMatch
                   ? 'border-green-500'
                   : 'border-red-500'
                 : 'border-gray-300'
-            }`}>
+              }`}>
               <FaLockOpen className="text-gray-400 mr-2" />
               <input
                 name="confirmPassword"
@@ -191,9 +190,8 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 font-semibold text-white rounded transition duration-200 ${
-              isFormFilled && !loading ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-500 cursor-not-allowed'
-            }`}
+            className={`w-full py-3 font-semibold text-white rounded transition duration-200 ${isFormFilled && !loading ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-500 cursor-not-allowed'
+              }`}
           >
             {loading ? 'Registering...' : 'Register'}
           </button>

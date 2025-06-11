@@ -17,7 +17,7 @@ const Login = () => {
   });
 
   const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch()
 
@@ -52,8 +52,8 @@ const Login = () => {
 
       if (res.data.success) {
         toast.success(res.data.message || "Login successful!");
-        localStorage.setItem('accessToken',res.data.data.accessToken)
-        localStorage.setItem('refreshToken',res.data.data.refreshToken)
+        localStorage.setItem('accessToken', res.data.data.accessToken)
+        localStorage.setItem('refreshToken', res.data.data.refreshToken)
         const userDet = await fetchUserDetails()
         dispatch(setUserDetails(userDet.data));
         setData({ email: '', password: '' });
@@ -120,11 +120,10 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 font-semibold text-white rounded transition duration-200 ${
-              isFormFilled && !loading
+            className={`w-full py-3 font-semibold text-white rounded transition duration-200 ${isFormFilled && !loading
                 ? 'bg-green-600 hover:bg-green-700 cursor-pointer'
                 : 'bg-gray-500 cursor-not-allowed'
-            }`}
+              }`}
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">

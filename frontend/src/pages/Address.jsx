@@ -3,7 +3,7 @@ import React from 'react'
 const Address = () => {
   return (
     <div>
-      Add
+      Address
     </div>
   )
 }
