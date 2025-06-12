@@ -1,81 +1,84 @@
-import React, { useState } from 'react'
-import { FaRegUserCircle } from 'react-icons/fa'
-import { useDispatch, useSelector } from 'react-redux'
-import Axios from '../utils/Axios'
-import SummaryApi from '../config/Api'
-import AxiosToastError from '../utils/AxiosToastError'
-import { updatedAvatar } from '../store/userSlice'
-import { IoClose } from "react-icons/io5";
+import React, { useState } from 'react';
+import { FaRegUserCircle } from 'react-icons/fa';
+import { IoClose } from 'react-icons/io5';
+import { useDispatch, useSelector } from 'react-redux';
+import Axios from '../utils/Axios';
+import Api from '../config/Api';
+import toast from 'react-hot-toast';
+import { updatedAvatar } from '../store/userSlice';
+import AxiosToastError from '../utils/AxiosToastError';
 
-const UserProfileAvatarEdit = ({close}) => {
-    const user = useSelector(state => state.user)
-    const dispatch = useDispatch()
-    const [loading,setLoading] = useState(false)
+const UserProfileAvatarEdit = ({ close }) => {
+  const user = useSelector((s) => s.user);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [fileName, setFileName] = useState(""); // track file name
 
-    const handleSubmit = (e)=>{
-        e.preventDefault()
+  const handleUploadAvatarImage = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setFileName(file.name);            // display file name
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+      const res = await Axios({
+        ...Api.uploadAvatar,
+        data: formData
+      });
+      const newAvatar = res.data?.data?.avatar;
+      dispatch(updatedAvatar(newAvatar));
+      toast.success('Profile photo updated!');
+      close();
+    } catch (err) {
+      AxiosToastError(err);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const handleUploadAvatarImage = async(e)=>{
-        const file = e.target.files[0]
-
-        if(!file){
-            return
-        }
-
-        const formData = new FormData()
-        formData.append('avatar',file)
-
-        try {
-            setLoading(true)
-            const response = await Axios({
-                ...SummaryApi.uploadAvatar,
-                data : formData
-            })
-            const { data : responseData}  = response
-
-            dispatch(updatedAvatar(responseData.data.avatar))
-
-        } catch (error) {
-            AxiosToastError(error)
-        } finally{
-            setLoading(false)
-        }
-
-    }
   return (
-    <section className='fixed top-0 bottom-0 left-0 right-0 bg-neutral-900 bg-opacity-60 p-4 flex items-center justify-center'>
-        <div className='bg-white max-w-sm w-full rounded p-4 flex flex-col items-center justify-center'>
-            <button onClick={close} className='text-neutral-800 w-fit block ml-auto'>
-                <IoClose size={20}/>
-            </button>
-            <div className='w-20 h-20 bg-red-500 flex items-center justify-center rounded-full overflow-hidden drop-shadow-sm'>
-                {
-                    user.avatar ? (
-                        <img 
-                        alt={user.name}
-                        src={user.avatar}
-                        className='w-full h-full'
-                        />
-                    ) : (
-                        <FaRegUserCircle size={65}/>
-                    )
-                }
-            </div>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor='uploadProfile'>
-                    <div className='border border-primary-200 cursor-pointer hover:bg-primary-200 px-4 py-1 rounded text-sm my-3'>
-                        {
-                            loading ? "Loading..." : "Upload"
-                        }
-                    </div>
-                    <input onChange={handleUploadAvatarImage} type='file' id='uploadProfile' className='hidden'/>
-                </label>
-            </form>
-            
-        </div>
-    </section>
-  )
-}
+    <section className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4">
+      <div className="relative bg-white max-w-sm w-full rounded-lg shadow-lg p-6 flex flex-col items-center">
+        <button
+          onClick={close}
+          className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 cursor-pointer"
+        >
+          <IoClose size={24} />
+        </button>
 
-export default UserProfileAvatarEdit
+        <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden mb-4 shadow-inner flex items-center justify-center">
+          {user.avatar ? (
+            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+          ) : (
+            <FaRegUserCircle size={72} className="text-gray-400" />
+          )}
+        </div>
+
+        <label
+          htmlFor="uploadProfile"
+          className="inline-block bg-amber-300 hover:bg-amber-400 text-white font-medium py-2 px-6 rounded-full cursor-pointer transition focus:outline-none focus:ring-2 focus:ring-amber-200"
+        >
+          {loading ? 'Uploading…' : 'Choose Photo'}
+        </label>
+        <input
+          type="file"
+          id="uploadProfile"
+          accept="image/jpeg,image/png"
+          onChange={handleUploadAvatarImage}
+          className="hidden"
+        />
+
+        {fileName && (
+          <p className="mt-2 text-sm text-gray-600">
+            Selected: <span className="font-medium">{fileName}</span>
+          </p>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default UserProfileAvatarEdit;
