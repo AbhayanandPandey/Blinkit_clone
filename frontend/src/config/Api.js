@@ -32,7 +32,11 @@ const Api = {
     logout:{
         url: '/api/user/logout',
         method: 'get'
-    }
+    },
+    uploadAvatar: {
+        url: '/api/user/upload-avatar',
+        method: 'put'
+    },
 }
 
 export default Api
