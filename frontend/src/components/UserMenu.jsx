@@ -62,7 +62,7 @@
             </Link>
             <button
             onClick={wrapClose(handleLogout)}
-            className="text-left px-2 text-red-600 hover:text-red-800"
+            className="text-left px-2 text-red-600 hover:text-red-800 cursor-pointer"
             >
             Log Out
             </button>
