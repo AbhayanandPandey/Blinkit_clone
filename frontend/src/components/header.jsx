@@ -15,7 +15,6 @@ function header() {
   const user = useSelector((state) => state?.user)
   const [openUser, setOpenUser] = useState(false)
 
-
   const handleLogin = () => {
     navigate('/login')
   }

@@ -12,12 +12,11 @@ const UserProfileAvatarEdit = ({ close }) => {
   const user = useSelector((s) => s.user);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [fileName, setFileName] = useState(""); 
+
   const handleUploadAvatarImage = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setFileName(file.name);           
     setLoading(true);
     const formData = new FormData();
     formData.append('avatar', file);
@@ -25,12 +24,12 @@ const UserProfileAvatarEdit = ({ close }) => {
     try {
       const res = await Axios({
         ...Api.uploadAvatar,
-        data: formData
+        data: formData,
       });
       const newAvatar = res.data?.data?.avatar;
       dispatch(updatedAvatar(newAvatar));
-      toast.success('Profile photo updated!');
       close();
+      toast.success('Profile photo updated!');
     } catch (err) {
       AxiosToastError(err);
     } finally {
@@ -50,7 +49,7 @@ const UserProfileAvatarEdit = ({ close }) => {
 
         <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden mb-4 shadow-inner flex items-center justify-center">
           {user.avatar ? (
-            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+            <img src={user.avatar} alt={user.name} className="w-full h-full" />
           ) : (
             <FaRegUserCircle size={72} className="text-gray-400" />
           )}
@@ -60,7 +59,29 @@ const UserProfileAvatarEdit = ({ close }) => {
           htmlFor="uploadProfile"
           className="inline-block bg-amber-300 hover:bg-amber-400 text-white font-medium py-2 px-6 rounded-full cursor-pointer transition focus:outline-none focus:ring-2 focus:ring-amber-200"
         >
-          {loading ? 'Uploading…' : 'Choose Photo'}
+          {loading ? (
+            <svg
+              className="animate-spin h-5 w-5 text-white inline-block"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8z"
+              />
+            </svg>
+          ) : (
+            'Choose Photo'
+          )}
         </label>
         <input
           type="file"
@@ -69,12 +90,6 @@ const UserProfileAvatarEdit = ({ close }) => {
           onChange={handleUploadAvatarImage}
           className="hidden"
         />
-
-        {fileName && (
-          <p className="mt-2 text-sm text-gray-600">
-            Selected: <span className="font-medium">{fileName}</span>
-          </p>
-        )}
       </div>
     </section>
   );
