@@ -196,6 +196,8 @@ export async function updateAvatar(req, res) {
 
         return res.json({
             message: 'upload profile',
+            success: true,
+            error: false,
             data: {
                 _id: userId,
                 avatar: upload.url
