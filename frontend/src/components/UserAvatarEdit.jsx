@@ -12,13 +12,12 @@ const UserProfileAvatarEdit = ({ close }) => {
   const user = useSelector((s) => s.user);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [fileName, setFileName] = useState(""); // track file name
-
+  const [fileName, setFileName] = useState(""); 
   const handleUploadAvatarImage = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setFileName(file.name);            // display file name
+    setFileName(file.name);           
     setLoading(true);
     const formData = new FormData();
     formData.append('avatar', file);
