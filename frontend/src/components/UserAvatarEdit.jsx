@@ -33,7 +33,6 @@ const UserAvatarEdit = () => {
     <section className="fixed inset-0 bg-neutral-900/60 flex items-center justify-center z-50 p-4">
       <div className="relative bg-white max-w-sm w-full rounded-xl p-6 flex flex-col items-center">
         
-        {/* Avatar Preview */}
         <div className="w-24 h-24 bg-red-400 flex items-center justify-center rounded-full overflow-hidden drop-shadow-md mb-4">
           {user.avatar && !selectedFile ? (
             <img src={user.avatar} alt={user.name} className="w-full h-full" />
@@ -44,7 +43,6 @@ const UserAvatarEdit = () => {
           )}
         </div>
 
-        {/* File Input */}
         <label htmlFor="profileImg" className="cursor-pointer text-sm text-blue-600 hover:underline mb-2">
           {selectedFile ? 'Change profile picture' : 'Choose new profile picture'}
         </label>
@@ -56,7 +54,6 @@ const UserAvatarEdit = () => {
           className=" w-full text-sm text-gray-700 mb-4 hidden"
         />
 
-        {/* Upload Button */}
         {selectedFile && (
           <button
             onClick={handleUpload}
@@ -85,7 +82,6 @@ const UserAvatarEdit = () => {
   );
 };
 
-// Placeholder for demonstration
 const fakeUpload = () => new Promise((resolve) => setTimeout(resolve, 2000));
 
 export default UserAvatarEdit;
