@@ -36,8 +36,8 @@ const userSlice = createSlice({
             state.createdAt = action.payload?.createdAt || '';
             state.updatedAt = action.payload?.updatedAt || '';
         },
-        updateAvater: (state, action) => {
-            state.avatar = action.payload?.avatar || state.avatar;
+        updatedAvatar: (state, action) => {
+            state.avatar = action.payload
         },
         logout: (state) => {
             state.id = '';
@@ -58,5 +58,5 @@ const userSlice = createSlice({
     }
 });
 
-export const { setUserDetails, logout, updateAvater } = userSlice.actions;
+export const { setUserDetails, logout, updatedAvatar } = userSlice.actions;
 export default userSlice.reducer;

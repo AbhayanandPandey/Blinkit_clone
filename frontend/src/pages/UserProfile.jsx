@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { FaRegUserCircle } from 'react-icons/fa'
 import UserAvatarEdit from '../components/UserAvatarEdit'
 
