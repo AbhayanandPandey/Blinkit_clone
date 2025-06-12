@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { HiXMark } from 'react-icons/hi2';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
 import toast from 'react-hot-toast'
+import { updateAvater } from '../store/userSlice'
 
 const UserAvatarEdit = () => {
   const user = useSelector((state) => state.user);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -30,9 +32,10 @@ const UserAvatarEdit = () => {
         data: formData,
       });
       toast.success('Profile image updated Successful')
+      dispatch(updateAvater(response.data?.avatar))
       navigate('/dashboard')
     } catch (err) {
-      console.error(err);
+      toast.error(err);
     } finally {
       setLoading(false);
     }
