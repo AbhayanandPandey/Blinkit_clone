@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaRegUserCircle } from 'react-icons/fa';
 import UserAvatarEdit from '../components/UserAvatarEdit';
-import AxiosToastError from '../utils/AxiosToastError';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
 import toast from 'react-hot-toast';
@@ -10,12 +9,11 @@ import fetchUserDetails from '../utils/fetchUserDetails';
 import { setUserDetails } from '../store/userSlice';
 
 const UserProfile = () => {
-  const user = useSelector(state => state.user);
+  const user = useSelector(s => s.user);
   const dispatch = useDispatch();
 
   const [openProfile, setOpenProfile] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [userData, setUserData] = useState({
     name: user.name,
     email: user.email,
@@ -30,118 +28,122 @@ const UserProfile = () => {
     });
   }, [user]);
 
-  const handleOnChange = e => {
+  const handleChange = e => {
     const { name, value } = e.target;
-    setUserData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+    setUserData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
 
+    const trimmed = {
+      name: userData.name.trim(),
+      email: userData.email.trim(),
+      mobile: userData.mobile.trim(),
+    };
+
     if (
-      userData.name === user.name &&
-      userData.email === user.email &&
-      userData.mobile === user.mobile
+      trimmed.name === user.name &&
+      trimmed.email === user.email &&
+      trimmed.mobile === user.mobile
     ) {
       toast.error("Nothing changed to update.");
       return;
     }
 
-    const mobileRegex = /^[6-9]\d{9}$/;
-    if (!mobileRegex.test(userData.mobile)) {
-      toast.error("Please enter a valid 10‑digit mobile number.");
+    if (!trimmed.name || !trimmed.email || !trimmed.mobile) {
+      toast.error("Fields cannot be empty or just spaces.");
       return;
     }
 
+    const mobileRegex = /^[6-9]\d{9}$/;
+    if (!mobileRegex.test(trimmed.mobile)) {
+      toast.error("Enter a valid 10-digit mobile number.");
+      return;
+    }
+
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await Axios({ ...Api.updateUser, data: userData });
-      const { data: respData } = response;
+      const res = await Axios({ ...Api.updateUser, data: trimmed });
+      const { data: respData } = res;
+      if (respData.error) return toast.error(respData.message);
 
-      if (respData.error) {
-        toast.error(respData.message);
-      } else if (respData.success) {
-        toast.success("Profile updated successfully");
-
-        const fresh = await fetchUserDetails();
-        dispatch(setUserDetails(fresh.data));
-      }
+      toast.success("Profile updated!");
+      const fresh = await fetchUserDetails();
+      dispatch(setUserDetails(fresh.data));
     } catch (err) {
-      AxiosToastError(err);
+      toast.error(err.message || "Update failed.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <div className="w-20 h-20 bg-red-400 flex items-center justify-center rounded-full overflow-hidden drop-shadow-sm">
-        {user.avatar ? (
-          <img alt={user.name} src={user.avatar} className="h-full w-full" />
-        ) : (
-          <FaRegUserCircle size={65} />
-        )}
+    <div className="px-4 py-6">
+      <div className="flex flex-col items-center mb-6">
+        <div className="w-20 h-20 bg-gray-200 rounded-full overflow-hidden mb-2 flex items-center justify-center">
+          {user.avatar ? (
+            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+          ) : (
+            <FaRegUserCircle size={65} className="text-gray-400" />
+          )}
+        </div>
+        <button
+          onClick={() => setOpenProfile(true)}
+          className="text-sm border border-amber-200 hover:bg-amber-300 px-4 py-1 rounded-full"
+        >
+          Edit
+        </button>
       </div>
-      <button
-        onClick={() => setOpenProfile(true)}
-        className="min-w-20 text-sm cursor-pointer border border-amber-200 hover:bg-amber-300 px-3 py-1 rounded-full mt-3"
-      >
-        Edit
-      </button>
-      {openProfile && (
-        <UserAvatarEdit close={() => setOpenProfile(false)} />
-      )}
 
-      <form onSubmit={handleSubmit} className="my-4 grid gap-4">
-        <div className="grid">
+      {openProfile && <UserAvatarEdit close={() => setOpenProfile(false)} />}
+
+      <form onSubmit={handleSubmit} className="max-w-md mx-auto grid gap-4">
+        {/* Name */}
+        <div className="flex flex-col">
           <label htmlFor="name">Name</label>
           <input
             id="name"
             name="name"
             type="text"
-            placeholder="Enter your name"
-            className="p-2 bg-blue-50 rounded outline-blue-400"
+            className="p-2 bg-blue-50 rounded outline-none focus:border-amber-300 border"
             value={userData.name}
-            onChange={handleOnChange}
+            onChange={handleChange}
             required
           />
         </div>
-        <div className="grid">
+        {/* Email */}
+        <div className="flex flex-col">
           <label htmlFor="email">Email</label>
           <input
             id="email"
             name="email"
             type="email"
-            placeholder="Enter your email"
-            className="p-2 bg-blue-50 rounded outline-blue-400"
+            className="p-2 bg-blue-50 rounded outline-none focus:border-amber-300 border"
             value={userData.email}
-            onChange={handleOnChange}
+            onChange={handleChange}
             required
           />
         </div>
-        <div className="grid">
-          <label htmlFor="mobile">Mobile no</label>
+        {/* Mobile */}
+        <div className="flex flex-col">
+          <label htmlFor="mobile">Mobile No</label>
           <input
             id="mobile"
             name="mobile"
             type="text"
-            placeholder="Enter your mobile"
-            className="p-2 bg-blue-50 rounded outline-blue-400"
+            className="p-2 bg-blue-50 rounded outline-none focus:border-amber-300 border"
             value={userData.mobile}
-            onChange={handleOnChange}
+            onChange={handleChange}
             required
           />
         </div>
+        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          className={`px-4 py-2 font-semibold rounded text-neutral-900 transition ${
-            loading
-              ? 'bg-gray-300 cursor-not-allowed'
-              : 'bg-amber-200 hover:bg-amber-300'
+          className={`py-2 rounded font-semibold text-neutral-900 ${
+            loading ? "bg-gray-300 cursor-not-allowed" : "bg-amber-200 hover:bg-amber-300"
           }`}
         >
           {loading ? "Updating..." : "Submit"}

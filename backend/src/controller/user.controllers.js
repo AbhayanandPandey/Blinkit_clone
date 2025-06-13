@@ -10,64 +10,64 @@ import genOtp from "../utils/genOtp.js";
 import forgotPassOtp from "../utils/forgotPassOtp.js";
 
 function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 export async function registerUser(req, res) {
-  try {
-    const { name, email, password } = req.body;
+    try {
+        const { name, email, password } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        message: "All fields are required",
-        error: true,
-        success: false
-      });
+        if (!name || !email || !password) {
+            return res.status(400).json({
+                message: "All fields are required",
+                error: true,
+                success: false
+            });
+        }
+
+        const existingUser = await UserModel.findOne({ email: email.toLowerCase() });
+        if (existingUser) {
+            return res.status(400).json({
+                message: "User already exists",
+                error: true,
+                success: false
+            });
+        }
+
+        const salt = await bcryptjs.genSalt(10);
+        const hashedPassword = await bcryptjs.hash(password, salt);
+
+        const newUser = new UserModel({
+            name: capitalize(name),
+            email: email.toLowerCase(),
+            password: hashedPassword,
+        });
+
+        const savedUser = await newUser.save();
+
+        const verifyEmailUrl = `${process.env.FRONTEND_URL}/verify-email?code=${savedUser._id}`;
+
+        await sendEmail({
+            to: email,
+            subject: "Verify Your Email from Blinkyt",
+            html: verifyEmailTemplate({
+                name: capitalize(name),
+                url: verifyEmailUrl
+            })
+        });
+
+        return res.status(200).json({
+            message: "User registered successfully, please verify your email",
+            error: false,
+            success: true
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || "Something went wrong",
+            error: true,
+            success: false
+        });
     }
-
-    const existingUser = await UserModel.findOne({ email: email.toLowerCase() });
-    if (existingUser) {
-      return res.status(400).json({
-        message: "User already exists",
-        error: true,
-        success: false
-      });
-    }
-
-    const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(password, salt);
-
-    const newUser = new UserModel({
-      name: capitalize(name),
-      email: email.toLowerCase(),
-      password: hashedPassword,
-    });
-
-    const savedUser = await newUser.save();
-
-    const verifyEmailUrl = `${process.env.FRONTEND_URL}/verify-email?code=${savedUser._id}`;
-
-    await sendEmail({
-      to: email,
-      subject: "Verify Your Email from Blinkyt",
-      html: verifyEmailTemplate({
-        name: capitalize(name),
-        url: verifyEmailUrl
-      })
-    });
-
-    return res.status(200).json({
-      message: "User registered successfully, please verify your email",
-      error: false,
-      success: true
-    });
-
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message || "Something went wrong",
-      error: true,
-      success: false
-    });
-  }
 }
 
 export async function loginUser(req, res) {
@@ -213,37 +213,70 @@ export async function updateAvatar(req, res) {
 }
 
 export async function updateUserDetails(req, res) {
-    try {
-        const userId = req.userId;
-        const { name, email, mobile, password } = req.body
+  try {
+    const userId = req.userId;
+    let { name, email, mobile, password } = req.body;
 
-        const hashedPass = ''
-        if (password) {
-            const salt = await bcryptjs.genSalt(10)
-            hashedPass = await bcryptjs.hash(password, salt)
-        }
+    const trimmedName = name?.trim();
+    const trimmedEmail = email?.trim();
+    const trimmedMobile = mobile?.trim();
 
-        const updateUser = await UserModel.updateOne({ _id: userId }, {
-            ...(name && { name: name }),
-            ...(email && { email: email }),
-            ...(mobile && { mobile: mobile }),
-            ...(password && { password: hashedPass })
-        })
-
-        return res.json({
-            message: 'Updated successfully',
-            error: false,
-            success: true,
-            data: updateUser
-        })
-
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message || error,
-            error: true,
-            success: false
-        })
+    if (!trimmedName && !trimmedEmail && !trimmedMobile && !password) {
+      return res.status(400).json({
+        message: 'Nothing to update',
+        error: true,
+        success: false,
+      });
     }
+
+    let hashedPass;
+    if (password) {
+      const salt = await bcryptjs.genSalt(10);
+      hashedPass = await bcryptjs.hash(password, salt);
+    }
+
+    const mobileExists = trimmedMobile &&
+      await UserModel.findOne({ mobile: trimmedMobile });
+    if (mobileExists && mobileExists._id.toString() !== userId) {
+      return res.status(400).json({
+        message: 'Mobile number already exists',
+        error: true,
+        success: false,
+      });
+    }
+
+    const emailExists = trimmedEmail &&
+      await UserModel.findOne({ email: trimmedEmail.toLowerCase() });
+    if (emailExists && emailExists._id.toString() !== userId) {
+      return res.status(400).json({
+        message: 'Email already exists',
+        error: true,
+        success: false,
+      });
+    }
+
+    await UserModel.updateOne(
+      { _id: userId },
+      {
+        ...(trimmedName && { name: trimmedName.charAt(0).toUpperCase() + trimmedName.slice(1).toLowerCase() }),
+        ...(trimmedEmail && { email: trimmedEmail.toLowerCase() }),
+        ...(trimmedMobile && { mobile: trimmedMobile }),
+        ...(password && { password: hashedPass }),
+      }
+    );
+
+    return res.json({
+      message: 'Updated successfully',
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
 }
 
 export async function forgotPassword(req, res) {
@@ -327,8 +360,8 @@ export async function verifyOtp(req, res) {
                 success: false
             });
         }
-        user.forgot_password_otp=''
-        user.forgot_password_expiry =''
+        user.forgot_password_otp = ''
+        user.forgot_password_expiry = ''
         user.save();
 
         return res.status(200).json({
@@ -451,14 +484,14 @@ export async function refreshToken(req, res) {
             secure: true,
             sameSite: 'None'
         }
-        res.cookie('accessToken',newAccessToken,cookieOption)
+        res.cookie('accessToken', newAccessToken, cookieOption)
 
         return res.json({
-            message:'new access token generated',
-            error:false,
-            success:true,
-            data:{
-                accessToken:newAccessToken
+            message: 'new access token generated',
+            error: false,
+            success: true,
+            data: {
+                accessToken: newAccessToken
             }
         })
 
