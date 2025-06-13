@@ -99,7 +99,6 @@ const UserProfile = () => {
       {openProfile && <UserAvatarEdit close={() => setOpenProfile(false)} />}
 
       <form onSubmit={handleSubmit} className="max-w-md mx-auto grid gap-4">
-        {/* Name */}
         <div className="flex flex-col">
           <label htmlFor="name">Name</label>
           <input
@@ -112,7 +111,6 @@ const UserProfile = () => {
             required
           />
         </div>
-        {/* Email */}
         <div className="flex flex-col">
           <label htmlFor="email">Email</label>
           <input
@@ -125,7 +123,6 @@ const UserProfile = () => {
             required
           />
         </div>
-        {/* Mobile */}
         <div className="flex flex-col">
           <label htmlFor="mobile">Mobile No</label>
           <input
@@ -138,7 +135,6 @@ const UserProfile = () => {
             required
           />
         </div>
-        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
