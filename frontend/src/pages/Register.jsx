@@ -86,7 +86,7 @@ const Register = () => {
   };
 
   return (
-    <section className="py-10 flex items-center justify-center px-4 bg-gray-50">
+    <section className="py-10 lg:h-auto h-[90vh] flex items-center justify-center px-4 bg-gray-50">
       <div className="w-full max-w-lg bg-white rounded-xl shadow-md p-8">
         <h2 className="text-2xl font-bold text-center text-green-600">
           Welcome to <span className="text-emerald-700">Blinkyt</span>
