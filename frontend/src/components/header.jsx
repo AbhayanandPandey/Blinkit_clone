@@ -1,4 +1,4 @@
-import logo from '../assets/abc1.jpg'
+import logo from '../assets/abc2.png'
 import Search from './Search'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FaRegCircleUser } from 'react-icons/fa6'
@@ -37,7 +37,7 @@ function header() {
         !(isSearchPage && isMobile) && (
           <div className='container flex items-center h-full lg:py-4 justify-between pb-1 pt-0 pl-3 pr-3 mx-1'>
             <div className='' >
-              <Link to={"/"} className=' flex justify-center items-center'>
+              <Link to={"/"} className=' flex justify-center items-center mix-blend-multiply'>
                 <img
                   src={logo}
                   width={130}
