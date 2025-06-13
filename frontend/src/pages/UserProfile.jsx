@@ -72,7 +72,7 @@ const UserProfile = () => {
       const fresh = await fetchUserDetails();
       dispatch(setUserDetails(fresh.data));
     } catch (err) {
-      toast.error(err.message || "Update failed.");
+      toast.error(err.response.data.message || "Update failed.");
     } finally {
       setLoading(false);
     }
@@ -138,8 +138,8 @@ const UserProfile = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`py-2 rounded font-semibold text-neutral-900 ${
-            loading ? "bg-gray-300 cursor-not-allowed" : "bg-amber-200 hover:bg-amber-300"
+          className={`py-2 rounded font-semibold text-neutral-900 cursor-pointer ${
+            loading ? "bg-gray-300 cursor-not-allowed" : "bg-amber-300 hover:bg-amber-400"
           }`}
         >
           {loading ? "Updating..." : "Submit"}
