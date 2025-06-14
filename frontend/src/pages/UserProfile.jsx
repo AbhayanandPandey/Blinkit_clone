@@ -105,7 +105,7 @@ const UserProfile = () => {
             id="name"
             name="name"
             type="text"
-            className="p-2 bg-blue-50 rounded outline-none focus:border-amber-300 border"
+            className="p-2 bg-blue-50 rounded outline-none focus:border-amber-300 border border-neutral-200"
             value={userData.name}
             onChange={handleChange}
             required
@@ -117,7 +117,7 @@ const UserProfile = () => {
             id="email"
             name="email"
             type="email"
-            className="p-2 bg-blue-50 rounded outline-none focus:border-amber-300 border"
+            className="p-2 bg-blue-50 rounded outline-none focus:border-amber-300 border border-neutral-200"
             value={userData.email}
             onChange={handleChange}
             required
@@ -129,7 +129,7 @@ const UserProfile = () => {
             id="mobile"
             name="mobile"
             type="text"
-            className="p-2 bg-blue-50 rounded outline-none focus:border-amber-300 border"
+            className="p-2 bg-blue-50 rounded outline-none focus:border-amber-300 border border-neutral-200"
             value={userData.mobile}
             onChange={handleChange}
             required
