@@ -12,6 +12,11 @@ import Dashboard from "../layouts/Dashboard";
 import UserProfile from "../pages/UserProfile";
 import MyOrder from "../pages/MyOrder";
 import Address from "../pages/Address";
+import Product from "../admin/Product";
+import SubCategory from "../admin/SubCategory";
+import Category from "../admin/Category";
+import UploadProduct from "../admin/UploadProduct";
+import Fno from "../pages/Fno";
 
 const router = createBrowserRouter([
     {
@@ -65,6 +70,26 @@ const router = createBrowserRouter([
                     {
                         path:'myaddress',
                         element:<Address />
+                    },
+                    {
+                        path:'product',
+                        element:<Product />
+                    },
+                    {
+                        path:'subcategory',
+                        element:<SubCategory />
+                    },
+                    {
+                        path:'category',
+                        element:<Category />
+                    },
+                    {
+                        path:'upload-product',
+                        element:<UploadProduct />
+                    },
+                    {
+                        path:'fno',
+                        element:<Fno />
                     }
                 ]
             }

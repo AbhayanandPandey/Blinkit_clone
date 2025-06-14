@@ -88,7 +88,7 @@ function header() {
                       {
                         openUser && (
                           <div className='absolute right-0 h-20 top-12 bg-white'>
-                            <div className='bg bg-white rounded p-4 min-w-52 lg:shadow-lg relative h-54 '>
+                            <div className='bg bg-white rounded p-4 min-w-62 lg:shadow-lg relative min-h-fit '>
                               <UserMenu close={handleClose} />
                             </div>
                           </div>
