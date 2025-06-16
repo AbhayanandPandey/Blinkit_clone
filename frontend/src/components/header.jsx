@@ -32,7 +32,7 @@ function header() {
   }
 
   return (
-    <header className=' h-28 lg:h-20  sticky top-0 flex items-center flex-col lg:shadow  lg:pb-0 bg-white'>
+    <header className=' h-28 lg:h-20  sticky top-0 flex items-center flex-col lg:shadow  lg:pb-0 bg-white z-10'>
       {
         !(isSearchPage && isMobile) && (
           <div className='container flex items-center h-full lg:py-4 justify-between pb-1 pt-0 pl-3 pr-3 mx-1'>

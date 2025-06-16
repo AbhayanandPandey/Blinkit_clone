@@ -1,13 +1,14 @@
-import React from 'react'
-import UserMenu from '../components/UserMenu'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
-import Divider from '../components/Divider'
-import Axios from '../utils/Axios'
-import { useDispatch } from 'react-redux'
-import toast from 'react-hot-toast'
-import Api from '../config/Api'
-import AxiosToastError from '../utils/AxiosToastError'
-import { logout } from '../store/userSlice'
+import React from 'react';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import toast from 'react-hot-toast';
+
+import UserMenu from '../components/UserMenu';
+import Divider from '../components/Divider';
+import Axios from '../utils/Axios';
+import Api from '../config/Api';
+import AxiosToastError from '../utils/AxiosToastError';
+import { logout } from '../store/userSlice';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -27,40 +28,35 @@ const Dashboard = () => {
     }
   };
 
-  const wrapClose = (cb) => (e) => {
-    cb?.(e);
-  };
-  const handlefno =async ()=>{
-    navigate('/dashboard/fno')
-  }
-
   return (
-    <section className='bg-white h-full'>
-      <div className='container mx-auto p-3 grid lg:grid-cols-[250px_1fr] gap-10'>
-        <div className="py-4 sticky top-24 overflow-auto hidden lg:block h-full">
-          <div className='fixed border border-l-0 border-b-0 border-t-0 border-r-neutral-300 h-10/12'>
+    <section className="bg-white ">
+      <div className="container mx-auto px-4 py-6 grid lg:grid-cols-[250px_1fr]">
+
+        <aside className="hidden lg:flex flex-col sticky top-24 h-[calc(96vh-6rem)] border-r border-gray-300 pr-4">
+          <div className="flex-1 overflow-y-auto">
             <UserMenu />
-            <div className='absolute bottom-16 w-full pr-2 gap-3 mt-2'>
-              <Divider />
-              <button
-                onClick={wrapClose(handleLogout)}
-                className=" w-full text-left px-3 text-red-600 hover:bg-gray-200 rounded cursor-pointer"
-              >
-                Logout
-              </button>
-              <button className="w-full text-left px-3 hover:bg-gray-200 rounded cursor-pointer" onClick={handlefno}>
-                <Link to="/dashboard/fno" onClick={wrapClose()} className="mt-2 hover:bg-gray-200 rounded w-full">
-                  F&O
-                </Link>
-              </button>
-            </div>
           </div>
-        </div>
-        <div className='bg-white ml-3 p-4 flex justify-center items-center'>
-          <div className='w-full'>
-            <Outlet />
+
+          <div className="mt-auto pt-1">
+            <Divider />
+            <button
+              onClick={handleLogout}
+              className="w-full text-left px-3 py-1 text-red-600 hover:bg-gray-100 rounded-md"
+            >
+              Logout
+            </button>
+            <Link
+              to="/dashboard/fno"
+              className="block w-full mt-1 px-3 py-1 text-left hover:bg-gray-100 rounded-md"
+            >
+              F&O
+            </Link>
           </div>
-        </div>
+        </aside>
+
+        <main className="bg-white w-full min-h-[78vh] px-2 sm:px-4 py-4">
+          <Outlet />
+        </main>
       </div>
     </section>
   );
