@@ -25,22 +25,22 @@ const UploadCategory = ({ close }) => {
   const handleUplaod= async(e)=>{
     const file = e.target.files[0]
     if(!file){
+      close()
       return
     }
     const Img = await UplaodImage(file);
     if(Img.data.error){
       toast.error(Img.data.message)
+      close()
     }
     if(Img.data.success){
       toast.success(Img.data.message)
       close()
     }
-
   }
 
   return (
     <section className=' px-3 lg:px-0
-    
     fixed top-0 left-0 right-0 bottom-0 bg-neutral-800 opacity-90 z-11 flex items-center justify-center'>
       <div className='bg-white overflow-hidden rounded max-w-4xl p-4 w-full '>
         <div className="flex items-center justify-between">
