@@ -41,7 +41,7 @@ const Dashboard = () => {
             <Divider />
             <button
               onClick={handleLogout}
-              className="w-full text-left px-3 py-1 text-red-600 hover:bg-gray-100 rounded-md"
+              className="w-full text-left px-3 py-1 text-red-600 hover:bg-gray-100 rounded-md cursor-pointer"
             >
               Logout
             </button>
@@ -54,7 +54,7 @@ const Dashboard = () => {
           </div>
         </aside>
 
-        <main className="bg-white w-full min-h-[78vh] px-2 sm:px-4 py-4">
+        <main className="bg-white w-full min-h-[1078vh] px-2 sm:px-4 py-4">
           <Outlet />
         </main>
       </div>
