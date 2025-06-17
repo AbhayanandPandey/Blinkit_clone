@@ -90,7 +90,7 @@ const UserProfile = () => {
         </div>
         <button
           onClick={() => setOpenProfile(true)}
-          className="text-sm border border-amber-200 hover:bg-amber-300 px-4 py-1 rounded-full"
+          className="text-sm border border-amber-200 hover:bg-amber-300 px-4 py-1 rounded-full cursor-pointer"
         >
           Edit
         </button>
