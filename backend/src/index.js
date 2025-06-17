@@ -9,6 +9,8 @@ import helmet from 'helmet';
 import userRouter from './routes/user.routes.js'
 
 import './config/db.js';
+import categoryRouter from './routes/category.routes.js';
+import uploadRouter from './routes/upload.route.js';
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use(helmet({
 }));
 
 app.use('/api/user', userRouter)
+app.use('/api/category',categoryRouter)
+app.use('/api/file',uploadRouter)
 
 app.listen(process.env.PORT || 5001, () => {
     console.log(`Server is running on port ${process.env.PORT || 5173}`);

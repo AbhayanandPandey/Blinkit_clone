@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { IoClose } from 'react-icons/io5'
+import UplaodImage from '../utils/uploadImage'
 
 const UploadCategory = ({ close }) => {
   const [data, setData] = useState({
@@ -20,12 +21,15 @@ const UploadCategory = ({ close }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
   }
-  const handleUplaod=(e)=>{
-    const file = e.target.file[0]
+  const handleUplaod= async(e)=>{
+    const file = e.target.files[0]
     if(!file){
       return
     }
-    
+
+    const Img = await UplaodImage(file);
+    console.log('res',Img)
+
   }
 
   return (
@@ -62,11 +66,10 @@ const UploadCategory = ({ close }) => {
               </div>
               <label htmlFor="uploadImage">
                 <div
-                  disabled={!data.name}
                   className={`${!data.name ? 'bg-gray-200 cursor-not-allowed' : 'bg-amber-500 cursor-pointer '} px-4 py-2 rounded`}>
                   upload Image
                 </div>
-                <input onChange={handleUplaod} type="file" name="" id="uploadImage"  className='hidden'/>
+                <input disabled={!data.name} onChange={ handleUplaod} type="file" name="" id="uploadImage"  className='hidden'/>
               </label>
 
             </div>

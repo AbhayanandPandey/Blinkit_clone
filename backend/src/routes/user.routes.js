@@ -1,6 +1,6 @@
 import {Router } from 'express'
 const userRouter  = Router();
-import {registerUser, verifyEmail, loginUser, logoutUser, updateAvatar, updateUserDetails, forgotPassword, verifyOtp, resetPas, refreshToken, getUserDetails} from '../controller/user.controllers.js'
+import {registerUser, verifyEmail, loginUser, logoutUser, updateAvatar, updateUserDetails, forgotPassword, verifyOtp, resetPas, refreshToken, getUserDetails} from '../controller/user.controller.js'
 import isAuthenticate from '../middleware/Auth.middleware.js';
 import upload from '../middleware/multer.js';
 

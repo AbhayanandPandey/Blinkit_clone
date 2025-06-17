@@ -41,6 +41,14 @@ const Api = {
         url: '/api/user/update-user',
         method: 'put'
     },
+    addCategory:{
+        url:'/api/category/create-category',
+        method:'post'
+    },
+    uploadImage: {
+        url: '/api/file/upload',
+        method: 'post'
+    },
 }
 
 export default Api
