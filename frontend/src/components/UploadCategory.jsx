@@ -17,6 +17,17 @@ const UploadCategory = ({ close }) => {
     })
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+  const handleUplaod=(e)=>{
+    const file = e.target.file[0]
+    if(!file){
+      return
+    }
+    
+  }
+
   return (
     <section className=' px-3 lg:px-0
     
@@ -28,7 +39,7 @@ const UploadCategory = ({ close }) => {
             <IoClose size={22} />
           </button>
         </div>
-        <form action="my-3">
+        <form className="my-3 grid gap-2" onSubmit={handleSubmit}>
           <div className='grid gap-1 py-2'>
             <label htmlFor="categoryName">Name</label>
             <input
@@ -41,13 +52,26 @@ const UploadCategory = ({ close }) => {
               className='bg-blue-50 border border-blue-100 p-2 focus-within:border-blue-300 outline-none rounded'
             />
           </div>
-          <div>
+          <div className='grid gap-1'>
             <p>Image</p>
-            <div>
-              
-           </div>
-      </div>
-    </form> 
+            <div className='flex gap-3 flex-col lg:flex-row items-center'>
+              <div className='border bg-blue-50 border-blue-100 h-36 w-full lg:w-36 flex items-center justify-center rounded'>
+                <p className='text-sm text-neutral-500'>
+                  No image
+                </p>
+              </div>
+              <label htmlFor="uploadImage">
+                <div
+                  disabled={!data.name}
+                  className={`${!data.name ? 'bg-gray-200 cursor-not-allowed' : 'bg-amber-500 cursor-pointer '} px-4 py-2 rounded`}>
+                  upload Image
+                </div>
+                <input onChange={handleUplaod} type="file" name="" id="uploadImage"  className='hidden'/>
+              </label>
+
+            </div>
+          </div>
+        </form>
       </div >
     </section >
   )
