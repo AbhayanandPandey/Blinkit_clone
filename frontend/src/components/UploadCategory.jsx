@@ -28,12 +28,12 @@ const UploadCategory = ({ close }) => {
       return
     }
     const Img = await UplaodImage(file);
-    console.log('res',Img)
     if(Img.data.error){
       toast.error(Img.data.message)
     }
     if(Img.data.success){
       toast.success(Img.data.message)
+      close()
     }
 
   }
