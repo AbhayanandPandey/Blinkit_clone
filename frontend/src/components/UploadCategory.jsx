@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { IoClose } from 'react-icons/io5'
 import UplaodImage from '../utils/uploadImage'
+import toast from 'react-hot-toast'
 
 const UploadCategory = ({ close }) => {
   const [data, setData] = useState({
@@ -26,9 +27,14 @@ const UploadCategory = ({ close }) => {
     if(!file){
       return
     }
-
     const Img = await UplaodImage(file);
     console.log('res',Img)
+    if(Img.data.error){
+      toast.error(Img.data.message)
+    }
+    if(Img.data.success){
+      toast.success(Img.data.message)
+    }
 
   }
 
