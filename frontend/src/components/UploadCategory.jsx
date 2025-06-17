@@ -18,8 +18,10 @@ const UploadCategory = ({ close }) => {
   }
 
   return (
-    <section className='fixed top-0 left-0 right-0 bottom-0 bg-neutral-800 opacity-90 z-11 flex items-center justify-center'>
-      <div className='bg-white overflow-hidden rounded max-w-4xl p-4 w-full  '>
+    <section className=' px-3 lg:px-0
+    
+    fixed top-0 left-0 right-0 bottom-0 bg-neutral-800 opacity-90 z-11 flex items-center justify-center'>
+      <div className='bg-white overflow-hidden rounded max-w-4xl p-4 w-full '>
         <div className="flex items-center justify-between">
           <h2 className='font-semibold'>category</h2>
           <button onClick={close} className=' w-fit block cursor-pointer ml-auto'>
