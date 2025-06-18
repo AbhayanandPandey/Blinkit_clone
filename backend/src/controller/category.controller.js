@@ -38,3 +38,31 @@ export const AddCategory = async (req, res) => {
         })
     }
 }
+
+export const GetAllCategories = async (req, res) => {
+    try {
+        const categories = await CategoryModel.find({});
+
+        if (!categories || categories.length === 0) {
+            return res.status(404).json({
+                error: true,
+                message: 'No categories found',
+                success: false
+            });
+        }
+
+        return res.status(200).json({
+            error: false,
+            message: 'Categories retrieved successfully',
+            success: true,
+            data: categories
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: error.message || 'Internal server error',
+            success: false
+        });
+    }
+}
