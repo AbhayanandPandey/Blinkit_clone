@@ -54,7 +54,7 @@ const Dashboard = () => {
           </div>
         </aside>
 
-        <main className="bg-white w-full min-h-[1078vh] px-2 sm:px-4 py-4">
+        <main className="bg-white w-full min-h-[78vh] px-2 sm:px-4 py-4">
           <Outlet />
         </main>
       </div>

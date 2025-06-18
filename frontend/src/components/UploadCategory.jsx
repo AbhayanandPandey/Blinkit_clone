@@ -6,7 +6,7 @@ import Axios from '../utils/Axios';
 import Api from '../config/Api';
 import AxiosToastError from '../utils/AxiosToastError';
 
-const UploadCategory = ({ close }) => {
+const UploadCategory = ({ close , fetchData }) => {
   const [data, setData] = useState({ name: '', image: '' });
   const [loading, setLoading] = useState({ upload: false, submit: false });
 
@@ -30,6 +30,7 @@ const UploadCategory = ({ close }) => {
       if (responseData.success) {
         toast.success(responseData.message);
         close();
+        fetchData()
       } else if (responseData.error) {
         toast.error(responseData.error);
       }
@@ -37,6 +38,8 @@ const UploadCategory = ({ close }) => {
       AxiosToastError(error);
     } finally {
       setLoading((prev) => ({ ...prev, submit: false }));
+        fetchData()
+
     }
   };
 
@@ -101,7 +104,7 @@ const UploadCategory = ({ close }) => {
             <div className="flex gap-4 flex-col lg:flex-row items-center">
               <div className="border bg-blue-50 border-blue-100 h-36 w-full lg:w-36 flex items-center justify-center rounded overflow-hidden">
                 {data.image ? (
-                  <img src={data.image} alt="category" className="w-full h-full object-cover" />
+                  <img src={data.image} alt="category" className="w-full h-full object-scale-down" />
                 ) : (
                   <p className="text-sm text-neutral-500">No image</p>
                 )}
