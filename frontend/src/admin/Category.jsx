@@ -4,6 +4,8 @@ import Loading from '../components/loading'
 import NoData from '../components/NoData'
 import Axios from '../utils/Axios'
 import Api from '../config/Api'
+import { MdOutlineEdit, MdOutlineDelete } from "react-icons/md";
+
 
 const Category = () => {
   const [openUpload, setOpenUpload] = useState(false)
@@ -42,18 +44,27 @@ const Category = () => {
       }
       <div className=' py-8 px-7 w-full grid lg:grid-cols-5 md:grid-cols-4  grid-cols-2 gap-4 gap-y-6  place-items-center '>
         {
-        categoryData.map((category, i) => {
-          return (
-            <div className='w-32 h-48 bg-amber-100 rounded shadow-md '>
-              <img
-              alt={category.name}
-              src={category.image}
-              className='w-full object-scale-down'
-               />
-            </div>
-          )
-        })
-      }
+          categoryData.map((category, i) => {
+            return (
+              <div className='w-32 h-56 bg-gray-100 rounded shadow-md '>
+                <img
+                  alt={category.name}
+                  src={category.image}
+                  className='w-full object-scale-down'
+                />
+                <div className="flex justify-evenly" >
+                  <button className='w-auto h-auto p-1 cursor-pointer rounded'>
+                    <MdOutlineEdit size={24} />
+                  </button>
+                  <button className='w-auto h-auto p-1 cursor-pointer rounded'>
+                    <MdOutlineDelete size={24} />
+                  </button>
+                </div>
+
+              </div>
+            )
+          })
+        }
       </div>
       {
         loading && (
