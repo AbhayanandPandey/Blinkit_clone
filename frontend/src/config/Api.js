@@ -49,6 +49,10 @@ const Api = {
         url: '/api/file/upload',
         method: 'post'
     },
+    getCategories: {
+        url: '/api/category/get-categories',
+        method: 'get'
+    },
 }
 
 export default Api
