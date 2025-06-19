@@ -8,34 +8,30 @@ import AxiosToastError from '../utils/AxiosToastError';
 import SkeletonCard from '../components/SkeletonCard';
 import EditCategory from '../components/EditCategory';
 import ConfirmDelete from '../components/ConfirmDelete';
+import toast from 'react-hot-toast';
 
 const Category = () => {
   const [openUpload, setOpenUpload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [categoryData, setCategoryData] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
-  const [editData, setEditData] = useState({
-    name: '',
-    email: '',
-  })
-  const [openDelete, setOpenDelete] = useState(false)
-  const [deleteCategory, setDeleteCategory] = useState({
-    _id: ''
-  })
+  const [editData, setEditData] = useState({ name: '', image: '' });
+  const [openDelete, setOpenDelete] = useState(false);
+  const [deleteCategory, setDeleteCategory] = useState({ _id: '' });
 
   const fetchCategory = async () => {
     try {
       setLoading(true);
       const response = await Axios({ ...Api.getCategories });
       const { data: responseData } = response;
-      if (responseData.error) {
-        setCategoryData(responseData.data);
-      }
       if (responseData.success) {
-        setCategoryData(responseData.data);
+        setCategoryData(responseData.data || []);
+      } else {
+        setCategoryData([]);
       }
     } catch (error) {
       AxiosToastError(error);
+      setCategoryData([]);
     } finally {
       setLoading(false);
     }
@@ -45,28 +41,30 @@ const Category = () => {
     fetchCategory();
   }, []);
 
-  const nahdleDeleteCategory = async () => {
+  const handleDeleteCategory = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const deleteCategoryData = await Axios({
         ...Api.deleteCategoty,
-        data: deleteCategory
-      })
-
-      const { data: deleteData } = deleteCategoryData
-      if (deleteData.error) {
-        setCategoryData(deleteData.data);
-      }
+        data: deleteCategory,
+      });
+      const { data: deleteData } = deleteCategoryData;
       if (deleteData.success) {
-        setCategoryData(deleteData.data);
+        toast.success(deleteData.message);
+        fetchCategory();
+        setOpenDelete(false);
+        close()
+      } else {
+        toast.error(deleteData.message || 'Failed to delete');
+        close()
       }
-
     } catch (error) {
-      AxiosToastError(error)
+      AxiosToastError(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
   return (
     <section className="">
       <div className="p-2 pl-8 bg-white shadow-md flex items-center justify-between pr-8">
@@ -79,14 +77,12 @@ const Category = () => {
         </button>
       </div>
 
-      {!categoryData.length && !loading && <NoData />}
+      {!Array.isArray(categoryData) || categoryData.length === 0 && !loading && <NoData />}
 
       <div className="py-8 px-7 w-full grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-4 gap-y-6 place-items-center">
         {loading
-          ? Array(10)
-            .fill(0)
-            .map((_, i) => <SkeletonCard key={i} />)
-          : categoryData.map((category, i) => (
+          ? Array(10).fill(0).map((_, i) => <SkeletonCard key={i} />)
+          : Array.isArray(categoryData) && categoryData.map((category, i) => (
             <div
               key={category._id || i}
               className="w-32 h-56 bg-gray-100 rounded shadow-md flex flex-col justify-between"
@@ -98,10 +94,9 @@ const Category = () => {
               />
               <div className="flex justify-between px-5 py-1">
                 <button
-                  onClick=
-                  {() => {
-                    setOpenEdit(true)
-                    setEditData(category)
+                  onClick={() => {
+                    setOpenEdit(true);
+                    setEditData(category);
                   }}
                   className="p-1 bg-green-200 hover:bg-green-300 rounded cursor-pointer"
                 >
@@ -109,8 +104,8 @@ const Category = () => {
                 </button>
                 <button
                   onClick={() => {
-                    setOpenDelete(true)
-                    setDeleteCategory(category)
+                    setOpenDelete(true);
+                    setDeleteCategory(category);
                   }}
                   className="p-1 bg-red-200 hover:bg-red-300 rounded cursor-pointer"
                 >
@@ -125,20 +120,17 @@ const Category = () => {
         <UploadCategory fetchData={fetchCategory} close={() => setOpenUpload(false)} />
       )}
 
-      {
-        openEdit && (
-          <EditCategory close={() => setOpenEdit(false)} data={editData} fetchData={fetchCategory} />
-        )
-      }
-      {
-        openDelete && (
-          <ConfirmDelete
-            close={() => setOpenDelete(false)}
-            cancle={() => setOpenDelete(false)}
-            confirm={nahdleDeleteCategory}
-          />
-        )
-      }
+      {openEdit && (
+        <EditCategory close={() => setOpenEdit(false)} data={editData} fetchData={fetchCategory} />
+      )}
+
+      {openDelete && (
+        <ConfirmDelete
+          close={() => setOpenDelete(false)}
+          cancle={() => setOpenDelete(false)}
+          confirm={handleDeleteCategory}
+        />
+      )}
     </section>
   );
 };
