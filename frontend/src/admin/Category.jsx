@@ -50,11 +50,11 @@ const Category = () => {
       setLoading(true)
       const deleteCategoryData = await Axios({
         ...Api.deleteCategoty,
-        data:deleteCategory
+        data: deleteCategory
       })
 
-      const {data: deleteData} = deleteCategoryData
-       if (deleteData.error) {
+      const { data: deleteData } = deleteCategoryData
+      if (deleteData.error) {
         setCategoryData(deleteData.data);
       }
       if (deleteData.success) {
@@ -63,7 +63,7 @@ const Category = () => {
 
     } catch (error) {
       AxiosToastError(error)
-    } finally{
+    } finally {
       setLoading(false)
     }
   }
