@@ -1,8 +1,71 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Axios from '../utils/Axios';
+import Api from '../config/Api';
+import { IoClose } from 'react-icons/io5';
 
-const EditCategory = () => {
+const EditCategory = ({close , fetchData}) => {
+    const [data, setData] = useState({ name: '', image: '' });
+    const [loading, setLoading] = useState({ upload: false, submit: false });
+    const handleOnchange = (e) => {
+        const { name, value } = e.target;
+        setData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading((prev) => ({ ...prev, submit: true }));
+
+            const response = await Axios({
+                ...Api.addCategory,
+                data: data
+            });
+
+            const { data: responseData } = response;
+
+            if (responseData.success) {
+                toast.success(responseData.message);
+                close();
+                fetchData()
+            } else if (responseData.error) {
+                toast.error(responseData.error);
+            }
+        } catch (error) {
+            AxiosToastError(error);
+        } finally {
+            setLoading((prev) => ({ ...prev, submit: false }));
+            fetchData()
+
+        }
+    };
+
+    const handleUplaod = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        try {
+            setLoading((prev) => ({ ...prev, upload: true }));
+
+            const response = await UplaodImage(file);
+            const { data: ImageResponse } = response;
+
+            if (ImageResponse?.success && ImageResponse?.data?.url) {
+                setData((prev) => ({
+                    ...prev,
+                    image: ImageResponse.data.url
+                }));
+                toast.success("Image uploaded successfully");
+            } else {
+                toast.error(ImageResponse?.message || "Image upload failed");
+            }
+        } catch (err) {
+            toast.error("Upload failed. Try again.");
+        } finally {
+            setLoading((prev) => ({ ...prev, upload: false }));
+        }
+    };
     return (
-        <section className="px-3 lg:px-0 fixed inset-0 bg-neutral-800 bg-opacity-90 z-50 flex items-center justify-center">
+        <section className="fixed top-0 left-0 bottom-0 right-0 flex justify-center items-center bg-black/80 z-60 bg-opacity-60">
             <div className="bg-white rounded max-w-4xl p-5 w-full shadow-lg relative">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="font-semibold text-lg">Add New Category</h2>
@@ -41,8 +104,8 @@ const EditCategory = () => {
                             <label htmlFor="uploadImage">
                                 <div
                                     className={`flex items-center justify-center gap-2 px-4 py-2 rounded font-medium transition ${!data.name || loading.upload || loading.submit
-                                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                            : 'bg-amber-400 text-white hover:bg-amber-500 cursor-pointer'
+                                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                        : 'bg-amber-400 text-white hover:bg-amber-500 cursor-pointer'
                                         }`}
                                 >
                                     {loading.upload && (
@@ -67,8 +130,8 @@ const EditCategory = () => {
                         type="submit"
                         disabled={!data.name || !data.image || loading.upload || loading.submit}
                         className={`px-5 py-2 rounded text-white font-medium transition cursor-pointer ${data.name && data.image && !loading.upload && !loading.submit
-                                ? 'bg-amber-400 hover:bg-amber-500'
-                                : 'bg-gray-400 cursor-not-allowed'
+                            ? 'bg-amber-400 hover:bg-amber-500'
+                            : 'bg-gray-400 cursor-not-allowed'
                             }`}
                     >
                         {loading.submit ? 'Submitting...' : 'Add Category'}
