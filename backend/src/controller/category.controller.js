@@ -53,7 +53,7 @@ export const AddCategory = async (req, res) => {
 
 export const GetAllCategories = async (req, res) => {
   try {
-    const categories = await CategoryModel.find({});
+    const categories = await CategoryModel.find({}).sort({ createdAt: -1 }).select('-__v');
 
     if (!categories || categories.length === 0) {
       return res.status(404).json({

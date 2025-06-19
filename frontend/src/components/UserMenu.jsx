@@ -33,7 +33,7 @@ const UserMenu = ({ close }) => {
               onClick={wrapClose()}
               className="flex items-center gap-2 hover:bg-gray-200 rounded px-2"
             >
-              <span className="truncate">{user.name || user.mobile}</span>
+              <span className="truncate">{user.name || user.mobile} <span className='font-medium text-red-600'>{user.role === 'Admin' ? '(Admin)' : ''}</span> </span>
               <HiOutlineExternalLink />
             </Link>
           </div>
@@ -43,13 +43,7 @@ const UserMenu = ({ close }) => {
           <div className="text-sm grid gap-3 mt-2 text-gray-600">
             {user.role === 'Admin' ? (
               <>
-                <Link
-                  to="/dashboard/product"
-                  onClick={wrapClose()}
-                  className="px-2 hover:bg-gray-200 rounded"
-                >
-                  Product
-                </Link>
+                
                 <Link
                   to="/dashboard/category"
                   onClick={wrapClose()}
@@ -63,6 +57,13 @@ const UserMenu = ({ close }) => {
                   className="px-2 hover:bg-gray-200 rounded"
                 >
                   Sub Category
+                </Link>
+                <Link
+                  to="/dashboard/product"
+                  onClick={wrapClose()}
+                  className="px-2 hover:bg-gray-200 rounded"
+                >
+                  Product
                 </Link>
                 <Link
                   to="/dashboard/upload-product"

@@ -9,8 +9,13 @@ import SkeletonCard from '../components/SkeletonCard';
 import EditCategory from '../components/EditCategory';
 import ConfirmDelete from '../components/ConfirmDelete';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux'; 
+import { useNavigate } from 'react-router-dom';
 
 const Category = () => {
+  const navigate = useNavigate();
+  const user = useSelector(state => state.user.user);
+  console.log('u',user)
   const [openUpload, setOpenUpload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [categoryData, setCategoryData] = useState([]);
@@ -39,6 +44,7 @@ const Category = () => {
 
   useEffect(() => {
     fetchCategory();
+    
   }, []);
 
   const handleDeleteCategory = async () => {
