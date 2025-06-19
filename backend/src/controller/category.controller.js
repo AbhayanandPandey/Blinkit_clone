@@ -49,7 +49,6 @@ export const AddCategory = async (req, res) => {
   }
 };
 
-
 export const GetAllCategories = async (req, res) => {
     try {
         const categories = await CategoryModel.find({});
@@ -77,3 +76,52 @@ export const GetAllCategories = async (req, res) => {
         });
     }
 }
+
+export const UpdateCategory = async (req, res) => {
+  try {
+    const { id, name, image } = req.body;
+
+    if(!id){
+      return res.status(400).json({
+        error: true,
+        message: 'Invalid user!',
+        success: false,
+      });
+    }
+    if (!name || !image) {
+      return res.status(400).json({
+        error: true,
+        message: 'Name and image are required',
+        success: false,
+      });
+    }
+
+    const updatedCategory = await CategoryModel.updateOne(
+      { _id: id },
+      { name, image },
+      { new: true }
+    );
+
+    if (!updatedCategory) {
+      return res.status(404).json({
+        error: true,
+        message: 'Category not found',
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      error: false,
+      message: 'Category updated successfully',
+      success: true,
+      data: updatedCategory,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      message: error.message || erroe,
+      success: false,
+    });
+  }
+};

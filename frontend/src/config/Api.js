@@ -53,6 +53,10 @@ const Api = {
         url: '/api/category/get-categories',
         method: 'get'
     },
+    updateCategory: {
+        url: '/api/category/update-category',
+        method: 'put'
+    },
 }
 
 export default Api
