@@ -57,6 +57,10 @@ const Api = {
         url: '/api/category/update-category',
         method: 'put'
     },
+    deleteCategoty:{
+        url:'/api/category/delete-category',
+        method:'delete'
+    }
 }
 
 export default Api

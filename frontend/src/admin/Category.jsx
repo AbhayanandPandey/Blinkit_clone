@@ -33,10 +33,6 @@ const Category = () => {
     }
   };
 
-  const handleDeleteCategory = async () => {
-
-  }
-
   useEffect(() => {
     fetchCategory();
   }, []);
@@ -82,7 +78,9 @@ const Category = () => {
                   <MdOutlineEdit size={20} />
                 </button>
                 <button
-                  onClick={() => handleDeleteCategory(category._id)}
+                  onClick={() => {
+                    
+                  }}
                   className="p-1 bg-red-200 hover:bg-red-300 rounded cursor-pointer"
                 >
                   <MdOutlineDelete size={20} />
