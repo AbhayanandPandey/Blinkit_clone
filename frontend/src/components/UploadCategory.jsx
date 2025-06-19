@@ -70,7 +70,7 @@ const UploadCategory = ({ close , fetchData }) => {
   };
 
   return (
-    <section className="px-3 lg:px-0 fixed inset-0 bg-black/80 bg-opacity-90 z-50 flex items-center justify-center">
+    <section className="fixed top-0 left-0 right-0 bottom-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
       <div className="bg-white rounded max-w-4xl p-5 w-full shadow-lg relative">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">

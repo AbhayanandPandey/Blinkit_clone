@@ -79,9 +79,9 @@ export const GetAllCategories = async (req, res) => {
 
 export const UpdateCategory = async (req, res) => {
   try {
-    const { id, name, image } = req.body;
+    const { _id, name, image } = req.body;
 
-    if(!id){
+    if(!_id){
       return res.status(400).json({
         error: true,
         message: 'Invalid user!',
@@ -97,7 +97,7 @@ export const UpdateCategory = async (req, res) => {
     }
 
     const updatedCategory = await CategoryModel.updateOne(
-      { _id: id },
+      { _id: _id },
       { name, image },
       { new: true }
     );

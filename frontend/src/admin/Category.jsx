@@ -13,6 +13,10 @@ const Category = () => {
   const [loading, setLoading] = useState(false);
   const [categoryData, setCategoryData] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
+  const [editData, setEditData] = useState({
+    name:'',
+    email:'',
+  })
 
   const fetchCategory = async () => {
     try {
@@ -29,9 +33,6 @@ const Category = () => {
     }
   };
 
-  const handleUpdatecategory = async () => {
-    setOpenEdit(true)
-  };
   const handleDeleteCategory = async () => {
 
   }
@@ -72,9 +73,10 @@ const Category = () => {
               <div className="flex justify-between px-3 py-1">
                 <button
                   onClick=
-                  {
-                    () => handleUpdatecategory(category)
-                  }
+                  {()=>{
+                    setOpenEdit(true)
+                    setEditData(category)
+                  }}
                   className="p-1 bg-green-200 hover:bg-green-300 rounded cursor-pointer"
                 >
                   <MdOutlineEdit size={20} />
@@ -96,7 +98,7 @@ const Category = () => {
 
       {
         openEdit && (
-          <EditCategory close={()=>setOpenEdit(false)} />
+          <EditCategory close={()=>setOpenEdit(false)} data={editData} fetchData={fetchCategory} />
         )
       }
     </section>

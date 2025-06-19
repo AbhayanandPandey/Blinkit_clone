@@ -38,7 +38,7 @@ const UserProfileAvatarEdit = ({ close }) => {
   };
 
   return (
-    <section className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4">
+    <section className="fixed top-0 left-0 right-0 bottom-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
       <div className="relative bg-white max-w-sm w-full rounded-lg shadow-lg p-6 flex flex-col items-center">
         <button
           onClick={close}
