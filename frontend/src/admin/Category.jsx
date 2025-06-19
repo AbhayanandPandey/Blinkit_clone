@@ -7,6 +7,7 @@ import { MdOutlineEdit, MdOutlineDelete } from 'react-icons/md';
 import AxiosToastError from '../utils/AxiosToastError';
 import SkeletonCard from '../components/SkeletonCard';
 import EditCategory from '../components/EditCategory';
+import ConfirmDelete from '../components/ConfirmDelete';
 
 const Category = () => {
   const [openUpload, setOpenUpload] = useState(false);
@@ -14,8 +15,12 @@ const Category = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState({
-    name:'',
-    email:'',
+    name: '',
+    email: '',
+  })
+  const [openDelete, setOpenDelete] = useState(false)
+  const [deleteCategory, setDeleteCategory] = useState({
+    _id: ''
   })
 
   const fetchCategory = async () => {
@@ -23,6 +28,9 @@ const Category = () => {
       setLoading(true);
       const response = await Axios({ ...Api.getCategories });
       const { data: responseData } = response;
+      if (responseData.error) {
+        setCategoryData(responseData.data);
+      }
       if (responseData.success) {
         setCategoryData(responseData.data);
       }
@@ -37,6 +45,28 @@ const Category = () => {
     fetchCategory();
   }, []);
 
+  const nahdleDeleteCategory = async () => {
+    try {
+      setLoading(true)
+      const deleteCategoryData = await Axios({
+        ...Api.deleteCategoty,
+        data:deleteCategory
+      })
+
+      const {data: deleteData} = deleteCategoryData
+       if (deleteData.error) {
+        setCategoryData(deleteData.data);
+      }
+      if (deleteData.success) {
+        setCategoryData(deleteData.data);
+      }
+
+    } catch (error) {
+      AxiosToastError(error)
+    } finally{
+      setLoading(false)
+    }
+  }
   return (
     <section className="">
       <div className="p-2 pl-8 bg-white shadow-md flex items-center justify-between pr-8">
@@ -66,10 +96,10 @@ const Category = () => {
                 src={category.image}
                 className="w-full h-48 object-contain rounded-t"
               />
-              <div className="flex justify-between px-3 py-1">
+              <div className="flex justify-between px-5 py-1">
                 <button
                   onClick=
-                  {()=>{
+                  {() => {
                     setOpenEdit(true)
                     setEditData(category)
                   }}
@@ -79,7 +109,8 @@ const Category = () => {
                 </button>
                 <button
                   onClick={() => {
-                    
+                    setOpenDelete(true)
+                    setDeleteCategory(category)
                   }}
                   className="p-1 bg-red-200 hover:bg-red-300 rounded cursor-pointer"
                 >
@@ -96,7 +127,16 @@ const Category = () => {
 
       {
         openEdit && (
-          <EditCategory close={()=>setOpenEdit(false)} data={editData} fetchData={fetchCategory} />
+          <EditCategory close={() => setOpenEdit(false)} data={editData} fetchData={fetchCategory} />
+        )
+      }
+      {
+        openDelete && (
+          <ConfirmDelete
+            close={() => setOpenDelete(false)}
+            cancle={() => setOpenDelete(false)}
+            confirm={nahdleDeleteCategory}
+          />
         )
       }
     </section>

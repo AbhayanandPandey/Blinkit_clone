@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-const subCategorySchema = mongoose.Schema({
+const subCategorySchema = new mongoose.Schema({
     name: {
         type: String,
         default: ''

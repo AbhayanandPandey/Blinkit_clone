@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+
 const productSchems = new mongoose.Schema({
     name:{
-        type:String
+        type:String,
+        default:'',
     },
     image:{
         type:Array,
@@ -24,7 +26,7 @@ const productSchems = new mongoose.Schema({
         default:''
     },
     stock:{
-        tpe:Number,
+        type:Number,
         default:null
     },
     price:{

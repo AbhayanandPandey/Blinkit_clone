@@ -72,7 +72,6 @@ const UploadCategory = ({ close , fetchData }) => {
   return (
     <section className="fixed top-0 left-0 right-0 bottom-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
       <div className="bg-white rounded max-w-4xl p-5 w-full shadow-lg relative">
-        {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-semibold text-lg">Add New Category</h2>
           <button onClick={close} className="text-gray-700 hover:text-black transition cursor-pointer">
@@ -80,9 +79,7 @@ const UploadCategory = ({ close , fetchData }) => {
           </button>
         </div>
 
-        {/* Form */}
         <form className="grid gap-4" onSubmit={handleSubmit}>
-          {/* Name Input */}
           <div className="grid gap-1">
             <label htmlFor="categoryName" className="font-medium">Name</label>
             <input
@@ -98,7 +95,6 @@ const UploadCategory = ({ close , fetchData }) => {
             />
           </div>
 
-          {/* Image Upload */}
           <div className="grid gap-2">
             <label className="font-medium">Image</label>
             <div className="flex gap-4 flex-col lg:flex-row items-center">

@@ -160,7 +160,7 @@ export const DeleteCategory = async (req, res) => {
       });
     }
 
-    const deletedCategory = await CategoryModel.deleteOne({ _id });
+    const deletedCategory = await CategoryModel.deleteOne({ _id:_id });
 
     return res.status(200).json({
       error: false,
