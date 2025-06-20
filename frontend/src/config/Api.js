@@ -60,7 +60,11 @@ const Api = {
     deleteCategoty:{
         url:'/api/category/delete-category',
         method:'delete'
-    }
+    },
+    addSubCategory: {
+        url: '/api/sub-category/create',
+        method: 'post'
+    },
 }
 
 export default Api

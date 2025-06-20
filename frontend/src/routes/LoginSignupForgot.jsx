@@ -1,0 +1,15 @@
+import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import Cookies from 'js-cookie'; 
+
+const LoginSignupForgot = () => {
+  const accessToken =
+    localStorage.getItem('accessToken') || Cookies.get('accessToken');
+
+  if (accessToken) {
+    return <Navigate to="/dashboard/profile" replace />;
+  }
+  return <Outlet />;
+};
+
+export default LoginSignupForgot;

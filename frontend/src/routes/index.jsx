@@ -18,6 +18,7 @@ import Category from "../admin/Category";
 import UploadProduct from "../admin/UploadProduct";
 import Fno from "../pages/Fno";
 import PrivateAdminRoute from "../routes/PrivateAdminRoute"; // 👈 Import here
+import LoginSignupForgot from "./LoginSignupForgot";
 
 
 const router = createBrowserRouter([
@@ -27,9 +28,14 @@ const router = createBrowserRouter([
     children: [
       { path: '', element: <Home /> },
       { path: 'search', element: <SearchPage /> },
-      { path: 'login', element: <Login /> },
-      { path: 'register', element: <Register /> },
-      { path: 'forgot-password', element: <ForgotPassword /> },
+      {
+        element: <LoginSignupForgot />,
+        children: [
+          { path: 'login', element: <Login /> },
+          { path: 'register', element: <Register /> },
+          { path: 'forgot-password', element: <ForgotPassword /> },
+        ],
+      },
       { path: 'verify-Otp', element: <VerifyOtp /> },
       { path: 'reset-password', element: <ResetPassword /> },
       { path: 'user', element: <UserMenuMobile /> },

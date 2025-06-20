@@ -28,7 +28,6 @@ function App() {
         dispatch(setAllCategory([]))
       }
     } catch (error) {
-      AxiosToastError(error);
       dispatch(setAllCategory([]))
     } finally {
     }
