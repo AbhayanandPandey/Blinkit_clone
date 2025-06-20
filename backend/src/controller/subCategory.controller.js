@@ -38,3 +38,32 @@ export const AddSubCategory = async (req, res) => {
             });
     }
 }
+export const GetAllSubCategories = async (req, res) => {
+    try {
+        const subCategories = await SubCategoryModel.find({})
+            .populate('category', 'name image')
+            .sort({ createdAt: -1 })
+            .select('-__v')
+
+        if (!subCategories || subCategories.length === 0) {
+            return res.status(404).json({
+                error: true,
+                success: false,
+                message: "No sub-categories found"
+            });
+        }
+
+        return res.status(200).json({
+            error: false,
+            success: true,
+            message: "Sub-categories retrieved successfully",
+            data: subCategories
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            success: false,
+            message: error.message || error
+        });
+    }
+}

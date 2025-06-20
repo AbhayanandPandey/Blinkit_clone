@@ -65,6 +65,10 @@ const Api = {
         url: '/api/sub-category/create',
         method: 'post'
     },
+    getSubCategories: {
+        url: '/api/sub-category/get-sub-categories',
+        method: 'post'
+    },
 }
 
 export default Api
