@@ -23,6 +23,13 @@ const Category = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [deleteCategory, setDeleteCategory] = useState({ _id: '' });
 
+
+  //   const allCategory = useSelector(state => state.product.allCategory)
+// console.log('data',allCategory)
+// useEffect(() => {
+//   setCategoryData(allCategory)
+// },[allCategory]);
+
   const fetchCategory = async () => {
     try {
       setLoading(true);
