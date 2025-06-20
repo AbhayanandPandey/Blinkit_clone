@@ -131,8 +131,6 @@ const UploadCategory = ({ close , fetchData }) => {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          
             <button
               type="submit"
               disabled={!data.name || !data.image || loading.upload || loading.submit}
