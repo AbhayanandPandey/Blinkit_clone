@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router-dom';
 const Category = () => {
   const navigate = useNavigate();
   const user = useSelector(state => state.user.user);
-  console.log('u',user)
   const [openUpload, setOpenUpload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [categoryData, setCategoryData] = useState([]);

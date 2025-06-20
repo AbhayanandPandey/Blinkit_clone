@@ -4,7 +4,7 @@ import { IoClose } from 'react-icons/io5'
 const ConfirmDelete = ({ close, cancle, confirm }) => {
     return (
         <div className='fixed top-0 left-0 right-0 bottom-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm'>
-            <div className='bg-white rounded max-w-md p-4 w-full shadow-lg relative'>
+            <div className='bg-white rounded max-w-md p-4 w-full shadow-lg relative lg:mx-0 mx-3'>
                 <div className="flex justify-between items-center gap-3">
                     <h1 className='font-semibold'>
                         Parmanent Delete
