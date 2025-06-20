@@ -47,18 +47,20 @@ const UploadSubCategory = ({ close }) => {
                             <p>Image</p>
                             <div className="flex flex-col gap-3 lg:flex-row items-center" >
                                 <div className="border border-blue-200 h-36 lg:w-36 w-full bg-blue-50 rounded flex justify-center items-center">
-                                {
-                                    !subData.image ? (
-                                        <p className='text-neutral-400 text-sm '>No Image</p>
-                                    ) : (
-                                        <img
-                                        className=''
+                                    {
+                                        !subData.image ? (
+                                            <p className='text-neutral-400 text-sm '>No Image</p>
+                                        ) : (
+                                            <img
+                                                className=''
 
-                                        />
-                                    )
-                                }
-                            </div>
-                            <button className='px-5 py-2 rounded text-white font-medium transition cursor-pointer bg-amber-400 hover:bg-amber-500'>Upload Image</button>
+                                            />
+                                        )
+                                    }
+                                </div>
+                                <button className='px-5 py-2 rounded text-white font-medium transition cursor-pointer bg-amber-400 hover:bg-amber-500'>
+                                    Upload Image
+                                </button>
                             </div>
                         </div>
                     </form>
