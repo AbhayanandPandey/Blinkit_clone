@@ -67,3 +67,56 @@ export const GetAllSubCategories = async (req, res) => {
         });
     }
 }
+export const EditSubCategoryData = async (req, res) => {
+    try {
+        const { _id,name, image, category } = req.body;
+
+        if (!name && !image && !category[0]) {
+            return res.status(400).json({
+                error: true,
+                success: false,
+                message: "All fields are required"
+            });
+        }
+
+        const updatedSubCategory = await SubCategoryModel.findByIdAndUpdate(
+            _id,
+            { name, image, category },
+            { new: true }
+        );
+
+        if (!updatedSubCategory) {
+            return res.status(404).json({
+                error: true,
+                success: false,
+                message: "Sub-category not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            error: false,
+            message: "Sub-category updated successfully",
+            data: updatedSubCategory
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: true,
+            error: error.message || error
+        });
+    }
+}
+export const DeleteSubCategory = async (req, res) => {
+    try {
+        const { _id } = req.body;
+        
+        
+    } catch (error) {
+        return res.status(500).json({
+            message:error.message || error,
+            success:false,
+            error:true
+        })
+    }
+}

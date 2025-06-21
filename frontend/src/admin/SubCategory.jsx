@@ -6,14 +6,19 @@ import Api from '../config/Api'
 import DisplayTable from '../components/DisplayTable'
 import { createColumnHelper } from '@tanstack/react-table'
 import ViewImage from '../components/ViewImage'
-import {LuPencil} from 'react-icons/lu'
-import {MdOutlineDelete} from 'react-icons/md'
+import { LuPencil } from 'react-icons/lu'
+import { MdOutlineDelete } from 'react-icons/md'
+import EditSubCategory from '../components/EditSubCategory'
 
 const SubCategory = () => {
   const [openAddSub, setOpenAddSub] = useState(false)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const [imageUrl,setImageUrl] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+  const [openEdit, setOpenEdit] = useState(false)
+  const [editData, setEditData] = useState({
+    _id: '',
+  })
 
   const columnHelper = createColumnHelper()
 
@@ -46,11 +51,11 @@ const SubCategory = () => {
       cell: info => (
         <div className='flex justify-center items-center'>
           <img
-          src={info.getValue()}
-          alt="sub"
-          className="w-12 h-12 cursor-pointer"
-          onClick={()=>{setImageUrl(info.getValue())}}
-        />
+            src={info.getValue()}
+            alt="sub"
+            className="w-12 h-12 cursor-pointer"
+            onClick={() => { setImageUrl(info.getValue()) }}
+          />
         </div>
       )
     }),
@@ -64,16 +69,19 @@ const SubCategory = () => {
         </span>
       )
     }),
-    columnHelper.accessor('_id',{
-      header:'Action',
-      cell:info=>(
+    columnHelper.accessor('_id', {
+      header: 'Action',
+      cell: info => (
         <div className='flex gap-3 items-center justify-center'>
-           <button  className='cursor-pointer p-2 bg-green-100 rounded-2xl hover:text-green-500'>
+          <button onClick={() => {
+            setOpenEdit(true)
+            setEditData(info.row.original)
+          }} className='cursor-pointer p-2 bg-green-100 rounded-2xl hover:text-green-500'>
             <LuPencil size={20} />
-           </button>
-           <button  className='cursor-pointer p-2 bg-red-100 rounded-2xl hover:text-red-500 '>
+          </button>
+          <button className='cursor-pointer p-2 bg-red-100 rounded-2xl hover:text-red-500 '>
             <MdOutlineDelete size={20} />
-           </button>
+          </button>
         </div>
       )
     })
@@ -103,7 +111,15 @@ const SubCategory = () => {
       )}
       {
         imageUrl &&
-        <ViewImage url={imageUrl} close={()=>setImageUrl('')} />
+        <ViewImage url={imageUrl} close={() => setImageUrl('')} />
+      }
+      {
+        openEdit &&
+        < EditSubCategory
+          data={editData}
+          close={() => setOpenEdit(false)}
+          fetchData={fetchSubCategory}
+        />
       }
     </section>
   )

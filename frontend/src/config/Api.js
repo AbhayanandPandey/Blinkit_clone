@@ -69,6 +69,10 @@ const Api = {
         url: '/api/sub-category/get-sub-categories',
         method: 'post'
     },
+    editSubCategory: {
+        url: '/api/sub-category/update',
+        method: 'put'
+    },
 }
 
 export default Api
