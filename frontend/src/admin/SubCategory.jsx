@@ -4,7 +4,6 @@ import AxiosToastError from '../utils/AxiosToastError'
 import Axios from '../utils/Axios'
 import Api from '../config/Api'
 import DisplayTable from '../components/DisplayTable'
-import SkeletonCard from '../components/SkeletonCard'
 import ViewImage from '../components/ViewImage'
 import { LuPencil } from 'react-icons/lu'
 import { MdOutlineDelete } from 'react-icons/md'
@@ -23,7 +22,6 @@ const SubCategory = () => {
   const [editData, setEditData] = useState({ _id: '' })
   const [deleteSub, setDeleteSub] = useState({ _id: '' })
   const [openDelete, setOpenDelete] = useState(false)
-
   const columnHelper = createColumnHelper()
 
   const fetchSubCategory = async () => {
@@ -84,9 +82,7 @@ const SubCategory = () => {
           ))}
         </div>
       )
-    })
-    ,
-
+    }),
     columnHelper.accessor('_id', {
       header: 'Action',
       cell: info => (
