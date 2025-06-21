@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 const LoginSignupForgot = () => {
   const accessToken =
-    localStorage.getItem('accessToken') || Cookies.get('accessToken');
+    localStorage.getItem('accessToken') && Cookies.get('accessToken');
 
   if (accessToken) {
     return <Navigate to="/dashboard/profile" replace />;
