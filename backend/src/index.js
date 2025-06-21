@@ -7,7 +7,6 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 
 import userRouter from './routes/user.routes.js'
-
 import './config/db.js';
 import categoryRouter from './routes/category.routes.js';
 import uploadRouter from './routes/upload.route.js';
@@ -17,7 +16,10 @@ const app = express();
 
 app.use(cors({
     credentials: true,
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: [
+     process.env.FRONTEND_URL ,
+    'https://5j4jg6lj-5173.inc1.devtunnels.ms'
+  ],
 }));
 app.use(express.json());
 app.use(cookieParser());

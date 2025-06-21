@@ -175,7 +175,7 @@ const UploadSubCategory = ({ close }) => {
                 </option>
                 {allcategoryData.map((category) => (
                   <option value={category._id} key={category._id}>
-                    {category.name}
+                    {(category.name)}
                   </option>
                 ))}
               </select>

@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import toast, { Toaster } from 'react-hot-toast'
-import { useEffect } from 'react'
 import fetchUserDetails from './utils/fetchUserDetails'
 import { setUserDetails } from './store/userSlice'
 import { useDispatch } from 'react-redux'
@@ -11,17 +10,25 @@ import Axios from './utils/Axios.js'
 import Api from './config/Api.js'
 import { setAllCategory } from './store/ProductSlice.js'
 import AxiosToastError from './utils/AxiosToastError.js'
+import FullPageLoader from './components/FullPageLoader.jsx' // 👈 Import loader
+
 function App() {
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState(true) // 👈 Loading state
+
   const fetchUser = async () => {
-    const fetchUserData = await fetchUserDetails()
-    dispatch(setUserDetails(fetchUserData.data))
+    try {
+      const fetchUserData = await fetchUserDetails()
+      dispatch(setUserDetails(fetchUserData.data))
+    } catch (error) {
+      // Optional: handle error
+    }
   }
 
-   const fetchCategory = async () => {
+  const fetchCategory = async () => {
     try {
-      const response = await Axios({ ...Api.getCategories });
-      const { data: responseData } = response;
+      const response = await Axios({ ...Api.getCategories })
+      const { data: responseData } = response
       if (responseData.success) {
         dispatch(setAllCategory(responseData.data || []))
       } else {
@@ -29,18 +36,23 @@ function App() {
       }
     } catch (error) {
       dispatch(setAllCategory([]))
-    } finally {
     }
-  };
+  }
 
-  useEffect(() => { 
-    fetchUser()
-    fetchCategory()
-  },[])
+  useEffect(() => {
+    const loadApp = async () => {
+      await Promise.all([fetchUser(), fetchCategory()])
+      setLoading(false)
+    }
+    loadApp()
+  }, [])
+
+  if (loading) return <FullPageLoader /> // 👈 Show loader until done
+
   return (
     <>
       <Header />
-      <main className='min-h-[78vh]'>
+      <main className="min-h-[78vh]">
         <Outlet />
       </main>
       <Footer />
