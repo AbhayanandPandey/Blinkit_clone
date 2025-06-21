@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
 
-import userRouter from './routes/user.routes.js'
+import userRouter from './routes/user.routes.js';
 import './config/db.js';
 import categoryRouter from './routes/category.routes.js';
 import uploadRouter from './routes/upload.route.js';
@@ -14,13 +14,23 @@ import subCategoryRouter from './routes/subCategory.route.js';
 
 const app = express();
 
+const allowedOrigins = [
+    'http://localhost:5173',
+    process.env.FRONTEND_URL,
+    'https://5j4jg6lj-5173.inc1.devtunnels.ms',
+];
+
 app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
-    origin: [
-     process.env.FRONTEND_URL ,
-    'https://5j4jg6lj-5173.inc1.devtunnels.ms'
-  ],
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
@@ -28,11 +38,12 @@ app.use(helmet({
     contentSecurityPolicy: false
 }));
 
-app.use('/api/user', userRouter)
-app.use('/api/category',categoryRouter)
-app.use('/api/file',uploadRouter)
-app.use('/api/sub-category',subCategoryRouter)
+app.use('/api/user', userRouter);
+app.use('/api/category', categoryRouter);
+app.use('/api/file', uploadRouter);
+app.use('/api/sub-category', subCategoryRouter);
 
-app.listen(process.env.PORT || 5001, () => {
-    console.log(`Server is running on port ${process.env.PORT || 5173}`);
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on port ${PORT}`);
 });
