@@ -20,8 +20,8 @@ const Dashboard = () => {
       if (response.data.success) {
         dispatch(logout());
         localStorage.clear();
-        toast.success(response.data.message);
         navigate('/');
+        toast.success(response.data.message);
       }
     } catch (err) {
       AxiosToastError(err);
