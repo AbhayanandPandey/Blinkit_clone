@@ -48,16 +48,10 @@ const Category = () => {
         ...Api.deleteCategoty,
         data: deleteCategory,
       });
-
       const { data: deleteData } = deleteCategoryData;
-
       if (deleteData.success) {
         toast.success(deleteData.message);
-
-        // ✅ Wait for the refetch to finish
         await fetchCategory();
-
-        // ✅ Close modal and reset state after data is updated
         setOpenDelete(false);
         setDeleteCategory({ _id: '' });
       } else {
@@ -72,7 +66,6 @@ const Category = () => {
 
   useEffect(() => {
     fetchCategory();
-
   }, []);
 
   return (

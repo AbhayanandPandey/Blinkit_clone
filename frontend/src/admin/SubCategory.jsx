@@ -26,24 +26,23 @@ const SubCategory = () => {
 
   const columnHelper = createColumnHelper()
 
- const fetchSubCategory = async () => {
-  setLoading(true)
-  try {
-    const response = await Axios({ ...Api.getSubCategories })
-    const { data: responseData } = response
-    if (responseData.success) {
-      setData(responseData.data)
-    } else {
+  const fetchSubCategory = async () => {
+    setLoading(true)
+    try {
+      const response = await Axios({ ...Api.getSubCategories })
+      const { data: responseData } = response
+      if (responseData.success) {
+        setData(responseData.data)
+      } else {
+        setData([])
+      }
+    } catch (error) {
+      AxiosToastError(error)
       setData([])
+    } finally {
+      setLoading(false)
     }
-  } catch (error) {
-    AxiosToastError(error)
-    setData([])
-  } finally {
-    setLoading(false)
   }
-}
-
 
   useEffect(() => {
     fetchSubCategory()
@@ -99,31 +98,25 @@ const SubCategory = () => {
   ]
 
   const handleDeleteSub = async () => {
-  try {
-    setLoading(true)
-    const response = await Axios({
-      ...Api.deleteSubCategory,
-      data: deleteSub
-    })
-
-    const { data: responseData } = response
-
-    if (responseData.success) {
-      toast.success(responseData.message)
-
-      // Wait for refetch to complete before resetting
-      await fetchSubCategory()
-
-      // Then close delete modal and reset state
-      setOpenDelete(false)
-      setDeleteSub({ _id: '' })
+    try {
+      setLoading(true)
+      const response = await Axios({
+        ...Api.deleteSubCategory,
+        data: deleteSub
+      })
+      const { data: responseData } = response
+      if (responseData.success) {
+        toast.success(responseData.message)
+        await fetchSubCategory()
+        setOpenDelete(false)
+        setDeleteSub({ _id: '' })
+      }
+    } catch (error) {
+      AxiosToastError(error)
+    } finally {
+      setLoading(false)
     }
-  } catch (error) {
-    AxiosToastError(error)
-  } finally {
-    setLoading(false)
   }
-}
 
   return (
     <section>
