@@ -5,11 +5,15 @@ import Axios from '../utils/Axios'
 import Api from '../config/Api'
 import DisplayTable from '../components/DisplayTable'
 import { createColumnHelper } from '@tanstack/react-table'
+import ViewImage from '../components/ViewImage'
+import {LuPencil} from 'react-icons/lu'
+import {MdOutlineDelete} from 'react-icons/md'
 
 const SubCategory = () => {
   const [openAddSub, setOpenAddSub] = useState(false)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [imageUrl,setImageUrl] = useState('')
 
   const columnHelper = createColumnHelper()
 
@@ -44,7 +48,8 @@ const SubCategory = () => {
           <img
           src={info.getValue()}
           alt="sub"
-          className="w-12 h-12 "
+          className="w-12 h-12 cursor-pointer"
+          onClick={()=>{setImageUrl(info.getValue())}}
         />
         </div>
       )
@@ -52,13 +57,26 @@ const SubCategory = () => {
     columnHelper.accessor('category', {
       header: 'Categories',
       cell: info => (
-        <span className="list-disc ml-4">
+        <span className="list-disc ml-4 inline-block">
           {info.getValue()?.map(cat => (
             <span key={cat._id} className="text-sm">{cat.name}</span>
           ))}
         </span>
       )
     }),
+    columnHelper.accessor('_id',{
+      header:'Action',
+      cell:info=>(
+        <div className='flex gap-3 items-center justify-center'>
+           <button  className='cursor-pointer p-2 bg-green-100 rounded-2xl hover:text-green-500'>
+            <LuPencil size={20} />
+           </button>
+           <button  className='cursor-pointer p-2 bg-red-100 rounded-2xl hover:text-red-500 '>
+            <MdOutlineDelete size={20} />
+           </button>
+        </div>
+      )
+    })
   ]
 
   return (
@@ -83,6 +101,10 @@ const SubCategory = () => {
           fetchSubCategory()
         }} />
       )}
+      {
+        imageUrl &&
+        <ViewImage url={imageUrl} close={()=>setImageUrl('')} />
+      }
     </section>
   )
 }

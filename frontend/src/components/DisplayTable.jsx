@@ -14,8 +14,8 @@ const DisplayTable = ({data,column}) => {
     })
 
     return (
-        <div className="p-2">
-      <table className='w-full py-0 px-0 border-collapse'>
+        <div className="p-2 rounded">
+      <table className='w-full py-0 px-0 border-collapse rounded'>
         <thead className='bg-green-700 text-white'>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
@@ -38,7 +38,7 @@ const DisplayTable = ({data,column}) => {
         <tbody className=''>
           {table.getRowModel().rows.map((row,index) => (
             <tr key={row.id}>
-                <td className='border border-blue-200 shadow-md px-2 py-1 '>{index+1}</td>
+                <td className='border border-blue-200 shadow-md px-2 py-1 text-center '>{index+1}</td>
               {row.getVisibleCells().map(cell => (
                 <td key={cell.id} className='border border-blue-200 shadow-md px-2 py-1 '>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
