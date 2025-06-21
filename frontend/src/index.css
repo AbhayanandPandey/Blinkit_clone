@@ -8,3 +8,10 @@ body {
     "wdth" 100;
   @apply bg-blue-50;
 }
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

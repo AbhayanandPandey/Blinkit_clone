@@ -97,7 +97,6 @@ const UploadSubCategory = ({ close }) => {
           </button>
         </div>
         <form onSubmit={handleSubmit} className="grid gap-3">
-          {/* Name */}
           <div className="grid gap-1">
             <label htmlFor="name">Name</label>
             <input
@@ -112,7 +111,6 @@ const UploadSubCategory = ({ close }) => {
             />
           </div>
 
-          {/* Image Upload */}
           <div className="grid gap-1">
             <label>Image</label>
             <div className="flex flex-col gap-3 lg:flex-row items-center">

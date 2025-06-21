@@ -51,7 +51,11 @@ const SubCategory = () => {
   const columns = [
     columnHelper.accessor('name', {
       header: 'Name',
-      cell: info => <span>{info.getValue()}</span>
+      cell: info => (
+        <span className="text-sm font-medium text-gray-800 truncate block max-w-[200px] pl-2">
+          {info.getValue()}
+        </span>
+      )
     }),
     columnHelper.accessor('image', {
       header: 'Image',
@@ -69,13 +73,20 @@ const SubCategory = () => {
     columnHelper.accessor('category', {
       header: 'Categories',
       cell: info => (
-        <span className="list-disc ml-4 inline-block">
+        <div className="flex flex-wrap gap-2 max-h-24 overflow-y-scroll scrollbar-hidden pr-1 max-w-60">
           {info.getValue()?.map(cat => (
-            <span key={cat._id} className="text-sm">{cat.name}</span>
+            <span
+              key={cat._id}
+              className="text-sm bg-gray-100 px-2 py-1 rounded shadow"
+            >
+              {cat.name}
+            </span>
           ))}
-        </span>
+        </div>
       )
-    }),
+    })
+    ,
+
     columnHelper.accessor('_id', {
       header: 'Action',
       cell: info => (
