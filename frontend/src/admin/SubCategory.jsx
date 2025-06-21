@@ -4,11 +4,15 @@ import AxiosToastError from '../utils/AxiosToastError'
 import Axios from '../utils/Axios'
 import Api from '../config/Api'
 import DisplayTable from '../components/DisplayTable'
-import { createColumnHelper } from '@tanstack/react-table'
+import SkeletonCard from '../components/SkeletonCard'
 import ViewImage from '../components/ViewImage'
 import { LuPencil } from 'react-icons/lu'
 import { MdOutlineDelete } from 'react-icons/md'
 import EditSubCategory from '../components/EditSubCategory'
+import ConfirmDelete from '../components/ConfirmDelete'
+import toast from 'react-hot-toast'
+import { createColumnHelper } from '@tanstack/react-table'
+import SkeletonCardForSubCategory from '../components/SkeletonCardForSubCategory'
 
 const SubCategory = () => {
   const [openAddSub, setOpenAddSub] = useState(false)
@@ -16,26 +20,30 @@ const SubCategory = () => {
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
   const [openEdit, setOpenEdit] = useState(false)
-  const [editData, setEditData] = useState({
-    _id: '',
-  })
+  const [editData, setEditData] = useState({ _id: '' })
+  const [deleteSub, setDeleteSub] = useState({ _id: '' })
+  const [openDelete, setOpenDelete] = useState(false)
 
   const columnHelper = createColumnHelper()
 
-  const fetchSubCategory = async () => {
-    try {
-      setLoading(true)
-      const response = await Axios({ ...Api.getSubCategories })
-      const { data: responseData } = response
-      if (responseData.success) {
-        setData(responseData.data)
-      }
-    } catch (error) {
-      AxiosToastError(error)
-    } finally {
-      setLoading(false)
+ const fetchSubCategory = async () => {
+  setLoading(true)
+  try {
+    const response = await Axios({ ...Api.getSubCategories })
+    const { data: responseData } = response
+    if (responseData.success) {
+      setData(responseData.data)
+    } else {
+      setData([])
     }
+  } catch (error) {
+    AxiosToastError(error)
+    setData([])
+  } finally {
+    setLoading(false)
   }
+}
+
 
   useEffect(() => {
     fetchSubCategory()
@@ -54,7 +62,7 @@ const SubCategory = () => {
             src={info.getValue()}
             alt="sub"
             className="w-12 h-12 cursor-pointer"
-            onClick={() => { setImageUrl(info.getValue()) }}
+            onClick={() => setImageUrl(info.getValue())}
           />
         </div>
       )
@@ -79,13 +87,43 @@ const SubCategory = () => {
           }} className='cursor-pointer p-2 bg-green-100 rounded-2xl hover:text-green-500'>
             <LuPencil size={20} />
           </button>
-          <button className='cursor-pointer p-2 bg-red-100 rounded-2xl hover:text-red-500 '>
+          <button onClick={() => {
+            setOpenDelete(true)
+            setDeleteSub(info.row.original)
+          }} className='cursor-pointer p-2 bg-red-100 rounded-2xl hover:text-red-500 '>
             <MdOutlineDelete size={20} />
           </button>
         </div>
       )
     })
   ]
+
+  const handleDeleteSub = async () => {
+  try {
+    setLoading(true)
+    const response = await Axios({
+      ...Api.deleteSubCategory,
+      data: deleteSub
+    })
+
+    const { data: responseData } = response
+
+    if (responseData.success) {
+      toast.success(responseData.message)
+
+      // Wait for refetch to complete before resetting
+      await fetchSubCategory()
+
+      // Then close delete modal and reset state
+      setOpenDelete(false)
+      setDeleteSub({ _id: '' })
+    }
+  } catch (error) {
+    AxiosToastError(error)
+  } finally {
+    setLoading(false)
+  }
+}
 
   return (
     <section>
@@ -100,7 +138,13 @@ const SubCategory = () => {
       </div>
 
       <div className="p-4 bg-white shadow-sm">
-        <DisplayTable data={data} column={columns} loading={loading} />
+        {loading ? (
+          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+            {Array(6).fill(0).map((_, i) => <SkeletonCardForSubCategory key={i} />)}
+          </div>
+        ) : (
+          <DisplayTable data={data} column={columns} loading={loading} />
+        )}
       </div>
 
       {openAddSub && (
@@ -109,20 +153,26 @@ const SubCategory = () => {
           fetchSubCategory()
         }} />
       )}
-      {
-        imageUrl &&
+      {imageUrl && (
         <ViewImage url={imageUrl} close={() => setImageUrl('')} />
-      }
-      {
-        openEdit &&
-        < EditSubCategory
+      )}
+      {openEdit && (
+        <EditSubCategory
           data={editData}
           close={() => setOpenEdit(false)}
           fetchData={fetchSubCategory}
         />
-      }
+      )}
+      {openDelete && (
+        <ConfirmDelete
+          cancle={() => setOpenDelete(false)}
+          close={() => setOpenDelete(false)}
+          confirm={handleDeleteSub}
+        />
+      )}
     </section>
   )
 }
 
 export default SubCategory
+

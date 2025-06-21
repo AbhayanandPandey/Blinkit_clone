@@ -9,7 +9,7 @@ import SkeletonCard from '../components/SkeletonCard';
 import EditCategory from '../components/EditCategory';
 import ConfirmDelete from '../components/ConfirmDelete';
 import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux'; 
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const Category = () => {
@@ -22,13 +22,6 @@ const Category = () => {
   const [editData, setEditData] = useState({ name: '', image: '' });
   const [openDelete, setOpenDelete] = useState(false);
   const [deleteCategory, setDeleteCategory] = useState({ _id: '' });
-
-
-  //   const allCategory = useSelector(state => state.product.allCategory)
-// console.log('data',allCategory)
-// useEffect(() => {
-//   setCategoryData(allCategory)
-// },[allCategory]);
 
   const fetchCategory = async () => {
     try {
@@ -48,11 +41,6 @@ const Category = () => {
     }
   };
 
-  useEffect(() => {
-    fetchCategory();
-    
-  }, []);
-
   const handleDeleteCategory = async () => {
     try {
       setLoading(true);
@@ -60,15 +48,20 @@ const Category = () => {
         ...Api.deleteCategoty,
         data: deleteCategory,
       });
+
       const { data: deleteData } = deleteCategoryData;
+
       if (deleteData.success) {
         toast.success(deleteData.message);
-        fetchCategory();
+
+        // ✅ Wait for the refetch to finish
+        await fetchCategory();
+
+        // ✅ Close modal and reset state after data is updated
         setOpenDelete(false);
-        close()
+        setDeleteCategory({ _id: '' });
       } else {
         toast.error(deleteData.message || 'Failed to delete');
-        close()
       }
     } catch (error) {
       AxiosToastError(error);
@@ -76,6 +69,11 @@ const Category = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchCategory();
+
+  }, []);
 
   return (
     <section className="">
