@@ -14,8 +14,8 @@ const DisplayTable = ({data,column}) => {
     })
 
     return (
-        <div className="p-2 rounded">
-      <table className='w-full py-0 px-0 border-collapse rounded'>
+        <div className="p-2 rounded w-full">
+      <table className=' py-0 px-0 border-collapse rounded'>
         <thead className='bg-green-700 text-white'>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
@@ -23,7 +23,7 @@ const DisplayTable = ({data,column}) => {
                     <th>Sr.No</th>
                 }
               {headerGroup.headers.map(header => (
-                <th key={header.id} className='border p-2 '>
+                <th key={header.id} className='border p-2 whitespace-nowrap '>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -40,7 +40,7 @@ const DisplayTable = ({data,column}) => {
             <tr key={row.id}>
                 <td className='border border-blue-200 shadow-md px-2 py-1 text-center '>{index+1}</td>
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className='border border-blue-200 shadow-md px-2 py-1 '>
+                <td key={cell.id} className='border border-blue-200 shadow-md px-2 py-1 whitespace-nowrap '>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

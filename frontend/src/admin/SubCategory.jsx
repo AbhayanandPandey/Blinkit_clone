@@ -137,7 +137,7 @@ const SubCategory = () => {
         </button>
       </div>
 
-      <div className="p-4 bg-white shadow-sm">
+      <div className="p-4 bg-white shadow-sm overflow-auto w-full max-w-[95vw]">
         {loading ? (
           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
             {Array(6).fill(0).map((_, i) => <SkeletonCardForSubCategory key={i} />)}
