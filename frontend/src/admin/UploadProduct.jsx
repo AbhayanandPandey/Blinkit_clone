@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { FaCloudUploadAlt } from 'react-icons/fa'
+import UplaodImage from '../utils/uploadImage'
 
 const UploadProduct = () => {
   const [data, setData] = useState({
@@ -23,6 +24,18 @@ const UploadProduct = () => {
         [name]: value
       }
     })
+  }
+  const handleUploadImage = async (e) => {
+    const file = e.target.files[0]
+    if (!file) {
+      return
+    }
+    const response = await UplaodImage(file);
+    const { data: ImageResponse } = response;
+    setData((prev) => ({
+      ...prev,
+      image: ImageResponse.data.url
+    }));
   }
   return (
     <section className="">
@@ -61,12 +74,14 @@ const UploadProduct = () => {
           <div>
             <p>Image</p>
             <div>
-              <div className='bg-blue-50 h-24 border border-blue-200 rounded flex justify-center items-center'>
+              <label htmlFor='image' className='bg-blue-50 h-24 border border-blue-200 rounded flex justify-center items-center cursor-pointer'>
                 <div className='text-center flex justify-center items-center flex-col'>
                   <FaCloudUploadAlt size={26} />
                   <p>upload image</p>
+                  <input type="file" id='image' className='hidden' accept='image/*' onChange={handleUploadImage} />
                 </div>
-              </div>
+              </label>
+
             </div>
           </div>
         </form>
