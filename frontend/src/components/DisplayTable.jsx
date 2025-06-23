@@ -14,8 +14,8 @@ const DisplayTable = ({data,column}) => {
     })
 
     return (
-        <div className="p-2 rounded w-full">
-      <table className=' py-0 px-0 border-collapse rounded'>
+        <div className="p-2 rounded">
+      <table className=' py-0 px-0 border-collapse rounded w-full'>
         <thead className='bg-green-700 text-white'>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
