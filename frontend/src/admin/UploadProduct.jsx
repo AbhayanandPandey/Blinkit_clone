@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import SubCategory from './SubCategory'
+import { FaCloudUploadAlt } from 'react-icons/fa'
 
 const UploadProduct = () => {
   const [data, setData] = useState({
@@ -45,17 +45,29 @@ const UploadProduct = () => {
             />
           </div>
           <div className='grid gap-1'>
-            <label htmlFor="decription">Decription</label>
-            <input
+            <label htmlFor="description">Description</label>
+            <textarea
               type="text"
-              id='decription'
-              name='decription'
-              placeholder='Enter Product decription'
-              value={data.decription}
+              id='description'
+              name='description'
+              placeholder='Enter Product description'
+              value={data.description}
               onChange={handleChange}
               required
-              className='bg-blue-50 p-2 outline-none border border-blue-200 rounded'
+              rows={3}
+              className='bg-blue-50 p-2 outline-none border border-blue-200 rounded resize-none'
             />
+          </div>
+          <div>
+            <p>Image</p>
+            <div>
+              <div className='bg-blue-50 h-24 border border-blue-200 rounded flex justify-center items-center'>
+                <div className='text-center flex justify-center items-center flex-col'>
+                  <FaCloudUploadAlt size={26} />
+                  <p>upload image</p>
+                </div>
+              </div>
+            </div>
           </div>
         </form>
       </div>
