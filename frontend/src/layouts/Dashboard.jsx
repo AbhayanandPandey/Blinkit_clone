@@ -30,7 +30,7 @@ const Dashboard = () => {
 
   return (
     <section className="bg-white ">
-      <div className="container mx-auto px-4 pl-2 py-6 grid lg:grid-cols-[250px_1fr]">
+      <div className="container mx-auto px-2 pl-1 py-6 grid lg:grid-cols-[250px_1fr]">
 
         <aside className="hidden lg:flex flex-col sticky top-26 h-[calc(96vh-6rem)] border-r border-gray-300 pr-4">
           <div className="flex-1 overflow-y-auto">
@@ -54,7 +54,7 @@ const Dashboard = () => {
           </div>
         </aside>
 
-        <main className="bg-white w-48/49 min-h-[78vh] px-2 sm:px-4 py-4">
+        <main className="bg-white w-full min-h-[78vh] px-2 sm:px-4 py-4">
           <Outlet />
         </main>
       </div>

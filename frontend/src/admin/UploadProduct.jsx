@@ -62,7 +62,7 @@ const UploadProduct = () => {
       <div className='grid p-4'>
         <form className='grid gap-2'>
           <div className='grid gap-1'>
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name" className=' font-semibold text-gray-700'>Name</label>
             <input
               type="text"
               id='name'
@@ -75,7 +75,7 @@ const UploadProduct = () => {
             />
           </div>
           <div className='grid gap-1'>
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description" className='font-semibold text-gray-700'>Description</label>
             <textarea
               type="text"
               id='description'
@@ -129,7 +129,7 @@ const UploadProduct = () => {
                     <button
                       type="button"
                       onClick={() => removeImage(i)}
-                      className="absolute top-0 cursor-pointer right-0 bg-transparent rounded-full p-1 shadow group-hover:opacity-100 opacity-0 transition-all"
+                      className="absolute bottom-0 cursor-pointer right-0 bg-transparent rounded-full p-1 shadow group-hover:opacity-100 opacity-0 transition-all"
                       title="Remove"
                     >
                       ❌
