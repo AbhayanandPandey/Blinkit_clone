@@ -91,7 +91,7 @@ const UploadProduct = () => {
         <h2 className="font-semibold text-lg">Upload Product</h2>
       </div>
 
-      <div className="grid p-4">
+      <div className="grid p-7">
         <form className="grid gap-3">
           <div className="grid gap-1">
             <label htmlFor="name" className="font-semibold text-gray-700">
