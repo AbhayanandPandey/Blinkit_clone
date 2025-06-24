@@ -165,10 +165,11 @@ const UploadProduct = () => {
                     <button
                       type="button"
                       onClick={() => removeImage(i)}
-                      className="absolute bottom-1 cursor-pointer right-1 bg-white rounded-full p-1 text-red-600 hover:text-red-800 group-hover:opacity-100 opacity-0 transition-all"
+                      className="absolute bottom-0 cursor-pointer right-1 bg-white rounded-full p-1 text-red-600 hover:text-red-800 group-hover:opacity-100 opacity-0 transition-all"
                       title="Remove"
                     >
-                      <MdOutlineDelete size={18} />
+                      {/* <MdOutlineDelete size={18} /> */}
+                      &times;
                     </button>
                   </div>
                 ))}
@@ -204,7 +205,7 @@ const UploadProduct = () => {
                     <button
                       type="button"
                       onClick={() => removeCategory(cat._id)}
-                      className="text-red-600 font-bold hover:text-red-800 cursor-pointer"
+                      className="text-gray-600 font-bold hover:text-red-600 cursor-pointer"
                       title="Remove"
                     >
                       &times;
