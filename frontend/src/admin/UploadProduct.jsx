@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { ImSpinner8 } from 'react-icons/im';
 import { MdOutlineDelete } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import UploadImage from '../utils/uploadImage'; 
+import UploadImage from '../utils/uploadImage';
+import AxiosToastError from '../utils/AxiosToastError';
+import Axios from '../utils/Axios';
+import Api from '../config/Api';
 
 const UploadProduct = () => {
   const [imageUploading, setImageUploading] = useState(false);
   const allCategory = useSelector((state) => state.product.allCategory);
+  const [allSubCategory, setAllSubCategory] = useState([]);
 
   const [data, setData] = useState({
     name: '',
@@ -84,6 +88,44 @@ const UploadProduct = () => {
       category: prev.category.filter((c) => c._id !== id),
     }));
   };
+
+  const fetchSubCategory = async () => {
+    try {
+      const response = await Axios({ ...Api.getSubCategories });
+      const { data: responseData } = response;
+
+      if (responseData.success) {
+        setAllSubCategory(responseData.data || []);
+      } else {
+        setAllSubCategory([]);
+      }
+    } catch (error) {
+      AxiosToastError(error);
+      setAllSubCategory([]);
+    }
+  };
+
+  const handleSelectSubCategory = (e) => {
+    const selectedId = e.target.value;
+    if (!selectedId) return;
+
+    const selectedSubCat = allSubCategory.find((sub) => sub._id === selectedId);
+    if (!selectedSubCat) return;
+
+    const alreadyExists = data.subCategory.some((sc) => sc._id === selectedSubCat._id);
+    if (!alreadyExists) {
+      setData((prev) => ({
+        ...prev,
+        subCategory: [...prev.subCategory, selectedSubCat],
+      }));
+    }
+
+    e.target.value = '';
+  };
+
+  useEffect(() => {
+    fetchSubCategory();
+  }, []);
 
   return (
     <section>
@@ -205,6 +247,50 @@ const UploadProduct = () => {
                     <button
                       type="button"
                       onClick={() => removeCategory(cat._id)}
+                      className="text-gray-600 font-bold hover:text-red-600 cursor-pointer"
+                      title="Remove"
+                    >
+                      &times;
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="grid gap-1">
+            <label htmlFor="sub-category" className="font-semibold text-gray-700">
+              Sub Category
+            </label>
+            <select
+              id="sub-category"
+              className="bg-blue-50 outline-none border border-blue-200 w-full p-2 rounded"
+              onChange={handleSelectSubCategory}
+            >
+              <option value="">Select Sub Category</option>
+              {allSubCategory.map((sub) => (
+                <option key={sub._id} value={sub._id}>
+                  {sub.name}
+                </option>
+              ))}
+            </select>
+
+            {data.subCategory.length > 0 && (
+              <div className="flex gap-2 flex-wrap mt-2">
+                {data.subCategory.map((sub) => (
+                  <span
+                    key={sub._id}
+                    className="bg-gray-200 text-neutral-800 px-2 py-1 rounded-full flex items-center gap-2 text-sm"
+                  >
+                    {sub.name}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setData((prev) => ({
+                          ...prev,
+                          subCategory: prev.subCategory.filter((sc) => sc._id !== sub._id),
+                        }))
+                      }
                       className="text-gray-600 font-bold hover:text-red-600 cursor-pointer"
                       title="Remove"
                     >
