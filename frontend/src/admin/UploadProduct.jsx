@@ -125,8 +125,8 @@ const UploadProduct = () => {
             />
           </div>
 
-          <div className="">
-            <p className="mb-2 font-semibold text-gray-700">Images</p>
+          <div className="grid gap-1">
+            <p className="mb-0 font-semibold text-gray-700">Images</p>
             <label
               htmlFor="image"
               className="bg-blue-50 h-28 border-2 border-dashed border-blue-300 rounded-lg flex justify-center items-center cursor-pointer hover:bg-blue-100 transition-all duration-200"
@@ -198,7 +198,7 @@ const UploadProduct = () => {
                 {data.category.map((cat) => (
                   <span
                     key={cat._id}
-                    className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full flex items-center gap-2 text-sm border border-blue-300"
+                    className="bg-gray-200 text-neutral-800 px-2 py-1 rounded-full flex items-center gap-2 text-sm "
                   >
                     {cat.name}
                     <button
