@@ -8,24 +8,28 @@ import UploadImage from '../utils/uploadImage';
 import AxiosToastError from '../utils/AxiosToastError';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
+import AddField from '../components/AddField';
 
 const UploadProduct = () => {
   const [imageUploading, setImageUploading] = useState(false);
   const allCategory = useSelector((state) => state.product.allCategory);
   const [allSubCategory, setAllSubCategory] = useState([]);
+  const [moreField, setMoreField] = useState([])
+  const [openAdd,setOpenAdd] = useState(false)
 
   const [data, setData] = useState({
     name: '',
     image: [],
     category: [],
     subCategory: [],
-    unit: [],
+    unit: '',
     stock: '',
     price: '',
     discount: '',
     description: '',
     more_details: {},
   });
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -302,6 +306,107 @@ const UploadProduct = () => {
             )}
           </div>
 
+          <div className="grid gap-1">
+            <label htmlFor="unit" className="font-semibold text-gray-700">
+              Unit (Quantity)
+            </label>
+            <input
+              type="text"
+              id="unit"
+              name="unit"
+              placeholder="Enter product unit"
+              value={data.unit}
+              onChange={handleChange}
+              required
+              className="bg-blue-50 p-2 outline-none border border-blue-200 rounded "
+
+            />
+          </div>
+
+          <div className="grid gap-1">
+            <label htmlFor="stock" className="font-semibold text-gray-700">
+              Number of stock
+            </label>
+            <input
+              type="number"
+              id="stock"
+              name="stock"
+              placeholder="Enter Product stock"
+              value={data.stock}
+              onChange={handleChange}
+              required
+              className="bg-blue-50 p-2 outline-none border border-blue-200 rounded [&::-webkit-inner-spin-button]:appearance-none 
+               [&::-webkit-outer-spin-button]:appearance-none"
+              min="0"
+              step="1"
+              style={{ MozAppearance: 'textfield' }}
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-"].includes(e.key)) {
+                  e.preventDefault();
+                }
+              }}
+            />
+          </div>
+
+          <div className="grid gap-1">
+            <label htmlFor="price" className="font-semibold text-gray-700">
+              Enter Product Price
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              placeholder="Enter Product price"
+              value={data.price}
+              onChange={handleChange}
+              required
+              className="bg-blue-50 p-2 outline-none border border-blue-200 rounded [&::-webkit-inner-spin-button]:appearance-none 
+               [&::-webkit-outer-spin-button]:appearance-none"
+              min="0"
+              step="1"
+              style={{ MozAppearance: 'textfield' }}
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-"].includes(e.key)) {
+                  e.preventDefault();
+                }
+              }}
+            />
+          </div>
+
+          <div className="grid gap-1">
+            <label htmlFor="discount" className="font-semibold text-gray-700">
+              Enter Product discount
+            </label>
+            <input
+              type="number"
+              id="discount"
+              name="discount"
+              placeholder="Enter Product discount"
+              value={data.discount}
+              onChange={handleChange}
+              required
+              className="bg-blue-50 p-2 outline-none border border-blue-200 rounded [&::-webkit-inner-spin-button]:appearance-none 
+               [&::-webkit-outer-spin-button]:appearance-none"
+              min="0"
+              step="1"
+              style={{ MozAppearance: 'textfield' }}
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-"].includes(e.key)) {
+                  e.preventDefault();
+                }
+              }}
+            />
+          </div>
+
+          <div onClick={()=>setOpenAdd(true)} className='inline-block hover:bg-amber-400 py-1 px-3 w-39 text-center font-semibold rounded cursor-pointer border border-blue-200 '>
+            Add More Fields
+          </div>
+
+          {
+            openAdd && (
+              <AddField close={()=> setOpenAdd(false)} />
+            )
+          }
         </form>
       </div>
     </section>
