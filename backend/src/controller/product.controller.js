@@ -9,23 +9,21 @@ export const uploadProduct = async (req, res) => {
       unit,
       stock,
       price,
-      discount,
+      discount = 0, 
       description,
       more_details,
-      images, // Expecting images key from frontend
+      images,
     } = req.body;
 
-    // Validation
     if (
       !name ||
-      !Array.isArray(category) || !category.length ||
-      !Array.isArray(subCategory) || !subCategory.length ||
+      !Array.isArray(category) || category.length === 0 ||
+      !Array.isArray(subCategory) || subCategory.length === 0 ||
       !unit ||
       stock === undefined || stock === '' ||
       price === undefined || price === '' ||
-      discount === undefined || discount === '' ||
       !description ||
-      !Array.isArray(images) || !images.length
+      !Array.isArray(images) || images.length === 0
     ) {
       return res.status(400).json({
         error: true,
@@ -36,7 +34,7 @@ export const uploadProduct = async (req, res) => {
 
     const newProduct = new ProductModel({
       name,
-      image: images, // saved to image field
+      image: images, 
       category,
       subCategory,
       unit,

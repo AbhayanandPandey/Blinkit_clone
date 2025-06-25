@@ -9,9 +9,12 @@ import AxiosToastError from '../utils/AxiosToastError';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
 import AddField from '../components/AddField';
+import SuccessAlert from '../utils/SuccessAlert';
+import ErrorAlert from '../utils/ErrorAlert';
 
 const UploadProduct = () => {
   const [imageUploading, setImageUploading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const allCategory = useSelector((state) => state.product.allCategory);
   const [allSubCategory, setAllSubCategory] = useState([]);
   const [openAdd, setOpenAdd] = useState(false)
@@ -147,8 +150,6 @@ const UploadProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Check if any field is missing
     if (
       !data.name ||
       !data.image.length ||
@@ -157,18 +158,17 @@ const UploadProduct = () => {
       !data.unit ||
       data.stock === '' ||
       data.price === '' ||
-      data.discount === '' ||
       !data.description
     ) {
       toast.error('All fields are required');
       return;
     }
 
+    setLoading(true);
     try {
-
       const payload = {
         ...data,
-        images: data.image, // backend expects 'images'
+        images: data.image,
       };
 
       const response = await Axios({
@@ -178,10 +178,8 @@ const UploadProduct = () => {
 
       const { data: productData } = response;
 
-      console.log('response data:', productData);
-
       if (productData.success) {
-        toast.success(productData.message || 'Product uploaded successfully');
+        SuccessAlert(productData.message);
         setData({
           name: '',
           image: [],
@@ -195,14 +193,14 @@ const UploadProduct = () => {
           more_details: {},
         });
       } else {
-        toast.error(productData.message || 'Something went wrong');
+        ErrorAlert(productData.message || 'Something went wrong');
       }
     } catch (error) {
       AxiosToastError(error);
     } finally {
+      setLoading(false);
     }
   };
-
 
   return (
     <section>
@@ -223,7 +221,7 @@ const UploadProduct = () => {
               placeholder="Enter Product name"
               value={data.name}
               onChange={handleChange}
-              required
+
               className="bg-blue-50 p-2 outline-none border border-blue-200 rounded"
             />
           </div>
@@ -238,11 +236,12 @@ const UploadProduct = () => {
               placeholder="Enter Product description"
               value={data.description}
               onChange={handleChange}
-              required
+
               rows={3}
               className="bg-blue-50 p-2 outline-none border border-blue-200 rounded resize-none"
             />
           </div>
+
 
           <div className="grid gap-1">
             <p className="mb-0 font-semibold text-gray-700">Images</p>
@@ -390,7 +389,7 @@ const UploadProduct = () => {
               placeholder="Enter product unit"
               value={data.unit}
               onChange={handleChange}
-              required
+
               className="bg-blue-50 p-2 outline-none border border-blue-200 rounded "
 
             />
@@ -407,7 +406,7 @@ const UploadProduct = () => {
               placeholder="Enter Product stock"
               value={data.stock}
               onChange={handleChange}
-              required
+
               className="bg-blue-50 p-2 outline-none border border-blue-200 rounded [&::-webkit-inner-spin-button]:appearance-none 
                [&::-webkit-outer-spin-button]:appearance-none"
               min="0"
@@ -432,7 +431,7 @@ const UploadProduct = () => {
               placeholder="Enter Product price"
               value={data.price}
               onChange={handleChange}
-              required
+
               className="bg-blue-50 p-2 outline-none border border-blue-200 rounded [&::-webkit-inner-spin-button]:appearance-none 
                [&::-webkit-outer-spin-button]:appearance-none"
               min="0"
@@ -457,7 +456,7 @@ const UploadProduct = () => {
               placeholder="Enter Product discount"
               value={data.discount}
               onChange={handleChange}
-              required
+
               className="bg-blue-50 p-2 outline-none border border-blue-200 rounded [&::-webkit-inner-spin-button]:appearance-none 
                [&::-webkit-outer-spin-button]:appearance-none"
               min="0"
@@ -495,7 +494,7 @@ const UploadProduct = () => {
                           }
                         })
                       }}
-                      required
+
                       className="bg-blue-50 p-2 outline-none border border-blue-200 rounded [&::-webkit-inner-spin-button]:appearance-none 
                [&::-webkit-outer-spin-button]:appearance-none"
                       min="0"
@@ -517,8 +516,11 @@ const UploadProduct = () => {
             Add More Fields
           </div>
 
-          <button className='bg-amber-300 hover:bg-amber-400 py-2 rounded font-semibold cursor-pointer'>
-            Submit
+          <button
+            disabled={loading}
+            className='bg-amber-300 hover:bg-amber-400 py-2 rounded font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
+          >
+            {loading ? 'Uploading...' : 'Submit'}
           </button>
 
         </form>
