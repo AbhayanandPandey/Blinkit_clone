@@ -147,6 +147,10 @@ const UploadProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(!data.name&&!data.image&&!data.category&&!data.description&&!data.discount&&!data.price&&!data.stock&&!data.subCategory&&!data.unit)
+    {
+      toast.error('all fields are required')
+    }
     console.log('data', data)
     setData({
       name: '',
@@ -339,7 +343,7 @@ const UploadProduct = () => {
 
           <div className="grid gap-1">
             <label htmlFor="unit" className="font-semibold text-gray-700">
-              Unit (Quantity)
+              Unit
             </label>
             <input
               type="text"
