@@ -45,7 +45,7 @@ const UploadProduct = () => {
 
     try {
       setImageUploading(true);
-      const response = await UploadImage(file); // Must return { data: { data: { url } } }
+      const response = await UploadImage(file);
       const { data: ImageResponse } = response;
       const imageUrl = ImageResponse.data.url;
 
@@ -145,6 +145,23 @@ const UploadProduct = () => {
     fetchSubCategory();
   }, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('data', data)
+    setData({
+      name: '',
+      image: [],
+      category: [],
+      subCategory: [],
+      unit: '',
+      stock: '',
+      price: '',
+      discount: '',
+      description: '',
+      more_details: {},
+    })
+  }
+
   return (
     <section>
       <div className="p-2 pl-8 bg-white shadow-md flex items-center justify-between pr-8">
@@ -152,7 +169,7 @@ const UploadProduct = () => {
       </div>
 
       <div className="grid p-7">
-        <form className="grid gap-3">
+        <form onSubmit={handleSubmit} className="grid gap-3">
           <div className="grid gap-1">
             <label htmlFor="name" className="font-semibold text-gray-700">
               Name
@@ -458,19 +475,24 @@ const UploadProduct = () => {
             Add More Fields
           </div>
 
-          {
-            openAdd && (
-              <AddField
-                close={() => setOpenAdd(false)}
-                value={fieldName}
-                onChange={(e) => {
-                  setFieldName(e.target.value)
-                }}
-                submit={handleSubmitMore}
-              />
-            )
-          }
+          <button className='bg-amber-300 hover:bg-amber-400 py-2 rounded font-semibold cursor-pointer'>
+            Submit
+          </button>
+
         </form>
+        {
+          openAdd && (
+            <AddField
+              close={() => setOpenAdd(false)}
+              value={fieldName}
+              onChange={(e) => {
+                setFieldName(e.target.value)
+              }}
+              submit={handleSubmitMore}
+            />
+          )
+        }
+
       </div>
     </section>
   );
