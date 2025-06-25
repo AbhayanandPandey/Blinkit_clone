@@ -145,26 +145,64 @@ const UploadProduct = () => {
     fetchSubCategory();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!data.name&&!data.image&&!data.category&&!data.description&&!data.discount&&!data.price&&!data.stock&&!data.subCategory&&!data.unit)
-    {
-      toast.error('all fields are required')
+
+    // Check if any field is missing
+    if (
+      !data.name ||
+      !data.image.length ||
+      !data.category.length ||
+      !data.subCategory.length ||
+      !data.unit ||
+      data.stock === '' ||
+      data.price === '' ||
+      data.discount === '' ||
+      !data.description
+    ) {
+      toast.error('All fields are required');
+      return;
     }
-    console.log('data', data)
-    setData({
-      name: '',
-      image: [],
-      category: [],
-      subCategory: [],
-      unit: '',
-      stock: '',
-      price: '',
-      discount: '',
-      description: '',
-      more_details: {},
-    })
-  }
+
+    try {
+
+      const payload = {
+        ...data,
+        images: data.image, // backend expects 'images'
+      };
+
+      const response = await Axios({
+        ...Api.uploadProducts,
+        data: payload,
+      });
+
+      const { data: productData } = response;
+
+      console.log('response data:', productData);
+
+      if (productData.success) {
+        toast.success(productData.message || 'Product uploaded successfully');
+        setData({
+          name: '',
+          image: [],
+          category: [],
+          subCategory: [],
+          unit: '',
+          stock: '',
+          price: '',
+          discount: '',
+          description: '',
+          more_details: {},
+        });
+      } else {
+        toast.error(productData.message || 'Something went wrong');
+      }
+    } catch (error) {
+      AxiosToastError(error);
+    } finally {
+    }
+  };
+
 
   return (
     <section>

@@ -77,6 +77,10 @@ const Api = {
         url: '/api/sub-category/delete',
         method: 'delete'
     },
+    uploadProducts: {
+        url:'/api/product/create-product',
+        method:'post'
+    }
 }
 
 export default Api

@@ -11,6 +11,7 @@ import './config/db.js';
 import categoryRouter from './routes/category.routes.js';
 import uploadRouter from './routes/upload.route.js';
 import subCategoryRouter from './routes/subCategory.route.js';
+import productRouter from './routes/product.route.js';
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/api/user', userRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/file', uploadRouter);
 app.use('/api/sub-category', subCategoryRouter);
+app.use('/api/product',productRouter)
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, '0.0.0.0', () => {
