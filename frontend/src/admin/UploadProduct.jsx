@@ -14,8 +14,8 @@ const UploadProduct = () => {
   const [imageUploading, setImageUploading] = useState(false);
   const allCategory = useSelector((state) => state.product.allCategory);
   const [allSubCategory, setAllSubCategory] = useState([]);
-  const [moreField, setMoreField] = useState([])
-  const [openAdd,setOpenAdd] = useState(false)
+  const [openAdd, setOpenAdd] = useState(false)
+  const [fieldName, setFieldName] = useState('')
 
   const [data, setData] = useState({
     name: '',
@@ -126,6 +126,20 @@ const UploadProduct = () => {
 
     e.target.value = '';
   };
+
+  const handleSubmitMore = (e) => {
+    setData((preve) => {
+      return {
+        ...preve,
+        more_details: {
+          ...preve.more_details,
+          [fieldName]: ""
+        }
+      }
+    })
+    setFieldName('')
+    setOpenAdd(false)
+  }
 
   useEffect(() => {
     fetchSubCategory();
@@ -325,7 +339,7 @@ const UploadProduct = () => {
 
           <div className="grid gap-1">
             <label htmlFor="stock" className="font-semibold text-gray-700">
-              Number of stock
+              Stock
             </label>
             <input
               type="number"
@@ -350,7 +364,7 @@ const UploadProduct = () => {
 
           <div className="grid gap-1">
             <label htmlFor="price" className="font-semibold text-gray-700">
-              Enter Product Price
+              Price
             </label>
             <input
               type="number"
@@ -375,7 +389,7 @@ const UploadProduct = () => {
 
           <div className="grid gap-1">
             <label htmlFor="discount" className="font-semibold text-gray-700">
-              Enter Product discount
+              Discount
             </label>
             <input
               type="number"
@@ -398,13 +412,62 @@ const UploadProduct = () => {
             />
           </div>
 
-          <div onClick={()=>setOpenAdd(true)} className='inline-block hover:bg-amber-400 py-1 px-3 w-39 text-center font-semibold rounded cursor-pointer border border-blue-200 '>
+          <div>
+            {
+              Object?.keys(data.more_details)?.map((k, i) => {
+                return (
+                  <div className="grid">
+                    <label htmlFor={k} className="font-semibold text-gray-700">
+                      {k}
+                    </label>
+                    <input
+                      type="text"
+                      id={k}
+                      value={data?.more_details[k]}
+                      onChange={(e) => {
+                        const value = e.target.value
+                        setData((preve) => {
+                          return {
+                            ...preve,
+                            more_details: {
+                              ...preve.more_details,
+                              [k]: value
+                            }
+                          }
+                        })
+                      }}
+                      required
+                      className="bg-blue-50 p-2 outline-none border border-blue-200 rounded [&::-webkit-inner-spin-button]:appearance-none 
+               [&::-webkit-outer-spin-button]:appearance-none"
+                      min="0"
+                      step="1"
+                      style={{ MozAppearance: 'textfield' }}
+                      onKeyDown={(e) => {
+                        if (["e", "E", "+", "-"].includes(e.key)) {
+                          e.preventDefault();
+                        }
+                      }}
+                    />
+                  </div>
+                )
+              })
+            }
+          </div>
+
+          <div onClick={() => setOpenAdd(true)} className='inline-block hover:bg-amber-400 py-1 px-3 w-39 text-center font-semibold rounded cursor-pointer border border-blue-200 '>
             Add More Fields
           </div>
 
           {
             openAdd && (
-              <AddField close={()=> setOpenAdd(false)} />
+              <AddField
+                close={() => setOpenAdd(false)}
+                value={fieldName}
+                onChange={(e) => {
+                  setFieldName(e.target.value)
+                }}
+                submit={handleSubmitMore}
+              />
             )
           }
         </form>
