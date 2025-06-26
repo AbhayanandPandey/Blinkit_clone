@@ -9,7 +9,7 @@ import Api from '../config/Api';
 
 const EditSubCategory = ({ close, data, fetchData }) => {
     const [subData, setSubData] = useState({
-        _id:data._id,
+        _id: data._id,
         name: data.name,
         image: data.image,
         category: data.category || []
@@ -80,7 +80,7 @@ const EditSubCategory = ({ close, data, fetchData }) => {
             } else {
                 toast.success(resData.message || 'Subcategory created');
                 if (close) close();
-                if(fetchData) fetchData();
+                if (fetchData) fetchData();
             }
         } catch (error) {
             AxiosToastError(error);
@@ -114,7 +114,6 @@ const EditSubCategory = ({ close, data, fetchData }) => {
                         />
                     </div>
 
-                    {/* Image Upload */}
                     <div className="grid gap-1">
                         <label>Image</label>
                         <div className="flex flex-col gap-3 lg:flex-row items-center">
@@ -145,7 +144,6 @@ const EditSubCategory = ({ close, data, fetchData }) => {
                         </div>
                     </div>
 
-                    {/* Category Select */}
                     <div className="grid gap-1">
                         <label>Select Category</label>
                         <div className="border border-blue-200 rounded">
@@ -192,8 +190,8 @@ const EditSubCategory = ({ close, data, fetchData }) => {
                             !subData.name || !subData.image || subData.category.length === 0 || loading.submit || loading.image
                         }
                         className={`px-4 py-2 rounded text-neutral-800 font-medium transition ${!subData.name || !subData.image || subData.category.length === 0 || loading.submit || loading.image
-                                ? 'bg-gray-300 cursor-not-allowed'
-                                : 'bg-amber-400 hover:bg-amber-500 cursor-pointer'
+                            ? 'bg-gray-300 cursor-not-allowed'
+                            : 'bg-amber-400 hover:bg-amber-500 cursor-pointer'
                             }`}
                     >
                         {loading.submit ? 'Submitting...' : 'Submit'}
