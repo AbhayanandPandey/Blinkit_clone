@@ -142,7 +142,6 @@ const UploadSubCategory = ({ close }) => {
             </div>
           </div>
 
-          {/* Category Select */}
           <div className="grid gap-1">
             <label>Select Category</label>
             <div className="border border-blue-200 rounded">
@@ -182,7 +181,6 @@ const UploadSubCategory = ({ close }) => {
             </div>
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={

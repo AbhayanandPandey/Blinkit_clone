@@ -183,7 +183,6 @@ const EditSubCategory = ({ close, data, fetchData }) => {
                         </div>
                     </div>
 
-                    {/* Submit */}
                     <button
                         type="submit"
                         disabled={

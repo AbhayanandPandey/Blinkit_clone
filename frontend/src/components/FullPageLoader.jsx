@@ -1,4 +1,3 @@
-// components/FullPageLoader.jsx
 import React from 'react';
 
 const FullPageLoader = () => {
