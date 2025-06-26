@@ -11,7 +11,6 @@ import Api from '../config/Api';
 import AddField from '../components/AddField';
 import SuccessAlert from '../utils/SuccessAlert';
 import ErrorAlert from '../utils/ErrorAlert';
-import SkeletonCardForUploadProduct from '../components/SkeletonCardForUploadProduct';
 
 const UploadProduct = () => {
   const [imageUploading, setImageUploading] = useState(false);

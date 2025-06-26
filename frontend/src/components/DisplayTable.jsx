@@ -20,7 +20,7 @@ const DisplayTable = ({data,column}) => {
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
                 {
-                    <th>Sr.No</th>
+                    <th className='px-3'>Sr.No</th>
                 }
               {headerGroup.headers.map(header => (
                 <th key={header.id} className='border p-2 whitespace-nowrap '>
