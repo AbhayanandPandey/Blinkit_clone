@@ -39,7 +39,7 @@ const AddField = ({ close, value, onChange, submit }) => {
                     </div>
                 </div>
             </div>
-        </section>
+        </section> 
     );
 };
 
