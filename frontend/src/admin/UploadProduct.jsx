@@ -201,7 +201,6 @@ const UploadProduct = () => {
       setLoading(false);
     }
   };
-
   return (
     <section>
       <div className="p-2 pl-8 bg-white shadow-md flex items-center justify-between pr-8">
@@ -242,7 +241,6 @@ const UploadProduct = () => {
               className="bg-blue-50 p-2 outline-none border border-blue-200 rounded resize-none"
             />
           </div>
-
 
           <div className="grid gap-1">
             <p className="mb-0 font-semibold text-gray-700">Images</p>
@@ -530,7 +528,6 @@ const UploadProduct = () => {
             />
           )
         }
-
       </div>
     </section>
   );
