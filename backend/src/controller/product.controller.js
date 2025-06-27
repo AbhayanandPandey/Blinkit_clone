@@ -64,38 +64,49 @@ export const uploadProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   try {
-    let {page , limit, search} = req.body;
-    if(!page || !limit){
-      page = 1;
-      limit = 10;
-    }
+    let { page, limit, search } = req.body;
+
+    // Ensure page and limit are numbers with defaults
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+
     const skip = (page - 1) * limit;
 
-    const searchQuery = search ? { $text :{
-      $search: search,
-      $caseSensitive: false,
-      $diacriticSensitive: false
-    } } : {};
+    // Build search query using text index if `search` is provided
+    const searchQuery = search
+      ? {
+          $text: {
+            $search: search,
+            $caseSensitive: false,
+            $diacriticSensitive: false,
+          },
+        }
+      : {};
 
-    const {data,TotalCount } = await Promise.all([
-      ProductModel.find(searchQuery).sort({ createdAt: -1 }).skip(skip).limit(limit),
-      ProductModel.countDocuments(searchQuery)
-    ])
+    // Fetch products and total count concurrently
+    const [products, totalCount] = await Promise.all([
+      ProductModel.find(searchQuery)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      ProductModel.countDocuments(searchQuery),
+    ]);
 
     res.status(200).json({
       success: true,
-      message: "Products retrieved successfully",
+      message: 'Products retrieved successfully',
       error: false,
-      TotalCount: TotalCount,
-      data:data,
-      totalPages: Math.ceil(TotalCount / limit),
+      data: products,
+      totalCount,
+      totalPages: Math.ceil(totalCount / limit),
+      currentPage: page,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message || erro,
+      message: error.message || 'Internal server error',
       error: error.message,
     });
   }
-}
+};
+
