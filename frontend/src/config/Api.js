@@ -80,7 +80,11 @@ const Api = {
     uploadProducts: {
         url:'/api/product/create-product',
         method:'post'
-    }
+    },
+    getProducts: {
+        url:'/api/product/get-product',
+        method:'post'
+    },
 }
 
 export default Api
