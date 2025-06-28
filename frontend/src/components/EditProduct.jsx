@@ -56,7 +56,10 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
       setLoading(prev => ({ ...prev, submit: true }));
       const response = await Axios({
         ...Api.updateProduct,
-        data: form,
+        data: {
+        productId: form._id, 
+        ...form,
+      },
       });
 
       const { data: resData } = response;
