@@ -115,7 +115,9 @@ const Product = () => {
                 }}
               />
             ))
-            : <NoData />}
+            : 
+              <NoData />
+            }
       </div>
 
       {totalPages > 1 && (
