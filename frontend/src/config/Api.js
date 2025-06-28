@@ -21,7 +21,7 @@ const Api = {
         url: "/api/user/reset-password",
         method: "put"
     },
-    refreshToken:{
+    refreshToken: {
         url: '/api/user/refresh-token',
         method: 'post'
     },
@@ -29,7 +29,7 @@ const Api = {
         url: '/api/user/user-details',
         method: 'get'
     },
-    logout:{
+    logout: {
         url: '/api/user/logout',
         method: 'get'
     },
@@ -41,9 +41,9 @@ const Api = {
         url: '/api/user/update-user',
         method: 'put'
     },
-    addCategory:{
-        url:'/api/category/create-category',
-        method:'post'
+    addCategory: {
+        url: '/api/category/create-category',
+        method: 'post'
     },
     uploadImage: {
         url: '/api/file/upload',
@@ -57,9 +57,9 @@ const Api = {
         url: '/api/category/update-category',
         method: 'put'
     },
-    deleteCategoty:{
-        url:'/api/category/delete-category',
-        method:'delete'
+    deleteCategoty: {
+        url: '/api/category/delete-category',
+        method: 'delete'
     },
     addSubCategory: {
         url: '/api/sub-category/create',
@@ -78,12 +78,20 @@ const Api = {
         method: 'delete'
     },
     uploadProducts: {
-        url:'/api/product/create-product',
-        method:'post'
+        url: '/api/product/create-product',
+        method: 'post'
     },
     getProducts: {
-        url:'/api/product/get-product',
-        method:'post'
+        url: '/api/product/get-product',
+        method: 'post'
+    },
+    deleteProduct: {
+        url: '/api/product/delete-product',
+        method: 'delete'
+    },
+    updateProduct: {
+        url: '/api/product/update-product',
+        method: 'put'
     },
 }
 

@@ -10,18 +10,18 @@ import Axios from './utils/Axios.js'
 import Api from './config/Api.js'
 import { setAllCategory } from './store/ProductSlice.js'
 import AxiosToastError from './utils/AxiosToastError.js'
-import FullPageLoader from './components/FullPageLoader.jsx' // 👈 Import loader
+import FullPageLoader from './components/FullPageLoader.jsx' 
 
 function App() {
   const dispatch = useDispatch()
-  const [loading, setLoading] = useState(true) // 👈 Loading state
+  const [loading, setLoading] = useState(true)
 
   const fetchUser = async () => {
     try {
       const fetchUserData = await fetchUserDetails()
       dispatch(setUserDetails(fetchUserData.data))
     } catch (error) {
-      // Optional: handle error
+      AxiosToastError(erro)
     }
   }
 
@@ -47,7 +47,7 @@ function App() {
     loadApp()
   }, [])
 
-  if (loading) return <FullPageLoader /> // 👈 Show loader until done
+  if (loading) return <FullPageLoader /> 
 
   return (
     <>

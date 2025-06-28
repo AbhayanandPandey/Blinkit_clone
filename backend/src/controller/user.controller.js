@@ -167,6 +167,9 @@ export async function logoutUser(req, res) {
         }
         res.clearCookie('accessToken', cookieOption)
         res.clearCookie('refreshToken', cookieOption)
+        localStorage.removeItem(accessToken)
+        localStorage.removeItem(refreshToken)
+
 
         const removereRefshToken = await UserModel.findByIdAndUpdate(userid, { refresh_token: '' })
 
