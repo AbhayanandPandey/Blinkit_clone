@@ -21,20 +21,22 @@ const Product = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState(null);
   const [search, setSearch] = useState('')
-  const debouncedSearch = useDebounce(search);
+  const debouncedSearch = useDebounce(search, 400);
 
 
-  const fetchProductData = async () => {
+  const fetchProductData = async (searchTerm = '') => {
     try {
       setLoading(true);
+
       const response = await Axios({
         ...Api.getProducts,
         data: {
           page,
           limit: 10,
-          search: debouncedSearch
+          search: searchTerm
         },
       });
+
       const { data: ProductResponse } = response;
       if (ProductResponse.success) {
         setProductData(ProductResponse.data || []);
@@ -48,6 +50,7 @@ const Product = () => {
       setLoading(false);
     }
   };
+
 
   const handleDelete = async () => {
     try {
@@ -69,8 +72,13 @@ const Product = () => {
   };
 
   useEffect(() => {
-  fetchProductData();
-}, [page, debouncedSearch]);
+    const cleaned = debouncedSearch.trim();
+
+    if (cleaned === '' || cleaned.length > 1) {
+      fetchProductData(cleaned);
+    }
+  }, [page, debouncedSearch]);
+
 
   const handleOnChange = (e) => {
     const { value } = e.target
@@ -115,9 +123,9 @@ const Product = () => {
                 }}
               />
             ))
-            : 
-              <NoData />
-            }
+            :
+            <NoData />
+        }
       </div>
 
       {totalPages > 1 && (
