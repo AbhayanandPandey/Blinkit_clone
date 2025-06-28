@@ -65,25 +65,17 @@ export const uploadProduct = async (req, res) => {
 export const getAllProducts = async (req, res) => {
   try {
     let { page, limit, search } = req.body;
-
-    // Ensure page and limit are numbers with defaults
     page = parseInt(page) || 1;
     limit = parseInt(limit) || 10;
 
     const skip = (page - 1) * limit;
 
-    // Build search query using text index if `search` is provided
     const searchQuery = search
       ? {
-          $text: {
-            $search: search,
-            $caseSensitive: false,
-            $diacriticSensitive: false,
-          },
+          name: { $regex: search, $options: 'i' },
         }
       : {};
 
-    // Fetch products and total count concurrently
     const [products, totalCount] = await Promise.all([
       ProductModel.find(searchQuery)
         .sort({ createdAt: -1 })

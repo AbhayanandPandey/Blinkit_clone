@@ -8,6 +8,7 @@ import NoData from '../components/NoData';
 import ConfirmDelete from '../components/ConfirmDelete';
 import EditProduct from '../components/EditProduct';
 import toast from 'react-hot-toast';
+import useDebounce from '../utils/useDebounce'; // add this
 import { CiSearch } from "react-icons/ci";
 
 const Product = () => {
@@ -19,13 +20,20 @@ const Product = () => {
   const [deleteProductId, setDeleteProductId] = useState(null);
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState(null);
+  const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search);
+
 
   const fetchProductData = async () => {
     try {
       setLoading(true);
       const response = await Axios({
         ...Api.getProducts,
-        data: { page, limit: 10 },
+        data: {
+          page,
+          limit: 10,
+          search: debouncedSearch
+        },
       });
       const { data: ProductResponse } = response;
       if (ProductResponse.success) {
@@ -61,20 +69,28 @@ const Product = () => {
   };
 
   useEffect(() => {
-    fetchProductData();
-  }, [page]);
+  fetchProductData();
+}, [page, debouncedSearch]);
+
+  const handleOnChange = (e) => {
+    const { value } = e.target
+    setSearch(value)
+    setPage(1)
+  }
 
   return (
     <section>
-      <div className="p-2 pl-8 bg-white shadow-md flex items-center justify-between pr-8">
+      <div className="p-2 pl-8 bg-white shadow-md flex items-center justify-between pr-8 gap-4">
         <div>
           <h2 className="font-semibold text-lg">Products</h2>
         </div>
-        <div className='h-full px-2 py-2 bg-blue-50 rounded flex '>
+        <div className='h-full px-2 py-2 bg-blue-50 rounded flex border border-blue-200 focus-within:border-blue-400'>
           <CiSearch size={23} />
           <input type="text"
-          placeholder='Search products ...'
-          className='px-1 py-0 outline-none'
+            placeholder='Search products ...'
+            className='px-1 py-0 outline-none'
+            value={search}
+            onChange={handleOnChange}
           />
         </div>
       </div>
@@ -82,10 +98,10 @@ const Product = () => {
       <div className="py-8 px-7 w-full grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-4 gap-y-6 place-items-center min-h-[400px]">
         {loading
           ? Array(10)
-              .fill(0)
-              .map((_, i) => <SkeletonCardProduct key={i} />)
+            .fill(0)
+            .map((_, i) => <SkeletonCardProduct key={i} />)
           : productData.length > 0
-          ? productData.map((product) => (
+            ? productData.map((product) => (
               <ProductCardAdmin
                 key={product._id}
                 data={product}
@@ -99,7 +115,7 @@ const Product = () => {
                 }}
               />
             ))
-          : <NoData />}
+            : <NoData />}
       </div>
 
       {totalPages > 1 && (
@@ -107,7 +123,7 @@ const Product = () => {
           <button
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page === 1}
-            className="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50 cursor-pointer"
+            className="px-3 py-1 border rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50 cursor-pointer border-blue-200 shadow"
           >
             Previous
           </button>
@@ -117,7 +133,7 @@ const Product = () => {
           <button
             onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={page === totalPages}
-            className="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50 cursor-pointer"
+            className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50 cursor-pointer border border-blue-200 shadow"
           >
             Next
           </button>
