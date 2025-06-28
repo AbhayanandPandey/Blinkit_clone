@@ -24,7 +24,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageUpload = async (e) => {
@@ -32,20 +32,43 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
     if (!file) return;
 
     try {
-      setLoading(prev => ({ ...prev, upload: true }));
+      setLoading((prev) => ({ ...prev, upload: true }));
       const response = await uploadImage(file);
       const { data: imgRes } = response;
 
       if (imgRes?.success) {
-        setForm(prev => ({ ...prev, image: [...prev.image, imgRes.data.url] }));
+        setForm((prev) => ({
+          ...prev,
+          image: [...prev.image, imgRes.data.url],
+        }));
         toast.success('Image uploaded');
       } else {
         toast.error(imgRes?.message || 'Failed to upload image');
       }
-    } catch (err) {
+    } catch {
       toast.error('Image upload failed');
     } finally {
-      setLoading(prev => ({ ...prev, upload: false }));
+      setLoading((prev) => ({ ...prev, upload: false }));
+    }
+  };
+
+  const removeImage = (index) => {
+    const newImages = [...form.image];
+    newImages.splice(index, 1);
+    setForm((prev) => ({ ...prev, image: newImages }));
+  };
+
+  const handleFieldAdd = () => {
+    if (fieldName.trim()) {
+      setForm((prev) => ({
+        ...prev,
+        more_details: {
+          ...prev.more_details,
+          [fieldName]: '',
+        },
+      }));
+      setFieldName('');
+      setAddField(false);
     }
   };
 
@@ -53,13 +76,13 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
     e.preventDefault();
 
     try {
-      setLoading(prev => ({ ...prev, submit: true }));
+      setLoading((prev) => ({ ...prev, submit: true }));
       const response = await Axios({
         ...Api.updateProduct,
         data: {
-        productId: form._id, 
-        ...form,
-      },
+          productId: form._id,
+          ...form,
+        },
       });
 
       const { data: resData } = response;
@@ -73,88 +96,51 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
     } catch (err) {
       AxiosToastError(err);
     } finally {
-      setLoading(prev => ({ ...prev, submit: false }));
-    }
-  };
-
-  const removeImage = (index) => {
-    const newImages = [...form.image];
-    newImages.splice(index, 1);
-    setForm(prev => ({ ...prev, image: newImages }));
-  };
-
-  const handleFieldAdd = () => {
-    if (fieldName.trim()) {
-      setForm(prev => ({
-        ...prev,
-        more_details: {
-          ...prev.more_details,
-          [fieldName]: ''
-        }
-      }));
-      setFieldName('');
-      setAddField(false);
+      setLoading((prev) => ({ ...prev, submit: false }));
     }
   };
 
   return (
-    <section className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl relative max-h-[95vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Edit Product</h2>
-          <button onClick={close}>
-            <IoClose size={24} className="hover:text-red-500" />
+    <section className="fixed top-0 left-0 right-0 bottom-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
+      <div className="bg-white rounded max-w-5xl p-5 w-full shadow-lg relative lg:mx-0 mx-3 max-h-[95vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold">Edit Product</h2>
+          <button onClick={close} className="text-gray-700 hover:text-black transition cursor-pointer">
+            <IoClose size={24} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="grid gap-4">
-          <div>
-            <label className="font-medium">Name</label>
+        <form onSubmit={handleSubmit} className="grid gap-3">
+          <div className="grid gap-1">
+            <label htmlFor="name">Name</label>
             <input
+              className="bg-blue-50 border border-blue-100 p-2 rounded outline-none focus:ring-2 focus:ring-amber-300"
               type="text"
               name="name"
               value={form.name}
               onChange={handleChange}
-              placeholder="Product name"
+              autoComplete="off"
               required
-              className="w-full p-2 border bg-blue-50 rounded"
             />
           </div>
 
-          <div>
-            <label className="font-medium">Description</label>
+          <div className="grid gap-1">
+            <label htmlFor="description">Description</label>
             <textarea
+              className="bg-blue-50 border border-blue-100 p-2 rounded resize-none outline-none focus:ring-2 focus:ring-amber-300"
+              rows="3"
               name="description"
               value={form.description}
               onChange={handleChange}
               placeholder="Product description"
-              rows="3"
               required
-              className="w-full p-2 border bg-blue-50 rounded resize-none"
             />
           </div>
 
-          <div>
-            <label className="font-medium">Images</label>
-            <div className="grid gap-2">
-              <label className="h-24 bg-blue-50 border flex flex-col items-center justify-center cursor-pointer rounded">
-                {loading.upload ? (
-                  <Loading />
-                ) : (
-                  <>
-                    <FaCloudUploadAlt size={24} />
-                    <p>Upload</p>
-                  </>
-                )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                />
-              </label>
-
-              <div className="flex flex-wrap gap-2">
+          <div className="grid gap-1">
+            <label>Images</label>
+            <div className="flex flex-col gap-3 lg:flex-row items-start">
+              <div className="grid grid-cols-5 gap-2">
                 {form.image?.map((img, i) => (
                   <div key={i} className="relative group w-20 h-20 bg-blue-50 border rounded">
                     <img
@@ -173,61 +159,79 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                   </div>
                 ))}
               </div>
+
+              <label htmlFor="uploadImage">
+                <div
+                  className={`px-5 py-2 rounded text-white font-medium transition cursor-pointer mt-2 lg:mt-0 ${
+                    loading.upload ? 'bg-gray-400' : 'bg-amber-400 hover:bg-amber-500'
+                  }`}
+                >
+                  {loading.upload ? 'Uploading...' : 'Upload Image'}
+                </div>
+                <input
+                  type="file"
+                  id="uploadImage"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                  disabled={loading.upload}
+                />
+              </label>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="font-medium">Unit</label>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="grid gap-1">
+              <label htmlFor="unit">Unit</label>
               <input
+                className="bg-blue-50 border border-blue-100 p-2 rounded"
                 type="text"
                 name="unit"
                 value={form.unit}
                 onChange={handleChange}
                 placeholder="e.g. Kg, Liter"
-                className="w-full p-2 border bg-blue-50 rounded"
               />
             </div>
-            <div>
-              <label className="font-medium">Stock</label>
+            <div className="grid gap-1">
+              <label htmlFor="stock">Stock</label>
               <input
+                className="bg-blue-50 border border-blue-100 p-2 rounded"
                 type="number"
                 name="stock"
                 value={form.stock}
                 onChange={handleChange}
-                className="w-full p-2 border bg-blue-50 rounded"
               />
             </div>
-            <div>
-              <label className="font-medium">Price</label>
+            <div className="grid gap-1">
+              <label htmlFor="price">Price</label>
               <input
+                className="bg-blue-50 border border-blue-100 p-2 rounded"
                 type="number"
                 name="price"
                 value={form.price}
                 onChange={handleChange}
-                className="w-full p-2 border bg-blue-50 rounded"
               />
             </div>
-            <div>
-              <label className="font-medium">Discount (%)</label>
+            <div className="grid gap-1">
+              <label htmlFor="discount">Discount (%)</label>
               <input
+                className="bg-blue-50 border border-blue-100 p-2 rounded"
                 type="number"
                 name="discount"
                 value={form.discount}
                 onChange={handleChange}
-                className="w-full p-2 border bg-blue-50 rounded"
               />
             </div>
           </div>
 
           {Object.entries(form.more_details).map(([key, val], i) => (
-            <div key={i}>
-              <label className="font-medium capitalize">{key}</label>
+            <div key={i} className="grid gap-1">
+              <label className="capitalize">{key}</label>
               <input
                 type="text"
                 value={val}
                 onChange={(e) =>
-                  setForm(prev => ({
+                  setForm((prev) => ({
                     ...prev,
                     more_details: {
                       ...prev.more_details,
@@ -235,7 +239,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                     },
                   }))
                 }
-                className="w-full p-2 border bg-blue-50 rounded"
+                className="bg-blue-50 border border-blue-100 p-2 rounded"
               />
             </div>
           ))}
@@ -251,7 +255,11 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
           <button
             type="submit"
             disabled={loading.submit}
-            className="bg-amber-400 hover:bg-amber-500 text-white font-medium py-2 px-4 rounded disabled:bg-gray-300"
+            className={`px-4 py-2 rounded text-neutral-800 font-medium transition ${
+              loading.submit
+                ? 'bg-gray-300 cursor-not-allowed'
+                : 'bg-amber-400 hover:bg-amber-500 cursor-pointer'
+            }`}
           >
             {loading.submit ? 'Updating...' : 'Update Product'}
           </button>
