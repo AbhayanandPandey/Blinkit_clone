@@ -10,6 +10,7 @@ import AxiosToastError from '../utils/AxiosToastError';
 import toast from 'react-hot-toast';
 import ViewImage from '../components/ViewImage';
 import AddField from '../components/AddField';
+import SuccessAlert from '../utils/SuccessAlert';
 
 const EditProduct = ({ data: productData, close, fetchData }) => {
     const [form, setForm] = useState({
@@ -63,7 +64,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
 
             const { data: resData } = response;
             if (resData.success) {
-                toast.success(resData.message);
+                SuccessAlert(resData.message)
                 fetchData();
                 close();
             } else {
@@ -98,10 +99,10 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
 
     return (
         <section className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-white rounded shadow-lg p-6 w-full max-w-3xl relative max-h-[95vh] overflow-y-auto">
+            <div className="bg-white rounded shadow-lg p-6 w-full max-w-5xl relative max-h-[95vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-semibold">Edit Product</h2>
-                    <button onClick={close} className="text-gray-700 hover:text-black">
+                    <button onClick={close} className="text-gray-700 hover:text-black cursor-pointer">
                         <IoClose size={24} />
                     </button>
                 </div>
@@ -116,7 +117,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                             onChange={handleChange}
                             placeholder="Product name"
                             required
-                            className="w-full p-2 border border-blue-200 bg-blue-50 rounded"
+                            className="w-full p-2 border border-blue-200 outline-none  bg-blue-50 rounded"
                         />
                     </div>
 
@@ -129,7 +130,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                             placeholder="Product description"
                             rows="3"
                             required
-                            className="w-full p-2 border border-blue-200  bg-blue-50 rounded resize-none"
+                            className="w-full p-2 border border-blue-200 outline-none  bg-blue-50 rounded resize-none"
                         />
                     </div>
 
@@ -184,6 +185,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                             </div>
                         )}
                     </div>
+                    
 
                     {/* FORM FIELDS */}
                     <div className="grid grid-cols-2 gap-4">
@@ -195,7 +197,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                                 value={form.unit}
                                 onChange={handleChange}
                                 placeholder="e.g. Kg, Liter"
-                                className="w-full p-2 border border-blue-200  bg-blue-50 rounded"
+                                className="w-full p-2 border border-blue-200 outline-none  bg-blue-50 rounded"
                             />
                         </div>
                         <div>
@@ -205,7 +207,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                                 name="stock"
                                 value={form.stock}
                                 onChange={handleChange}
-                                className="w-full p-2 border border-blue-200  bg-blue-50 rounded"
+                                className="w-full p-2 border border-blue-200 outline-none  bg-blue-50 rounded"
                             />
                         </div>
                         <div>
@@ -215,7 +217,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                                 name="price"
                                 value={form.price}
                                 onChange={handleChange}
-                                className="w-full p-2 border border-blue-200  bg-blue-50 rounded"
+                                className="w-full p-2 border border-blue-200 outline-none  bg-blue-50 rounded"
                             />
                         </div>
                         <div>
@@ -225,7 +227,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                                 name="discount"
                                 value={form.discount}
                                 onChange={handleChange}
-                                className="w-full p-2 border border-blue-200  bg-blue-50 rounded"
+                                className="w-full p-2 border border-blue-200 outline-none  bg-blue-50 rounded"
                             />
                         </div>
                     </div>
@@ -246,7 +248,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                                         },
                                     }))
                                 }
-                                className="w-full p-2 border border-blue-200  bg-blue-50 rounded"
+                                className="w-full p-2 border border-blue-200 outline-none  bg-blue-50 rounded"
                             />
                         </div>
                     ))}
@@ -254,14 +256,14 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                     <button
                         type="button"
                         onClick={() => setAddField(true)}
-                        className='inline-block hover:bg-amber-400 py-1 px-3 w-39 text-center font-semibold rounded cursor-pointer border border-blue-200 '>
+                        className='inline-block hover:bg-amber-400 py-1 px-3 w-39 text-center font-semibold rounded cursor-pointer border border-blue-200 outline-none '>
                         Add More Fields
                     </button>
 
                     <button
                         type="submit"
                         disabled={loading.submit}
-                        className="bg-amber-400 hover:bg-amber-500 text-white font-medium py-2 px-4 rounded disabled:bg-gray-300"
+                        className="bg-amber-400 hover:bg-amber-500 text-white font-medium py-2 px-4 rounded disabled:bg-gray-300 cursor-pointer"
                     >
                         {loading.submit ? 'Updating...' : 'Update Product'}
                     </button>
