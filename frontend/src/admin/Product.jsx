@@ -8,6 +8,7 @@ import NoData from '../components/NoData';
 import ConfirmDelete from '../components/ConfirmDelete';
 import EditProduct from '../components/EditProduct';
 import toast from 'react-hot-toast';
+import { CiSearch } from "react-icons/ci";
 
 const Product = () => {
   const [productData, setProductData] = useState([]);
@@ -66,7 +67,16 @@ const Product = () => {
   return (
     <section>
       <div className="p-2 pl-8 bg-white shadow-md flex items-center justify-between pr-8">
-        <h2 className="font-semibold text-lg">Products</h2>
+        <div>
+          <h2 className="font-semibold text-lg">Products</h2>
+        </div>
+        <div className='h-full px-2 py-2 bg-blue-50 rounded flex '>
+          <CiSearch size={23} />
+          <input type="text"
+          placeholder='Search products ...'
+          className='px-1 py-0 outline-none'
+          />
+        </div>
       </div>
 
       <div className="py-8 px-7 w-full grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-4 gap-y-6 place-items-center min-h-[400px]">
