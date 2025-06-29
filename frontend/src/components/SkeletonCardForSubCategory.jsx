@@ -4,7 +4,6 @@ const SkeletonCardForSubCategory = () => {
   return (
     <div className="w-full animate-pulse">
       <table className="w-full border-collapse">
-       
         <tbody>
           {Array(5).fill(0).map((_, i) => (
             <tr key={i} className="border-t border-blue-200">
