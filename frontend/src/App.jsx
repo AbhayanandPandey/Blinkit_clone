@@ -21,7 +21,6 @@ function App() {
       const fetchUserData = await fetchUserDetails()
       dispatch(setUserDetails(fetchUserData.data))
     } catch (error) {
-      AxiosToastError(erro)
     }
   }
 
