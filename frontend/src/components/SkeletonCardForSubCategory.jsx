@@ -16,16 +16,6 @@ const SkeletonCardForSubCategory = () => {
               <td className="p-2">
                 <div className="h-10 w-10 bg-gray-200 rounded mx-auto" />
               </td>
-              <td className="p-2">
-                <div className="h-5 w-52 bg-gray-200 rounded mb-1" />
-                <div className="h-5 w-36 bg-gray-200 rounded" />
-              </td>
-              <td className="p-2 text-center">
-                <div className="flex justify-center gap-2">
-                  <div className="h-8 w-8 bg-gray-200 rounded-full" />
-                  <div className="h-8 w-8 bg-gray-200 rounded-full" />
-                </div>
-              </td>
             </tr>
           ))}
         </tbody>
