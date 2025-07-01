@@ -35,7 +35,7 @@ function header() {
     <header className=' h-28 lg:h-20  sticky top-0 flex items-center flex-col lg:shadow  lg:pb-0 bg-white z-10'>
       {
         !(isSearchPage && isMobile) && (
-          <div className='container flex items-center h-full lg:py-4 justify-between pb-1 pt-0 pl-3 pr-3 mx-1'>
+          <div className='w-full flex items-center h-full lg:py-4 justify-between pb-1 pt-0 pl-3 pr-5 mx-1'>
             <div className='' >
               <Link to={"/"} className=' flex justify-center items-center mix-blend-multiply'>
                 <img
@@ -116,8 +116,8 @@ function header() {
         )
       }
 
-      <div className='w-full h-auto pb-2 bg-transparent flex justify-center items-center'>
-        <div className={`container mx-auto px-2 lg:hidden ${location.pathname === '/search' ? 'mt-9' : 'mt-0'}`}>
+      <div className='w-full h-auto pb-4 bg-transparent flex justify-center items-center'>
+        <div className={`w-full px-7 mx-auto lg:hidden ${location.pathname === '/search' ? 'mt-9' : 'mt-0'}`}>
           <Search />
         </div>
 
