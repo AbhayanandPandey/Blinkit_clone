@@ -18,7 +18,6 @@ function Home() {
     <section className="bg-white">
       <div className="w-full mx-auto px-4 py-2 pb-4">
 
-        {/* Banner Section */}
         <div className={`w-full h-auto rounded overflow-hidden bg-blue-100 relative ${!loaded && 'animate-pulse'}`}>
           <img
             src={banner}
@@ -35,7 +34,6 @@ function Home() {
           {!loaded && <div className="absolute inset-0 bg-blue-100 animate-pulse" />}
         </div>
 
-        {/* Category Grid Section */}
         <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-10 mt-6 gap-4">
           {loadingCategory ? (
             Array(skeletonCount).fill(null).map((_, i) => (
