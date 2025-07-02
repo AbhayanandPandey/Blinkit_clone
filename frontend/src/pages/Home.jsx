@@ -23,13 +23,13 @@ function Home() {
             src={banner}
             alt="banner"
             onLoad={() => setLoaded(true)}
-            className={`w-full h-auto hidden sm:block transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full h-auto hidden sm:block transition-opacity duration-500 cursor-pointer ${loaded ? 'opacity-100' : 'opacity-0'}`}
           />
           <img
             src={bannerMobile}
             alt="banner mobile"
             onLoad={() => setLoaded(true)}
-            className={`w-full h-auto sm:hidden transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full h-auto sm:hidden transition-opacity duration-500 cursor-pointer ${loaded ? 'opacity-100' : 'opacity-0'}`}
           />
           {!loaded && <div className="absolute inset-0 bg-blue-100 animate-pulse" />}
         </div>
