@@ -2,52 +2,61 @@ import React, { useState } from 'react';
 import banner from '../assets/banner.jpg';
 import bannerMobile from '../assets/banner-mobile.jpg';
 import { useSelector } from 'react-redux';
+import useScreenSize from '../hooks/useScreenSize';
 
 function Home() {
   const [loaded, setLoaded] = useState(false);
-  const setLoadingCategory = useSelector(state => state.product.setLoadingCategory);
+  const loadingCategory = useSelector(state => state.product.setLoadingCategory);
+  const CategoryData = useSelector(state => state.product.allCategory);
+  const screenSize = useScreenSize();
+
+  let skeletonCount = 18;
+  if (screenSize === 'tablet') skeletonCount = 16;
+  if (screenSize === 'mobile') skeletonCount = 10;
 
   return (
     <section className="bg-white">
       <div className="w-full mx-auto px-4 py-2 pb-4">
 
+        {/* Banner Section */}
         <div className={`w-full h-auto rounded overflow-hidden bg-blue-100 relative ${!loaded && 'animate-pulse'}`}>
-          {/* Desktop Banner */}
           <img
             src={banner}
             alt="banner"
             onLoad={() => setLoaded(true)}
             className={`w-full h-auto hidden sm:block transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
           />
-
-          {/* Mobile Banner */}
           <img
             src={bannerMobile}
             alt="banner mobile"
             onLoad={() => setLoaded(true)}
             className={`w-full h-auto sm:hidden transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
           />
-
-          {/* Skeleton Loader */}
-          {!loaded && (
-            <div className="absolute inset-0 bg-blue-100 animate-pulse" />
-          )}
+          {!loaded && <div className="absolute inset-0 bg-blue-100 animate-pulse" />}
         </div>
 
-        {setLoadingCategory && (
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
-            {Array(20).fill(null).map((_, i) => (
-              <div key={i} className="bg-white rounded shadow p-4 min-h-40 space-y-3 animate-pulse">
+        {/* Category Grid Section */}
+        <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-10 mt-6 gap-4">
+          {loadingCategory ? (
+            Array(skeletonCount).fill(null).map((_, i) => (
+              <div key={i} className="bg-white rounded p-4 min-h-36 animate-pulse grid shadow gap-2">
                 <div className="bg-blue-100 min-h-24 rounded"></div>
-                <div className="bg-blue-100 h-6 rounded w-1/2"></div>
-                <div className="flex space-x-2">
-                  <div className="bg-blue-100 h-6 rounded w-1/4"></div>
-                  <div className="bg-blue-100 h-6 rounded w-1/4"></div>
-                </div>
+                <div className="bg-blue-100 h-8 rounded"></div>
               </div>
-            ))}
-          </div>
-        )}
+            ))
+          ) : (
+            CategoryData.map((c, i) => (
+              <div key={c._id || i} className="bg-white rounded min-h-36 shadow grid gap-2 cursor-pointer">
+                <img
+                  src={c.image}
+                  alt={c.name}
+                  className="w-full h-full object-scale-down"
+                />
+
+              </div>
+            ))
+          )}
+        </div>
 
       </div>
     </section>
