@@ -35,7 +35,7 @@ function header() {
     <header className=' h-28 lg:h-20  sticky top-0 flex items-center flex-col lg:shadow  lg:pb-0 bg-white z-10'>
       {
         !(isSearchPage && isMobile) && (
-          <div className='w-full flex items-center h-full lg:py-4 justify-between pb-1 pt-0 pl-3 pr-5 mx-1'>
+          <div className='w-full flex items-center h-full lg:py-4 justify-between pb-1 pt-0 pl-6 lg:pl-7 lg:pr-10 pr-7 mx-1'>
             <div className='' >
               <Link to={"/"} className=' flex justify-center items-center mix-blend-multiply'>
                 <img

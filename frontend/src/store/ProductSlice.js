@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialValue = {
   allCategory:[],
+  setLoadingCategory:false,
   subcategory:[],
   product: [],
 }
@@ -19,9 +20,12 @@ const ProductSlice = createSlice({
     setProduct: (state, action) => {
       state.product = [...action.payload];
     },
+    setLoadingCategory: (state, action) => {
+      state.setLoadingCategory = action.payload;
+    }
   },
 });
 
-export const { setAllCategory, setSubCategory, setProduct } = ProductSlice.actions;
+export const { setAllCategory, setSubCategory, setProduct,setLoadingCategory } = ProductSlice.actions;
 
 export default ProductSlice.reducer;

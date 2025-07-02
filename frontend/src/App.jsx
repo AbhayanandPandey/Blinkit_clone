@@ -8,9 +8,9 @@ import { setUserDetails } from './store/userSlice'
 import { useDispatch } from 'react-redux'
 import Axios from './utils/Axios.js'
 import Api from './config/Api.js'
-import { setAllCategory } from './store/ProductSlice.js'
+import { setAllCategory, setLoadingCategory } from './store/ProductSlice.js'
 import AxiosToastError from './utils/AxiosToastError.js'
-import FullPageLoader from './components/FullPageLoader.jsx' 
+import FullPageLoader from './components/FullPageLoader.jsx'
 
 function App() {
   const dispatch = useDispatch()
@@ -26,6 +26,9 @@ function App() {
 
   const fetchCategory = async () => {
     try {
+      dispatch(
+        setLoadingCategory(true)
+      )
       const response = await Axios({ ...Api.getCategories })
       const { data: responseData } = response
       if (responseData.success) {
@@ -35,6 +38,10 @@ function App() {
       }
     } catch (error) {
       dispatch(setAllCategory([]))
+    } finally {
+      dispatch(
+        setLoadingCategory(false)
+      )
     }
   }
 
@@ -46,7 +53,7 @@ function App() {
     loadApp()
   }, [])
 
-  if (loading) return <FullPageLoader /> 
+  if (loading) return <FullPageLoader />
 
   return (
     <>
