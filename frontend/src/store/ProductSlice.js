@@ -1,21 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialValue = {
+const initialState = {
   allCategory: [],
-  setLoadingCategory: false,
-  subCategory: [], // ✅ camelCase 'subCategory'
+  subcategory: [],
   product: [],
+  setLoadingCategory: false,
 };
 
 const ProductSlice = createSlice({
   name: "product",
-  initialState: initialValue,
+  initialState,
   reducers: {
     setAllCategory: (state, action) => {
       state.allCategory = [...action.payload];
     },
     setSubCategory: (state, action) => {
-      state.subCategory = [...action.payload]; // ✅ matches key in state
+      state.subcategory = [...action.payload];
     },
     setProduct: (state, action) => {
       state.product = [...action.payload];
@@ -25,7 +25,6 @@ const ProductSlice = createSlice({
     },
   },
 });
-
 
 export const { setAllCategory, setSubCategory, setProduct, setLoadingCategory } = ProductSlice.actions;
 

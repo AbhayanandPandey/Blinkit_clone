@@ -8,19 +8,17 @@ function Home() {
   const [loaded, setLoaded] = useState(false);
   const loadingCategory = useSelector(state => state.product.setLoadingCategory);
   const CategoryData = useSelector(state => state.product.allCategory);
-  const SubCategoryData = useSelector(state => state.product.subCategory);
+   const subCategoryData = useSelector(state => state.product.subcategory);
   
 
   const handleRedirectProduct = (id,name) => {
-    console.log(id,name)
-    const subcate = SubCategoryData.find(sub => {
-      console.log('data',sub)
-      // const cdata = sub.category.some(c =>{
-      //   return c._id == id
-      // })
-      // return cdata ? true :null
+    const subcate = subCategoryData.find(sub => {
+      const cdata = sub.category.some(c =>{
+        return c._id == id
+      })
+      return cdata ? true :null
     })
-    // console.log('d',SubCategoryData)
+    console.log('d',subcate)
   }
   const screenSize = useScreenSize();
 
