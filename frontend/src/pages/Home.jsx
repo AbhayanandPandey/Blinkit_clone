@@ -3,33 +3,37 @@ import banner from '../assets/banner.jpg';
 import bannerMobile from '../assets/banner-mobile.jpg';
 import { useSelector } from 'react-redux';
 import useScreenSize from '../hooks/useScreenSize';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [loaded, setLoaded] = useState(false);
   const loadingCategory = useSelector(state => state.product.setLoadingCategory);
   const CategoryData = useSelector(state => state.product.allCategory);
-   const subCategoryData = useSelector(state => state.product.subcategory);
-  
+  const subCategoryData = useSelector(state => state.product.subcategory);
+  const navigate = useNavigate();
 
-  const handleRedirectProduct = (id,name) => {
-    const subcate = subCategoryData.find(sub => {
-      const cdata = sub.category.some(c =>{
-        return c._id == id
-      })
-      return cdata ? true :null
-    })
-    console.log('d',subcate)
-  }
+  const handleRedirectProduct = (categoryId, categoryName) => {
+    const subcate = subCategoryData.find(sub =>
+      sub.category?.some(c => c._id === categoryId)
+    );
+
+    if (!subcate) return;
+
+    const formatSlug = str =>
+      str.toLowerCase().replace(/&|,/g, '').replace(/\s+/g, '-');
+
+    const categorySlug = `${formatSlug(categoryName)}-${categoryId}`;
+    const subcategorySlug = `${formatSlug(subcate.name)}-${subcate._id}`;
+
+    navigate(`/${categorySlug}/${subcategorySlug}`);
+  };
+
   const screenSize = useScreenSize();
-
-  let skeletonCount = 18;
-  if (screenSize === 'tablet') skeletonCount = 16;
-  if (screenSize === 'mobile') skeletonCount = 10;
+  let skeletonCount = screenSize === 'tablet' ? 16 : screenSize === 'mobile' ? 10 : 18;
 
   return (
     <section className="bg-white">
       <div className="w-full mx-auto px-4 py-2 pb-4">
-
         <div className={`w-full h-auto rounded overflow-hidden bg-blue-100 relative ${!loaded && 'animate-pulse'}`}>
           <img
             src={banner}
@@ -56,19 +60,20 @@ function Home() {
             ))
           ) : (
             CategoryData.map((c, i) => (
-              <div key={c._id || i} className="bg-white rounded min-h-36 shadow grid gap-2 cursor-pointer" onClick={() => handleRedirectProduct(c._id,c.name)}
+              <div
+                key={c._id || i}
+                className="bg-white rounded min-h-36 shadow grid gap-2 cursor-pointer"
+                onClick={() => handleRedirectProduct(c._id, c.name)}
               >
                 <img
                   src={c.image}
                   alt={c.name}
                   className="w-full h-full object-scale-down"
                 />
-
               </div>
             ))
           )}
         </div>
-
       </div>
     </section>
   );

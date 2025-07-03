@@ -17,10 +17,9 @@ import SubCategory from "../admin/SubCategory";
 import Category from "../admin/Category";
 import UploadProduct from "../admin/UploadProduct";
 import Fno from "../pages/Fno";
-import PrivateAdminRoute from "../routes/PrivateAdminRoute"; // 👈 Import here
+import PrivateAdminRoute from "../routes/PrivateAdminRoute";
 import LoginSignupForgot from "./LoginSignupForgot";
 import ProductListPage from "../pages/ProductListPage";
-
 
 const router = createBrowserRouter([
   {
@@ -40,7 +39,6 @@ const router = createBrowserRouter([
       { path: 'verify-Otp', element: <VerifyOtp /> },
       { path: 'reset-password', element: <ResetPassword /> },
       { path: 'user', element: <UserMenuMobile /> },
-
       {
         path: 'dashboard',
         element: <Dashboard />,
@@ -48,7 +46,6 @@ const router = createBrowserRouter([
           { path: 'profile', element: <UserProfile /> },
           { path: 'myorders', element: <MyOrder /> },
           { path: 'myaddress', element: <Address /> },
-
           {
             element: <PrivateAdminRoute />,
             children: [
@@ -58,19 +55,15 @@ const router = createBrowserRouter([
               { path: 'upload-product', element: <UploadProduct /> },
             ],
           },
-
           { path: 'fno', element: <Fno /> },
         ],
       },
+
+      // Dynamic product list page route
       {
-        path: ':category',
-        children: [
-          {
-            path: 'subcategory',
-            element: <ProductListPage />
-          }
-        ]
-      }
+        path: ':categorySlug/:subcategorySlug',
+        element: <ProductListPage />
+      },
     ],
   },
 ]);
