@@ -19,6 +19,7 @@ import UploadProduct from "../admin/UploadProduct";
 import Fno from "../pages/Fno";
 import PrivateAdminRoute from "../routes/PrivateAdminRoute"; // 👈 Import here
 import LoginSignupForgot from "./LoginSignupForgot";
+import ProductListPage from "../pages/ProductListPage";
 
 
 const router = createBrowserRouter([
@@ -48,9 +49,8 @@ const router = createBrowserRouter([
           { path: 'myorders', element: <MyOrder /> },
           { path: 'myaddress', element: <Address /> },
 
-          // ✅ Admin Routes Protected Here
           {
-            element: <PrivateAdminRoute />, // 👈 Wrap protected routes
+            element: <PrivateAdminRoute />,
             children: [
               { path: 'product', element: <Product /> },
               { path: 'subcategory', element: <SubCategory /> },
@@ -62,6 +62,15 @@ const router = createBrowserRouter([
           { path: 'fno', element: <Fno /> },
         ],
       },
+      {
+        path: ':category',
+        children: [
+          {
+            path: 'subcategory',
+            element: <ProductListPage />
+          }
+        ]
+      }
     ],
   },
 ]);

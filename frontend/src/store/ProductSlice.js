@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialValue = {
   allCategory: [],
   setLoadingCategory: false,
-  subcategory: [],
+  subCategory: [], // ✅ camelCase 'subCategory'
   product: [],
 };
 
@@ -15,16 +15,17 @@ const ProductSlice = createSlice({
       state.allCategory = [...action.payload];
     },
     setSubCategory: (state, action) => {
-      state.subcategory = [...action.payload];
+      state.subCategory = [...action.payload]; // ✅ matches key in state
     },
     setProduct: (state, action) => {
       state.product = [...action.payload];
     },
     setLoadingCategory: (state, action) => {
-      state.setLoadingCategory = action.payload; // ✅ This line is required
+      state.setLoadingCategory = action.payload;
     },
   },
 });
+
 
 export const { setAllCategory, setSubCategory, setProduct, setLoadingCategory } = ProductSlice.actions;
 

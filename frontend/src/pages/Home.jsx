@@ -8,6 +8,20 @@ function Home() {
   const [loaded, setLoaded] = useState(false);
   const loadingCategory = useSelector(state => state.product.setLoadingCategory);
   const CategoryData = useSelector(state => state.product.allCategory);
+  const SubCategoryData = useSelector(state => state.product.subCategory);
+  
+
+  const handleRedirectProduct = (id,name) => {
+    console.log(id,name)
+    const subcate = SubCategoryData.find(sub => {
+      console.log('data',sub)
+      // const cdata = sub.category.some(c =>{
+      //   return c._id == id
+      // })
+      // return cdata ? true :null
+    })
+    // console.log('d',SubCategoryData)
+  }
   const screenSize = useScreenSize();
 
   let skeletonCount = 18;
@@ -44,7 +58,8 @@ function Home() {
             ))
           ) : (
             CategoryData.map((c, i) => (
-              <div key={c._id || i} className="bg-white rounded min-h-36 shadow grid gap-2 cursor-pointer">
+              <div key={c._id || i} className="bg-white rounded min-h-36 shadow grid gap-2 cursor-pointer" onClick={() => handleRedirectProduct(c._id,c.name)}
+              >
                 <img
                   src={c.image}
                   alt={c.name}
