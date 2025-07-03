@@ -59,7 +59,6 @@ const router = createBrowserRouter([
         ],
       },
 
-      // Dynamic product list page route
       {
         path: ':categorySlug/:subcategorySlug',
         element: <ProductListPage />
