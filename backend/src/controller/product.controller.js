@@ -184,7 +184,7 @@ export const getAllProductsByCategory = async (req, res) => {
         message: "Category ID is required",
       });
     }
-    const products = await ProductModel.find({ category: { $in : id } }).limit(100)
+    const products = await ProductModel.find({ category: { $in : id } }).limit(15)
 
 
     res.status(200).json({
