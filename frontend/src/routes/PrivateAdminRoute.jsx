@@ -1,4 +1,3 @@
-// src/routes/PrivateAdminRoute.jsx
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 import Loading from '../components/Loading';
