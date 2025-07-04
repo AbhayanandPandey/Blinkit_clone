@@ -102,7 +102,7 @@ const Product = () => {
           />
         </div>
       </div>
-
+ 
       <div className="py-8 px-7 w-full grid lg:grid-cols-5 md:grid-cols-3  grid-cols-2 gap-4 gap-y-6 place-items-center min-h-[400px]">
         {loading
           ? Array(10)
