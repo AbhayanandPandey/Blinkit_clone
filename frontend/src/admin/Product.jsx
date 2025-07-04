@@ -8,7 +8,7 @@ import NoData from '../components/NoData';
 import ConfirmDelete from '../components/ConfirmDelete';
 import EditProduct from '../components/EditProduct';
 import toast from 'react-hot-toast';
-import useDebounce from '../utils/useDebounce'; // add this
+import useDebounce from '../utils/useDebounce'; 
 import { CiSearch } from "react-icons/ci";
 
 const Product = () => {
