@@ -93,6 +93,10 @@ const Api = {
         url: '/api/product/update-product',
         method: 'put'
     },
+    getProductsByCategory: {
+        url: '/api/product/get-productbycategory',
+        method: 'post'
+    }, 
 }
 
 export default Api

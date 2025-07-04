@@ -9,7 +9,7 @@ export const uploadProduct = async (req, res) => {
       unit,
       stock,
       price,
-      discount = 0, 
+      discount = 0,
       description,
       more_details,
       images,
@@ -34,7 +34,7 @@ export const uploadProduct = async (req, res) => {
 
     const newProduct = new ProductModel({
       name,
-      image: images, 
+      image: images,
       category,
       subCategory,
       unit,
@@ -72,8 +72,8 @@ export const getAllProducts = async (req, res) => {
 
     const searchQuery = search
       ? {
-          name: { $regex: search, $options: 'i' },
-        }
+        name: { $regex: search, $options: 'i' },
+      }
       : {};
 
     const [products, totalCount] = await Promise.all([
@@ -172,3 +172,32 @@ export const updateProduct = async (req, res) => {
     });
   }
 };
+
+export const getAllProductsByCategory = async (req, res) => {
+  try {
+    const { id } = req.body
+
+    if (!id) {
+      return res.status(400).json({
+        error: true,
+        success: false,
+        message: "Category ID is required",
+      });
+    }
+    const products = await ProductModel.find({ category: { $in : id } }).limit(100)
+
+
+    res.status(200).json({
+      error: false,
+      success: true,
+      message: "Products retrieved successfully",
+      data: products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || error,
+      error: true,
+    });
+  }
+}

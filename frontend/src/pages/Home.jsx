@@ -4,6 +4,7 @@ import bannerMobile from '../assets/banner-mobile.jpg';
 import { useSelector } from 'react-redux';
 import useScreenSize from '../hooks/useScreenSize';
 import { Link, useNavigate } from 'react-router-dom';
+import CategoryProduct from '../components/CategoryProduct';
 
 function Home() {
   const [loaded, setLoaded] = useState(false);
@@ -75,15 +76,13 @@ function Home() {
           )}
         </div>
 
-        <div >
-          <div className='mx-auto px-2 flex items-center justify-between p-4 md:mt-2 mt-2'>
-            <h3 className=' text-xl md:text-lg font-semibold '>Dairy, Bread & Eggs</h3>
-            <Link to='' className='text-green-600 hover:text-green-700'>see All</Link>
-          </div>
-          <div>
-
-          </div>
-        </div>
+        {
+          CategoryData.map((c, i) => {
+            return(
+            <CategoryProduct key={c._id+'categoryProduct'} id={c?._id} name={c?.name} />
+            )
+          })
+        }
 
       </div>
     </section>
