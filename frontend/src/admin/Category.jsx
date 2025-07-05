@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import UploadCategory from '../components/UploadCategory';
-import NoData from '../components/NoData';
-import Axios from '../utils/Axios';
-import Api from '../config/Api';
-import { MdOutlineEdit, MdOutlineDelete } from 'react-icons/md';
+
 import AxiosToastError from '../utils/AxiosToastError';
 import SkeletonCard from '../components/SkeletonCard';
 import EditCategory from '../components/EditCategory';
