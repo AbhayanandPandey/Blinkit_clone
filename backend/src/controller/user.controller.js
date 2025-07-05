@@ -156,7 +156,6 @@ export async function loginUser(req, res) {
         })
     }
 }
-
 export async function logoutUser(req, res) {
     try {
         const userid = req.userId
