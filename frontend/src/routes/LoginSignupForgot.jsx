@@ -7,7 +7,7 @@ const LoginSignupForgot = () => {
     localStorage.getItem('accessToken')
   const data =  Cookies.get('accessToken');
 
-  if (data||accessToken) {
+  if (data || accessToken) {
     return <Navigate to="/dashboard/profile" replace />;
   }
   return <Outlet />;
