@@ -47,7 +47,7 @@ const UserMenu = ({ close }) => {
                 <Link
                   to="/dashboard/category"
                   onClick={wrapClose()}
-                  className="px-2 hover:bg-gray-200 rounded"
+                  className="px-2 hover:bg-gray-200 rounded "
                 >
                   Category
                 </Link>
