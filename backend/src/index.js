@@ -16,9 +16,7 @@ import productRouter from './routes/product.route.js';
 const app = express();
 
 const allowedOrigins = [
-    'http://localhost:5173',
     process.env.FRONTEND_URL,
-    'https://5j4jg6lj-5173.inc1.devtunnels.ms',
 ];
 
 app.use(cors({
