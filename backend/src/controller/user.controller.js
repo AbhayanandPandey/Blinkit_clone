@@ -155,7 +155,7 @@ export async function registerUser(req, res) {
 //             success: false
 //         })
 //     }
-// }
+// } 
 
 export async function loginUser(req, res) {
   try {
