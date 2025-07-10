@@ -3,7 +3,7 @@ import Api, { baseURL } from '../config/Api'
 const Axios = axios.create({
     baseURL:baseURL,
     withCredentials:true,
-})
+}) 
 
 Axios.interceptors.request.use(
     async(config)=>{
