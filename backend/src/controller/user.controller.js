@@ -70,92 +70,92 @@ export async function registerUser(req, res) {
     }
 }
 
-export async function loginUser(req, res) {
-    try {
-        const { email, password } = req.body;
+// export async function loginUser(req, res) {
+//     try {
+//         const { email, password } = req.body;
 
-        if (!email || !password) {
-            return res.json({
-                message: "plese enter email or password",
-                error: true,
-                success: false
-            })
-        }
+//         if (!email || !password) {
+//             return res.json({
+//                 message: "plese enter email or password",
+//                 error: true,
+//                 success: false
+//             })
+//         }
 
-        const user = await UserModel.findOne({ email })
-        if (!user) {
-            return res.json({
-                message: "user not registered",
-                error: true,
-                success: false
-            })
-        }
+//         const user = await UserModel.findOne({ email })
+//         if (!user) {
+//             return res.json({
+//                 message: "user not registered",
+//                 error: true,
+//                 success: false
+//             })
+//         }
 
-        if (user.status === "Inactive") {
-            return res.status(400).json({
-                message: "user is inactive, plese connect to admin",
-                error: true,
-                success: false
-            })
-        }
-        if (user.status === "Suspended") {
-            return res.status(400).json({
-                message: "user is suspended, plese connect to admin",
-                error: true,
-                success: false
-            })
-        }
+//         if (user.status === "Inactive") {
+//             return res.status(400).json({
+//                 message: "user is inactive, plese connect to admin",
+//                 error: true,
+//                 success: false
+//             })
+//         }
+//         if (user.status === "Suspended") {
+//             return res.status(400).json({
+//                 message: "user is suspended, plese connect to admin",
+//                 error: true,
+//                 success: false
+//             })
+//         }
 
-        const hashPassword = await bcryptjs.compare(password, user.password)
+//         const hashPassword = await bcryptjs.compare(password, user.password)
 
-        if (!hashPassword) {
-            return res.status(400).json({
-                message: "plese enter a valid password",
-                error: true,
-                success: false
-            })
-        }
+//         if (!hashPassword) {
+//             return res.status(400).json({
+//                 message: "plese enter a valid password",
+//                 error: true,
+//                 success: false
+//             })
+//         }
 
-        const accessToken = await generateAccessToken(user._id);
-        const refreshToken = await generateRefreshToken(user._id);
+//         const accessToken = await generateAccessToken(user._id);
+//         const refreshToken = await generateRefreshToken(user._id);
 
-        const cookieOption =
-        {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'None'
-        }
-        res.cookie('accessToken', accessToken, cookieOption)
-        res.cookie('refreshToken', refreshToken, cookieOption)
+//         const cookieOption =
+//         {
+//             httpOnly: true,
+//             secure: true,
+//             sameSite: 'None'
+//         }
+//         res.cookie('accessToken', accessToken, cookieOption)
+//         res.cookie('refreshToken', refreshToken, cookieOption)
 
-        const date = Date.now();
-        const updateUser = await UserModel.updateOne(
-            { _id: user._id },
-            {
-                $set:
-                    { last_login_date: date }
-            }
-        )
+//         const date = Date.now();
+//         const updateUser = await UserModel.updateOne(
+//             { _id: user._id },
+//             {
+//                 $set:
+//                     { last_login_date: date }
+//             }
+//         )
 
-        return res.status(200).json({
-            message: 'login successfuly',
-            error: false,
-            success: true,
-            data: {
-                accessToken,
-                refreshToken
-            }
-        })
+//         return res.status(200).json({
+//             message: 'login successfuly',
+//             error: false,
+//             success: true,
+//             data: {
+//                 accessToken,
+//                 refreshToken
+//             }
+//         })
 
 
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message || error,
-            error: true,
-            success: false
-        })
-    }
-}
+//     } catch (error) {
+//         return res.status(500).json({
+//             message: error.message || error,
+//             error: true,
+//             success: false
+//         })
+//     }
+// }
 
 export async function loginUser(req, res) {
   try {
