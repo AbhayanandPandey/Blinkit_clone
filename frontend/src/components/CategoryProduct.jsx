@@ -4,6 +4,7 @@ import AxiosToastError from '../utils/AxiosToastError'
 import Axios from '../utils/Axios'
 import Api from '../config/Api'
 import CardLoading from './CardLoading'
+import CardProduct from './CardProduct'
 
 
 const CategoryProduct = ({ id, name }) => {
@@ -35,14 +36,29 @@ const CategoryProduct = ({ id, name }) => {
     useEffect(() => {
         fetchCategoryProduct()
     }, [])
+    const loadingCard = new Array(7).fill(null)
     return (
         <div >
             <div className='mx-auto px-2 flex items-center justify-between p-4 md:mt-2 mt-2'>
                 <h3 className=' text-xl md:text-lg font-semibold '>{name}</h3>
                 <Link to='' className='text-green-600 hover:text-green-700'>see All</Link>
             </div>
-            <div>
-                
+            <div className='flex items-center gap-4 md:gap-6 lg:gap-5.5 mx-auto p-2'>
+                {
+                    loading && 
+                    loadingCard.map((_,i)=>{
+                        return (
+                            <CardLoading />
+                        )
+                    })
+                }
+                {
+                    data.map((p,i)=>{
+                        return (
+                            <CardProduct data={p} key={p._id+'categoryWiseProduct'+i} />
+                        )
+                    })
+                }
             </div>
         </div>
     )
