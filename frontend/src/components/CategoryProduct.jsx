@@ -3,13 +3,16 @@ import { Link } from 'react-router-dom'
 import AxiosToastError from '../utils/AxiosToastError'
 import Axios from '../utils/Axios'
 import Api from '../config/Api'
+import CardLoading from './CardLoading'
 
 
 const CategoryProduct = ({ id, name }) => {
     const [data, setData] = useState([])
+    const [loading, setloading] = useState(false)
 
     const fetchCategoryProduct = async () => {
         try {
+            setloading(true)
             const response = await Axios({
                 ...Api.getProductsByCategory,
                 data: {
@@ -24,6 +27,8 @@ const CategoryProduct = ({ id, name }) => {
             }
         } catch (error) {
             AxiosToastError(error)
+        } finally {
+            setloading(false)
         }
     }
 
@@ -37,7 +42,7 @@ const CategoryProduct = ({ id, name }) => {
                 <Link to='' className='text-green-600 hover:text-green-700'>see All</Link>
             </div>
             <div>
-
+                
             </div>
         </div>
     )
