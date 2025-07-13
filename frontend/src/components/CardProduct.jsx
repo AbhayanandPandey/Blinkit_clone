@@ -17,8 +17,8 @@ const CardProduct = ({ data }) => {
                 />
             </div>
 
-            <h4 className="text-sm font-semibold mt-2 truncate">10 Min</h4>
-            <h3 className="text-sm font-semibold mt-2 truncate">{name}</h3>
+            <h4 className="text-sm mt-2 truncate text-green-600">10 Min</h4>
+            <h3 className="text-sm font-semibold pt-1 truncate">{name}</h3>
 
             <div className="mt-1">
                 <div className="flex items-center gap-2">
