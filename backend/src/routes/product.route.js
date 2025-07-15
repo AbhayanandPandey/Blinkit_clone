@@ -5,9 +5,9 @@ import { deleteProduct, getAllProducts, getAllProductsByCategory, updateProduct,
 const productRouter = Router();
 
 productRouter.post('/create-product', isAuthenticate, uploadProduct)
-productRouter.post('/get-product', isAuthenticate, getAllProducts)
+productRouter.post('/get-product', getAllProducts)
 productRouter.delete('/delete-product', isAuthenticate,deleteProduct)
 productRouter.put('/update-product', isAuthenticate, updateProduct) 
-productRouter.post('/get-productbycategory',isAuthenticate,getAllProductsByCategory)
+productRouter.post('/get-productbycategory',getAllProductsByCategory)
 
 export default productRouter;

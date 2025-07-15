@@ -5,7 +5,7 @@ import { AddSubCategory, DeleteSubCategoryData, EditSubCategoryData, GetAllSubCa
 const subCategoryRouter = Router();
 
 subCategoryRouter.post('/create',isAuthenticate,AddSubCategory)
-subCategoryRouter.post('/get-sub-categories',isAuthenticate,GetAllSubCategories)
+subCategoryRouter.post('/get-sub-categories',GetAllSubCategories)
 subCategoryRouter.put('/update', isAuthenticate, EditSubCategoryData);
 subCategoryRouter.delete('/delete', isAuthenticate, DeleteSubCategoryData); 
 

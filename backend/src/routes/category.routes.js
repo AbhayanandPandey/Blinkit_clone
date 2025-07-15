@@ -4,7 +4,7 @@ import { AddCategory, DeleteCategory, GetAllCategories, UpdateCategory } from '.
 const categoryRouter = Router();
 
 categoryRouter.post('/create-category', isAuthenticate,AddCategory);
-categoryRouter.get('/get-categories', isAuthenticate, GetAllCategories)
+categoryRouter.get('/get-categories', GetAllCategories)
 categoryRouter.put('/update-category', isAuthenticate, UpdateCategory);
 categoryRouter.delete('/delete-category',isAuthenticate,DeleteCategory)
 
