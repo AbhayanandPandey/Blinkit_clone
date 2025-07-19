@@ -148,9 +148,9 @@ const Product = () => {
               pageNumber === 1 ||
               pageNumber === totalPages ||
               (pageNumber >= page - 2 && pageNumber <= page + 2)
-            ) {  
-              return (
-                <button
+            ) {   
+              return ( 
+                <button   
                   key={i}
                   onClick={() => setPage(pageNumber)}
                   className={`lg:px-3 md:px-3 px-2 py-1 rounded border ${
