@@ -148,7 +148,7 @@ const Product = () => {
               pageNumber === 1 ||
               pageNumber === totalPages ||
               (pageNumber >= page - 2 && pageNumber <= page + 2)
-            ) {
+            ) {   
               return (
                 <button
                   key={i}
