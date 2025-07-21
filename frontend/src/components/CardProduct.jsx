@@ -17,7 +17,7 @@ const CardProduct = ({ data }) => {
                 />
             </div>
 
-            <h4 className="text-sm mt-2 truncate text-green-600">10 Min</h4>
+            <p className="text-sm text-green-600 rounded w-fit bg-green-100 p-2 py-[0.5px]">10 Min</p>
             <h3 className="text-sm font-semibold pt-1 truncate">{name}</h3>
 
             <div className="mt-1">
