@@ -17,26 +17,24 @@ const CardProduct = ({ data }) => {
                 />
             </div>
 
-            <p className="text-sm text-green-600 rounded w-fit bg-green-100 p-2 py-[0.5px]">10 Min</p>
-            <h3 className="text-sm font-semibold pt-1 truncate">{name}</h3>
+            <p className="text-sm text-green-600 rounded w-fit bg-green-100 mt-2 p-2 py-[0.5px]">10 Min</p>
 
-            <div className="mt-1">
+            <h3 className="text-sm font-semibold pt-1 text-ellipsis line-clamp-1">{name}</h3>
+
+            <p className="text-sm w-fit py-1 text-gray-600">{unit}</p>
+
+            <div className="mt-1 ">
                 <div className="flex items-center gap-2">
                     <span className="text-green-600 font-medium">₹{Math.round(discountedPrice)}</span>
                     {discount > 0 && (
                         <span className="text-sm line-through text-gray-500">₹{Math.round(price)}</span>
                     )}
                 </div>
-                <p className="text-xs text-gray-600">{unit}</p>
-            </div>
-
-            <div className="flex items-center justify-between gap-2 mt-3">
-                <button className="bg-green-600 text-white text-xs px-2 py-1 rounded hover:bg-green-700 w-full">
-                    Add to Cart
-                </button>
-                <button className="bg-blue-600 text-white text-xs px-2 py-1 rounded hover:bg-blue-700 w-full">
-                    Buy Now
-                </button>
+                <div className=" w-full py-1">
+                    <button className='rounded cursor-pointer w-full bg-green-300 p-1 hover:bg-green-400 transition-all'>
+                        Add to cart
+                    </button>
+                </div>
             </div>
         </div>
     );
