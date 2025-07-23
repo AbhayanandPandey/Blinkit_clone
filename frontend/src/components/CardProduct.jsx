@@ -11,11 +11,11 @@ const CardProduct = ({ data }) => {
     const formatSlug = str =>
       str.toLowerCase().replace(/&|,/g, '').replace(/\s+/g, '-');
 
-    const url = `product/${formatSlug(data.name)}-${data._id}`
+    const url = `/product/${formatSlug(data.name)}-${data._id}`
 
     return (
-        <Link to={url} className="border border-gray-200 p-3 rounded-lg shadow-sm transition-all lg:min-w-50 md:min-w-46 min-w-46 max-w-52 w-full">
-            <div className="w-full h-32 rounded bg-white flex items-center justify-center overflow-hidden">
+        <Link to={url} className="border border-gray-200 p-3 rounded-lg shadow-sm transition-all lg:min-w-50 md:min-w-46 min-w-46 max-w-46 w-full">
+            <div className="w-full h-28 rounded bg-white flex items-center justify-center overflow-hidden">
                 <img
                     src={image?.[0] || '/default.jpg'}
                     alt={name}
@@ -27,7 +27,7 @@ const CardProduct = ({ data }) => {
 
             <h3 className="text-sm font-semibold pt-1 text-ellipsis line-clamp-1">{name}</h3>
 
-            <p className="text-sm w-fit py-1 text-gray-600">{unit}</p>
+            <p className="text-sm w-fit py-1 text-gray-600 line-clamp-1">{unit}</p>
 
             <div className="mt-1 flex items-center justify-between ">
                 <div className="flex items-center gap-2">

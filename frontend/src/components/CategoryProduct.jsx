@@ -74,13 +74,13 @@ const CategoryProduct = ({ id, name }) => {
                         onClick={() => scroll('left')}
                         className='pointer-events-auto cursor-pointer shadow rounded-full p-2 hover:bg-gray-100 bg-white'
                     >
-                        <TfiAngleLeft size={24} />
+                        <TfiAngleLeft size={20} />
                     </button>
                     <button
                         onClick={() => scroll('right')}
                         className='pointer-events-auto cursor-pointer shadow rounded-full p-2 hover:bg-gray-100 bg-white'
                     >
-                        <TfiAngleRight size={24} />
+                        <TfiAngleRight size={20} />
                     </button>
                 </div>
             </div>
