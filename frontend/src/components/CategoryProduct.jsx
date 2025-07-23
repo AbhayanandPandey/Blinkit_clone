@@ -44,7 +44,7 @@ const CategoryProduct = ({ id, name }) => {
                 <h3 className=' text-xl md:text-lg font-semibold '>{name}</h3>
                 <Link to='' className='text-green-600 hover:text-green-700'>see All</Link>
             </div>
-            <div className='flex items-center gap-4 md:gap-6 lg:gap-5.5 mx-auto p-2'>
+            <div className='flex items-center gap-4 md:gap-6 lg:gap-5.5 mx-auto p-2 overflow-hidden'>
                 {
                     loading &&
                     loadingCard.map((_, i) => {
@@ -60,12 +60,12 @@ const CategoryProduct = ({ id, name }) => {
                         )
                     })
                 }
-                <div className='w-full max-w-full absolute flex justify-between'>
-                    <button className='left-0'>
-                        <FaAngleLeft  />
+                <div className='w-full max-w-full left-0 right-0 absolute hidden  lg:flex md:flex justify-between mx-auto'>
+                    <button className='cursor-pointer shadow rounded-full p-2 hover:bg-gray-100 text-lg'>
+                        <FaAngleLeft size={24}  />
                     </button>
-                    <button>
-                        <FaAngleRight  />
+                    <button className='cursor-pointer shadow rounded-full p-2 hover:bg-gray-100 text-lg'>
+                        <FaAngleRight size={24}  />
                     </button>
                 </div>
             </div>

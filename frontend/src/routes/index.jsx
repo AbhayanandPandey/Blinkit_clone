@@ -20,6 +20,7 @@ import Fno from "../pages/Fno";
 import PrivateAdminRoute from "../routes/PrivateAdminRoute";
 import LoginSignupForgot from "./LoginSignupForgot";
 import ProductListPage from "../pages/ProductListPage";
+import ProductDisplayPage from "../pages/ProductDisplayPage";
 
 const router = createBrowserRouter([
   {
@@ -60,9 +61,18 @@ const router = createBrowserRouter([
       },
 
       {
-        path: ':categorySlug/:subcategorySlug',
-        element: <ProductListPage />
+        path: ':category',
+        children:[
+          {
+            path:':subcategory',
+            element: <ProductListPage />
+          }
+        ]
       },
+      {
+        path:'product/:product',
+        element:<ProductDisplayPage />
+      }
     ],
   },
 ]);
