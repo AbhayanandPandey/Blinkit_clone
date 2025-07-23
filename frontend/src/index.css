@@ -1,17 +1,30 @@
 @import "tailwindcss";
-
+html{
+  scroll-behavior: smooth;
+}
 body {
    font-family: "Open Sans", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
   font-variation-settings:
     "wdth" 100;
-  @apply bg-blue-50;
+  @apply bg-blue-50 scroll-smooth;
 }
 .scrollbar-hidden::-webkit-scrollbar {
+  scroll-behavior: smooth;
   display: none;
 }
 .scrollbar-hidden {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+  scroll-behavior: smooth;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+  scroll-behavior: smooth;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
 }

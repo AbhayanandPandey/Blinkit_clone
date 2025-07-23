@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import AxiosToastError from '../utils/AxiosToastError'
 import Axios from '../utils/Axios'
@@ -7,24 +7,20 @@ import CardLoading from './CardLoading'
 import CardProduct from './CardProduct'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 
-
 const CategoryProduct = ({ id, name }) => {
     const [data, setData] = useState([])
     const [loading, setloading] = useState(false)
+    const scrollRef = useRef(null)
 
     const fetchCategoryProduct = async () => {
         try {
             setloading(true)
             const response = await Axios({
                 ...Api.getProductsByCategory,
-                data: {
-                    id
-                }
+                data: { id }
             })
             const { data: responseData } = response
-            console.log(responseData)
             if (responseData.success) {
-
                 setData(responseData.data)
             }
         } catch (error) {
@@ -37,35 +33,53 @@ const CategoryProduct = ({ id, name }) => {
     useEffect(() => {
         fetchCategoryProduct()
     }, [])
+
+    const scroll = (direction) => {
+        if (scrollRef.current) {
+            const scrollAmount = 200
+            scrollRef.current.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth'
+            })
+        }
+    }
+
     const loadingCard = new Array(7).fill(null)
+
     return (
-        <div >
+        <div className="relative">
             <div className='mx-auto px-2 flex items-center justify-between p-4 md:mt-2 mt-2'>
                 <h3 className=' text-xl md:text-lg font-semibold '>{name}</h3>
-                <Link to='' className='text-green-600 hover:text-green-700'>see All</Link>
+                <Link to='' className='text-green-600 hover:text-green-700'>See All</Link>
             </div>
-            <div className='flex items-center gap-4 md:gap-6 lg:gap-5.5 mx-auto p-2 overflow-hidden'>
-                {
-                    loading &&
-                    loadingCard.map((_, i) => {
-                        return (
-                            <CardLoading />
-                        )
-                    })
-                }
-                {
-                    data.map((p, i) => {
-                        return (
-                            <CardProduct data={p} key={p._id + 'categoryWiseProduct' + i} />
-                        )
-                    })
-                }
-                <div className='w-full max-w-full left-0 right-0 absolute hidden  lg:flex md:flex justify-between mx-auto'>
-                    <button className='cursor-pointer shadow rounded-full p-2 hover:bg-gray-100 text-lg'>
-                        <FaAngleLeft size={24}  />
+
+            <div className='relative'>
+                <div
+                    className='flex items-start gap-4 md:gap-6 lg:gap-5.5 mx-auto p-2 overflow-x-auto scrollbar-hide scroll-smooth'
+                    ref={scrollRef}
+
+                >
+                    {
+                        loading
+                            ? loadingCard.map((_, i) => <CardLoading key={i} />)
+                            : data.map((p, i) => (
+                                <CardProduct data={p} key={p._id + 'categoryWiseProduct' + i} />
+                            ))
+                    }
+                </div>
+
+                <div className='hidden md:flex absolute top-1/2 -translate-y-1/2 w-full justify-between px-4 pointer-events-none'>
+                    <button
+                        onClick={() => scroll('left')}
+                        className='pointer-events-auto cursor-pointer shadow rounded-full p-2 hover:bg-gray-100 bg-white'
+                    >
+                        <FaAngleLeft size={24} />
                     </button>
-                    <button className='cursor-pointer shadow rounded-full p-2 hover:bg-gray-100 text-lg'>
-                        <FaAngleRight size={24}  />
+                    <button
+                        onClick={() => scroll('right')}
+                        className='pointer-events-auto cursor-pointer shadow rounded-full p-2 hover:bg-gray-100 bg-white'
+                    >
+                        <FaAngleRight size={24} />
                     </button>
                 </div>
             </div>
