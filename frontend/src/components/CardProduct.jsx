@@ -15,7 +15,7 @@ const CardProduct = ({ data }) => {
 
     return (
         <Link to={url} className="border border-gray-200 p-3 rounded-lg shadow-sm transition-all lg:min-w-50 md:min-w-46 min-w-46 max-w-46 w-full">
-            <div className="w-full h-28 rounded bg-white flex items-center justify-center overflow-hidden">
+            <div className="w-full h-28 lg:h-34 md:h-32  rounded bg-white flex items-center justify-center overflow-hidden">
                 <img
                     src={image?.[0] || '/default.jpg'}
                     alt={name}
@@ -37,7 +37,7 @@ const CardProduct = ({ data }) => {
                     )}
                 </div>
                 <div className=" w-fit py-1">
-                    <button className='rounded cursor-pointer w-full bg-green-500 p-1 hover:bg-green-600 px-4 transition-all text-white'>
+                    <button className='rounded cursor-pointer w-full bg-green-600 p-1 hover:bg-green-700 px-4 transition-all text-white'>
                         Add
                     </button>
                 </div>
