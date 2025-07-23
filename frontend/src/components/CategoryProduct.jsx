@@ -5,7 +5,8 @@ import Axios from '../utils/Axios'
 import Api from '../config/Api'
 import CardLoading from './CardLoading'
 import CardProduct from './CardProduct'
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
+// import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6'
+import { TfiAngleLeft, TfiAngleRight  } from "react-icons/tfi";
 
 const CategoryProduct = ({ id, name }) => {
     const [data, setData] = useState([])
@@ -68,18 +69,18 @@ const CategoryProduct = ({ id, name }) => {
                     }
                 </div>
 
-                <div className='hidden md:flex absolute top-1/2 -translate-y-1/2 w-full justify-between px-4 pointer-events-none'>
+                <div className='hidden md:flex absolute top-1/2 -translate-y-1/2 w-full justify-between px-4 pointer-events-none scroll-smooth'>
                     <button
                         onClick={() => scroll('left')}
                         className='pointer-events-auto cursor-pointer shadow rounded-full p-2 hover:bg-gray-100 bg-white'
                     >
-                        <FaAngleLeft size={24} />
+                        <TfiAngleLeft size={24} />
                     </button>
                     <button
                         onClick={() => scroll('right')}
                         className='pointer-events-auto cursor-pointer shadow rounded-full p-2 hover:bg-gray-100 bg-white'
                     >
-                        <FaAngleRight size={24} />
+                        <TfiAngleRight size={24} />
                     </button>
                 </div>
             </div>
