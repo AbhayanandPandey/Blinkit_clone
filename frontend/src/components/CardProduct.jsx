@@ -8,7 +8,7 @@ const CardProduct = ({ data }) => {
         : price;
 
     return (
-        <div className="border border-gray-200 p-3 rounded-lg shadow-sm hover:shadow-md transition-all min-w-46 max-w-52 w-full">
+        <div className="border border-gray-200 p-3 rounded-lg shadow-sm transition-all lg:min-w-50 md:min-w-46 min-w-46 max-w-52 w-full">
             <div className="w-full h-32 rounded bg-white flex items-center justify-center overflow-hidden">
                 <img
                     src={image?.[0] || '/default.jpg'}
@@ -23,16 +23,16 @@ const CardProduct = ({ data }) => {
 
             <p className="text-sm w-fit py-1 text-gray-600">{unit}</p>
 
-            <div className="mt-1 ">
+            <div className="mt-1 flex items-center justify-between ">
                 <div className="flex items-center gap-2">
                     <span className="text-green-600 font-medium">₹{Math.round(discountedPrice)}</span>
                     {discount > 0 && (
                         <span className="text-sm line-through text-gray-500">₹{Math.round(price)}</span>
                     )}
                 </div>
-                <div className=" w-full py-1">
-                    <button className='rounded cursor-pointer w-full bg-green-300 p-1 hover:bg-green-400 transition-all'>
-                        Add to cart
+                <div className=" w-fit py-1">
+                    <button className='rounded cursor-pointer w-full bg-green-500 p-1 hover:bg-green-600 px-4 transition-all text-white'>
+                        Add
                     </button>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import Axios from '../utils/Axios'
 import Api from '../config/Api'
 import CardLoading from './CardLoading'
 import CardProduct from './CardProduct'
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 
 
 const CategoryProduct = ({ id, name }) => {
@@ -45,20 +46,28 @@ const CategoryProduct = ({ id, name }) => {
             </div>
             <div className='flex items-center gap-4 md:gap-6 lg:gap-5.5 mx-auto p-2'>
                 {
-                    loading && 
-                    loadingCard.map((_,i)=>{
+                    loading &&
+                    loadingCard.map((_, i) => {
                         return (
                             <CardLoading />
                         )
                     })
                 }
                 {
-                    data.map((p,i)=>{
+                    data.map((p, i) => {
                         return (
-                            <CardProduct data={p} key={p._id+'categoryWiseProduct'+i} />
+                            <CardProduct data={p} key={p._id + 'categoryWiseProduct' + i} />
                         )
                     })
                 }
+                <div className='w-full max-w-full absolute flex justify-between'>
+                    <button className='left-0'>
+                        <FaAngleLeft  />
+                    </button>
+                    <button>
+                        <FaAngleRight  />
+                    </button>
+                </div>
             </div>
         </div>
     )
