@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 
 const ProductListPage = () => {
   const params = useParams()
-  const 
   return (
     <section className='bg-white sticky top-24 lg:top-20'>
       <div className='w-full mx-auto px-4 py-2 grid grid-cols-[90px_1fr] md:grid-cols-[200px_1fr] lg:grid-cols-[280px_1fr]'>
