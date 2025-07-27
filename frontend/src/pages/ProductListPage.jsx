@@ -44,7 +44,6 @@ const ProductListPage = () => {
       setLoading(false)
     }
   }
-
   useEffect(()=>{
     fetchProductData()
   },[params])
