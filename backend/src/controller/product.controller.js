@@ -201,3 +201,54 @@ export const getAllProductsByCategory = async (req, res) => {
     });
   }
 }
+
+export const getProductByCategoryAndSubCategory = async (req, res) => {
+  try {
+    const { category, subCategory, page, limit } = req.body;
+
+    if (!category || !subCategory) {
+      return res.status(400).json({
+        error: true,
+        success: false,
+        message: "Category and SubCategory are required",
+      });
+    }
+
+    if(!page)
+    {
+      page = 1;
+    }
+    if(!limit)
+    {
+      limit = 10;
+    }
+
+    const searchQuery = {
+      category: { $in: category },
+      subCategory: { $in: subCategory },
+    };
+
+    const skip = (page - 1) * limit;
+
+    const [data, totalCount] = await new Promise([
+      ProductModel.find(searchQuery).sort({createdAt:-1}).limit(limit).skip(skip),
+      ProductModel.countDocuments(searchQuery)
+    ]);
+
+    res.status(200).json({
+      error: false,
+      success: true,
+      message: "Products retrieved successfully",
+      data: data,
+      totalCount:totalCount,
+      totalPages: Math.ceil(totalCount / limit),
+      limit: limit,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || error,
+      error: true,
+    });
+  }
+}

@@ -96,6 +96,10 @@ const Api = {
     getProductsByCategory: {
         url: '/api/product/get-productbycategory',
         method: 'post'
+    },
+    getProductsByCategoryAndSubCategory: {
+        url: '/api/product/get-productbycategoryandsubcategory',
+        method: 'post'
     }, 
 }
 
