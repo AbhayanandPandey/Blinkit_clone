@@ -204,9 +204,9 @@ export const getAllProductsByCategory = async (req, res) => {
 
 export const getProductByCategoryAndSubCategory = async (req, res) => {
   try {
-    const { category, subCategory, page, limit } = req.body;
+    const { categoryId, subCategoryId, page, limit } = req.body;
 
-    if (!category || !subCategory) {
+    if (!categoryId || !subCategoryId) {
       return res.status(400).json({
         error: true,
         success: false,
@@ -224,13 +224,13 @@ export const getProductByCategoryAndSubCategory = async (req, res) => {
     }
 
     const searchQuery = {
-      category: { $in: category },
-      subCategory: { $in: subCategory },
+      category: { $in: categoryId },
+      subCategory: { $in: subCategoryId },
     };
 
     const skip = (page - 1) * limit;
 
-    const [data, totalCount] = await new Promise([
+    const [data, totalCount] = await Promise.all([
       ProductModel.find(searchQuery).sort({createdAt:-1}).limit(limit).skip(skip),
       ProductModel.countDocuments(searchQuery)
     ]);
