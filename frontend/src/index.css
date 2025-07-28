@@ -28,3 +28,8 @@ body {
   scrollbar-width: none;
   scroll-behavior: smooth;
 }
+@media (min-width: 900px) and (max-width: 1199px) {
+  .three-cols-900 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

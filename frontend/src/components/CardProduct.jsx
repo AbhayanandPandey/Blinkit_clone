@@ -14,7 +14,7 @@ const CardProduct = ({ data }) => {
     const url = `/product/${formatSlug(data.name)}-${data._id}`
 
     return (
-        <Link to={url} className="border border-gray-200 p-3 rounded-lg shadow-sm transition-all lg:min-w-50 md:min-w-46 min-w-46 max-w-46 w-full">
+        <Link to={url} className="border border-gray-200 p-3 rounded-lg shadow-sm transition-all lg:min-w-50 md:min-w-46 min-w-46 max-w-53 w-full">
             <div className="w-full h-28 lg:h-34 md:h-32  rounded bg-white flex items-center justify-center overflow-hidden">
                 <img
                     src={image?.[0] || '/default.jpg'}
