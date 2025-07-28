@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import AxiosToastError from '../utils/AxiosToastError';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
@@ -67,8 +67,13 @@ const ProductListPage = () => {
   }, [params, allSubcategories]);
 
   return (
-    <section className="bg-white py-2 pb-4 lg:py-8">
-      <div className="max-w-screen-xl mx-auto px-2 sm:px-4 lg:px-4">
+    <section className="bg-white pb-4 lg:py-2">
+      <div className="max-w-screen-xl mx-auto px-2 sm:px-4 lg:px-4 py-3 pt-0 lg:pt-3"> 
+        <div className="text-sm md:text-[16px] lg:text-[18px] mb-2 text-gray-700 ml-2 lg:ml-0">
+          <Link to="/" className="hover:text-blue-600 font-medium transition">Home</Link>
+          <span className="mx-1">/</span>
+          <span className="capitalize">{params.category.split('-').slice(0, -1).join(' ')}</span>
+        </div>
         <div className="grid grid-cols-[120px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] gap-3 sm:gap-4 min-h-[79vh]">
           <aside className="bg-white p-2 sm:p-4 border-r border-l border-gray-200">
             <div className="flex flex-col items-center px-0 md:px-2 lg:px-4 gap-3">
@@ -91,10 +96,12 @@ const ProductListPage = () => {
           </aside>
 
           <main>
-            <div className="bg-white shadow-md rounded py-3 px-2 mb-4">
-              <h3 className="font-semibold text-xl text-gray-800 capitalize">
+            <div className="bg-white shadow-md rounded md:py-3 py-2 mb-4 flex justify-between items-center md:px-6 px-2">
+              <h3 className="font-semibold md:text-xl text-gray-800 capitalize">
                 {params.subcategory.split('-').slice(0, -1).join(' ')}
               </h3>
+
+
             </div>
 
             <div className="p-2 grid grid-cols-1 place-items-center sm:grid-cols-2 md:grid-cols-2 three-cols-900 lg:grid-cols-4 gap-3 sm:gap-4">
