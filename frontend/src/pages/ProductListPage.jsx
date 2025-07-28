@@ -75,12 +75,12 @@ const ProductListPage = () => {
               {displaySub.map((s, i) => (
                 <div
                   key={i}
-                  className="w-full bg-gray-100 rounded shadow flex flex-col items-center p-2 cursor-pointer"
+                  className="w-full bg-gray-100 rounded shadow flex flex-col items-center p-2 cursor-pointer object-scale-down"
                 >
                   <img
                     src={s.image}
                     alt={s.name}
-                    className="w-16 md:w-18 lg:w-18 h-full object-contain mb-2"
+                    className="w-16 md:w-18 lg:w-18 h-full object-fill pt-3 mb-2"
                   />
                   <p className="text-center text-xs font-medium -mt-1 text-gray-700">
                     {s.name}
