@@ -94,14 +94,11 @@ const ProductListPage = () => {
               ))}
             </div>
           </aside>
-
           <main>
             <div className="bg-white shadow-md rounded md:py-3 py-2 mb-4 flex justify-between items-center md:px-6 px-2">
               <h3 className="font-semibold md:text-xl text-gray-800 capitalize">
                 {params.subcategory.split('-').slice(0, -1).join(' ')}
               </h3>
-
-
             </div>
 
             <div className="p-2 grid grid-cols-1 place-items-center sm:grid-cols-2 md:grid-cols-2 three-cols-900 lg:grid-cols-4 gap-3 sm:gap-4">
