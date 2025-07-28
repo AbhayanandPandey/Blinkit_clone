@@ -5,6 +5,7 @@ import AxiosToastError from '../utils/AxiosToastError'
 import Axios from '../utils/Axios'
 import Api from '../config/Api'
 import { useEffect } from 'react'
+import Loading from '../components/Loading'
 
 const ProductListPage = () => {
   const [data, setData] = useState([])
@@ -36,6 +37,7 @@ const ProductListPage = () => {
         else {
           setData([...data,...responseData.data])
         }
+        console.log(responseData)
         setTotalPage(responseData.totalCount)
       }
     } catch (error) {
@@ -58,7 +60,19 @@ const ProductListPage = () => {
         </div>
 
         <div className=''>
-          fdf
+          <div className="bg-white shadow-md p-4">
+            <h3 className='font-semibold '>
+              {params.subcategory.split('-').slice(0,-1).join(' ')}
+            </h3>
+          </div>
+          <div>
+            
+            {
+              loading && (
+                <Loading />
+              )
+            }
+          </div>
         </div>
       </div>
     </section>

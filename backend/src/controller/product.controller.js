@@ -204,23 +204,33 @@ export const getAllProductsByCategory = async (req, res) => {
 
 export const getProductByCategoryAndSubCategory = async (req, res) => {
   try {
-    const { categoryId, subCategoryId, page, limit } = req.body;
+    let { categoryId, subCategoryId, page, limit } = req.body;
 
-    if (!categoryId || !subCategoryId) {
-      return res.status(400).json({
-        error: true,
-        success: false,
-        message: "Category and SubCategory are required",
-      });
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+
+    if (!categoryId) {
+      const firstCategory = await CategoryModel.findOne().sort({ createdAt: 1 });
+      if (!firstCategory) {
+        return res.status(404).json({
+          error: true,
+          success: false,
+          message: "No categories found",
+        });
+      }
+      categoryId = [firstCategory._id];
     }
 
-    if(!page)
-    {
-      page = 1;
-    }
-    if(!limit)
-    {
-      limit = 10;
+    if (!subCategoryId) {
+      const firstSubCategory = await SubCategoryModel.findOne().sort({ createdAt: -1 });
+      if (!firstSubCategory) {
+        return res.status(404).json({
+          error: true,
+          success: false,
+          message: "No subcategories found",
+        });
+      }
+      subCategoryId = [firstSubCategory._id];
     }
 
     const searchQuery = {
@@ -231,8 +241,8 @@ export const getProductByCategoryAndSubCategory = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const [data, totalCount] = await Promise.all([
-      ProductModel.find(searchQuery).sort({createdAt:-1}).limit(limit).skip(skip),
-      ProductModel.countDocuments(searchQuery)
+      ProductModel.find(searchQuery).sort({ createdAt: -1 }).limit(limit).skip(skip),
+      ProductModel.countDocuments(searchQuery),
     ]);
 
     res.status(200).json({
@@ -240,7 +250,7 @@ export const getProductByCategoryAndSubCategory = async (req, res) => {
       success: true,
       message: "Products retrieved successfully",
       data: data,
-      totalCount:totalCount,
+      totalCount: totalCount,
       totalPages: Math.ceil(totalCount / limit),
       limit: limit,
     });
@@ -251,4 +261,4 @@ export const getProductByCategoryAndSubCategory = async (req, res) => {
       error: true,
     });
   }
-}
+};
