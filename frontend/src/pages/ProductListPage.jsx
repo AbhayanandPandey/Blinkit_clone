@@ -5,14 +5,18 @@ import Axios from '../utils/Axios';
 import Api from '../config/Api';
 import Loading from '../components/Loading';
 import CardProduct from '../components/CardProduct';
+import { useSelector } from 'react-redux';
 
 const ProductListPage = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [totalPage, setTotalPage] = useState(1);
+  const [displaySub, setDisplaySub] = useState([]);
 
   const params = useParams();
+  const Allsubcategory = useSelector((state) => state.product.subcategory);
+
   const categoryId = params.category.split('-').slice(-1)[0];
   const subCategoryId = params.subcategory.split('-').slice(-1)[0];
 
@@ -23,9 +27,9 @@ const ProductListPage = () => {
       const response = await Axios({
         ...Api.getProductsByCategoryAndSubCategory,
         data: {
-          categoryId: categoryId,
-          subCategoryId: subCategoryId,
-          page: page,
+          categoryId,
+          subCategoryId,
+          page,
           limit: 20,
         },
       });
@@ -56,17 +60,38 @@ const ProductListPage = () => {
     fetchProductData();
   }, [page, params]);
 
+  useEffect(() => {
+    const subCategorydata = Allsubcategory.filter((s) => {
+      const filterData = s.category.some((el) => el._id === categoryId);
+      return filterData ? filterData : null;
+    });
+    setDisplaySub(subCategorydata);
+  }, [params, Allsubcategory]);
+
   return (
-    <section className="bg-white py-2 pb-4 lg:py-8 ">
+    <section className="bg-white py-2 pb-4 lg:py-8">
       <div className="max-w-screen-xl mx-auto px-2 sm:px-4 lg:px-4">
-        <div className="grid grid-cols-[120px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr] gap-3 sm:gap-4 min-h-[76vh] ">
-          <aside className="min-h-[20vh] bg-gray-100 p-2 sm:p-4 shadow-sm">
-            <div className="text-xs sm:text-sm text-gray-600">Sidebar</div>
+        <div className="grid grid-cols-[120px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr] gap-3 sm:gap-4 min-h-[79vh]">
+          <aside className="min-h-[10vh] bg-white p-2 sm:p-4 shadow-sm">
+            <div className="text-xs sm:text-sm text-gray-600 space-y-2 px-0 sm:px-2 lg:px-7">
+              {displaySub.map((s, i) => (
+                <div key={i} className=" w-full p-1 flex justify-center bg-gray-200 shadow rounded">
+                  <div>
+                    <img
+                    src={s.image}
+                    alt="subCategory"
+                    className="w-14 lg:w-22 md:w-18 mt-4 h-full object-scale-down"
+                  />
+                  </div>
+                  <p className='-mt-7 text-xs'>{s.name}</p>
+                </div>
+              ))}
+            </div>
           </aside>
 
-          <main >
+          <main>
             <div className="bg-white shadow-md rounded py-3 px-2 mb-4">
-              <h3 className="font-semibold text-xl sm:text-xl text-gray-800 capitalize">
+              <h3 className="font-semibold text-xl text-gray-800 capitalize">
                 {params.subcategory.split('-').slice(0, -1).join(' ')}
               </h3>
             </div>
