@@ -15,7 +15,7 @@ const ProductListPage = () => {
   const [displaySub, setDisplaySub] = useState([]);
 
   const params = useParams();
-  const Allsubcategory = useSelector((state) => state.product.subcategory);
+  const allSubcategories = useSelector((state) => state.product.subcategory);
 
   const categoryId = params.category.split('-').slice(-1)[0];
   const subCategoryId = params.subcategory.split('-').slice(-1)[0];
@@ -23,7 +23,6 @@ const ProductListPage = () => {
   const fetchProductData = async () => {
     try {
       setLoading(true);
-
       const response = await Axios({
         ...Api.getProductsByCategoryAndSubCategory,
         data: {
@@ -61,29 +60,31 @@ const ProductListPage = () => {
   }, [page, params]);
 
   useEffect(() => {
-    const subCategorydata = Allsubcategory.filter((s) => {
-      const filterData = s.category.some((el) => el._id === categoryId);
-      return filterData ? filterData : null;
-    });
-    setDisplaySub(subCategorydata);
-  }, [params, Allsubcategory]);
+    const subCategoryData = allSubcategories.filter((s) =>
+      s.category.some((el) => el._id === categoryId)
+    );
+    setDisplaySub(subCategoryData);
+  }, [params, allSubcategories]);
 
   return (
     <section className="bg-white py-2 pb-4 lg:py-8">
       <div className="max-w-screen-xl mx-auto px-2 sm:px-4 lg:px-4">
-        <div className="grid grid-cols-[120px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr] gap-3 sm:gap-4 min-h-[79vh]">
-          <aside className="min-h-[10vh] bg-white p-2 sm:p-4 shadow-sm">
-            <div className="text-xs sm:text-sm text-gray-600 space-y-2 px-0 sm:px-2 lg:px-7">
+        <div className="grid grid-cols-[120px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] gap-3 sm:gap-4 min-h-[79vh]">
+          <aside className="bg-white p-2 sm:p-4 border-r border-l border-gray-200">
+            <div className="flex flex-col items-center px-0 md:px-2 lg:px-4 gap-3">
               {displaySub.map((s, i) => (
-                <div key={i} className=" w-full p-1 flex justify-center bg-gray-200 shadow rounded">
-                  <div>
-                    <img
+                <div
+                  key={i}
+                  className="w-full bg-gray-100 rounded shadow flex flex-col items-center p-2 cursor-pointer"
+                >
+                  <img
                     src={s.image}
-                    alt="subCategory"
-                    className="w-14 lg:w-22 md:w-18 mt-4 h-full object-scale-down"
+                    alt={s.name}
+                    className="w-16 md:w-18 lg:w-18 h-full object-contain mb-2"
                   />
-                  </div>
-                  <p className='-mt-7 text-xs'>{s.name}</p>
+                  <p className="text-center text-xs font-medium -mt-1 text-gray-700">
+                    {s.name}
+                  </p>
                 </div>
               ))}
             </div>
