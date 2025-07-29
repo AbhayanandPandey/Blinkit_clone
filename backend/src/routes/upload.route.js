@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import isAuthenticate from '../middleware/Auth.middleware.js';
-import uploadImageController from '../controller/uploadimages.controller.js';
+import uploadImageController from '../controller/uploadImages.controller.js';
 import upload from '../middleware/multer.js';
 const uploadRouter = Router();
 
