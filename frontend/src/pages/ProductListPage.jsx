@@ -6,7 +6,6 @@ import Api from '../config/Api';
 import Loading from '../components/Loading';
 import CardProduct from '../components/CardProduct';
 import { useSelector } from 'react-redux';
-import ProductListSkeleton from '../components/ProductListSkeleton';
 
 const ProductListPage = () => {
   const [data, setData] = useState([]);
@@ -126,9 +125,10 @@ const ProductListPage = () => {
             </div>
 
             {loading && (
-              <ProductListSkeleton />
+              <div className="flex justify-center my-4">
+                <Loading />
+              </div>
             )}
-
 
             {!loading && page < totalPage && (
               <div className="flex justify-center my-6">
