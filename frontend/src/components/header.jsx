@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
 import { useState } from 'react'
 import UserMenu from './UserMenu'
-function header() {
+function Header() {
   const [isMobile] = useMobile()
   const location = useLocation()
   const navigate = useNavigate()
@@ -126,4 +126,4 @@ function header() {
   )
 }
 
-export default header
+export default <H></H>eader
