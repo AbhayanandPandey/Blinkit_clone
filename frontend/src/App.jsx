@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './components/Header.jsx';
+import Header from './components/HeaderTemp.jsx';
 import Footer from './components/Footer';
 import toast, { Toaster } from 'react-hot-toast';
 import fetchUserDetails from './utils/fetchUserDetails';
