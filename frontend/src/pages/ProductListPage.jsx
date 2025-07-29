@@ -76,24 +76,39 @@ const ProductListPage = () => {
         </div>
 
         <div className="grid grid-cols-[120px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] gap-3 sm:gap-4">
-          <aside className="custom-scroll min-h-[78vh] max-h-[calc(81vh-0px)] overflow-y-auto bg-white p-2 sm:p-4 border-r border-l border-gray-200 sticky top-24">
+          <aside className="custom-scroll min-h-[78vh] max-h-[calc(84vh-0px)] overflow-y-auto bg-white p-2 sm:p-4 border-r border-l border-gray-200 sticky top-24">
             <div className="flex flex-col items-center px-0 md:px-2 lg:px-4 gap-3">
-              {displaySub.map((s, i) => (
-                <div
-                  key={i}
-                  className="w-full bg-gray-100 rounded shadow flex flex-col items-center p-2 cursor-pointer hover:bg-gray-200 transition"
-                >
-                  <img
-                    src={s.image}
-                    alt={s.name}
-                    className="w-16 md:w-18 lg:w-18 h-full object-contain pt-3 mb-2"
-                  />
-                  <p className="text-center text-xs font-medium -mt-1 text-gray-700">
-                    {s.name}
-                  </p>
-                </div>
-              ))}
+              {displaySub.map((s, i) => {
+                const formatSlug = (str) =>
+                  str.toLowerCase().replace(/&|,/g, '').replace(/\s+/g, '-');
+
+                const categoryName = s.category[0]?.name || '';
+                const subCategoryName = s.name || '';
+                const categoryId = s.category[0]?._id || '';
+                const subCategoryIdItem = s._id;
+
+                const link = `/${formatSlug(categoryName)}-${categoryId}/${formatSlug(subCategoryName)}-${subCategoryIdItem}`;
+
+                return (
+                  <Link
+                    to={link}
+                    key={i}
+                    className={`w-full bg-gray-100 rounded shadow flex flex-col items-center p-2 cursor-pointer hover:bg-green-100 transition ${subCategoryId === subCategoryIdItem ? 'bg-green-100' : ''
+                      }`}
+                  >
+                    <img
+                      src={s.image}
+                      alt={s.name}
+                      className="w-16 md:w-18 lg:w-18 h-full object-contain pt-3 mb-2"
+                    />
+                    <p className="text-center text-xs font-medium -mt-1 text-gray-700">
+                      {s.name}
+                    </p>
+                  </Link>
+                );
+              })}
             </div>
+
           </aside>
 
           <main className="min-h-[78vh]">
