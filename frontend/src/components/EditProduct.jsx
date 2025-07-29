@@ -5,7 +5,7 @@ import { ImSpinner8 } from 'react-icons/im';
 import { MdDelete } from 'react-icons/md';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
-import uploadImage from '../utils/UploadImage';
+import uploadImage from '../utils/uploadImages';
 import AxiosToastError from '../utils/AxiosToastError';
 import toast from 'react-hot-toast';
 import ViewImage from '../components/ViewImage';

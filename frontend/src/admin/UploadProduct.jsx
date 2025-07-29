@@ -4,7 +4,7 @@ import { ImSpinner8 } from 'react-icons/im';
 import { MdOutlineDelete } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import UploadImage from '../utils/uploadImage';
+import UploadImage from '../utils/uploadImages';
 import AxiosToastError from '../utils/AxiosToastError';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';

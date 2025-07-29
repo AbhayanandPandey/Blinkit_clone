@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IoClose } from 'react-icons/io5';
-import UplaodImage from '../utils/uploadImage';
+import UplaodImage from '../utils/uploadImages';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import AxiosToastError from '../utils/AxiosToastError';

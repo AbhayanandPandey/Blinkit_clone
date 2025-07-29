@@ -3,7 +3,7 @@ import Axios from '../utils/Axios';
 import Api from '../config/Api';
 import { IoClose } from 'react-icons/io5';
 import toast from 'react-hot-toast';
-import UplaodImage from '../utils/uploadImage';
+import UplaodImage from '../utils/uploadImages';
 import AxiosToastError from '../utils/AxiosToastError';
 
 const EditCategory = ({ close, fetchData, data: CategoryData }) => {

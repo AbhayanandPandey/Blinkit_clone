@@ -1,4 +1,4 @@
-import Axios from "../utils/Axios";
+import Axios from "./Axios";
 import Api from "../config/Api";
 import toast from "react-hot-toast";
 
