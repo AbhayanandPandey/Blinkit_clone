@@ -126,4 +126,4 @@ function Header() {
   )
 }
 
-export default <H></H>eader
+export default Header 
