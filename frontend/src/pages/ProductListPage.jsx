@@ -68,24 +68,25 @@ const ProductListPage = () => {
 
   return (
     <section className="bg-white pb-4 lg:py-2">
-      <div className="max-w-screen-xl mx-auto px-2 sm:px-4 lg:px-4 py-3 pt-0 lg:pt-3"> 
+      <div className="max-w-screen-xl mx-auto px-2 sm:px-4 lg:px-4 py-3 pt-0 lg:pt-3">
         <div className="text-sm md:text-[16px] lg:text-[18px] mb-2 text-gray-700 ml-2 lg:ml-0">
           <Link to="/" className="hover:text-blue-600 font-medium transition">Home</Link>
           <span className="mx-1">/</span>
           <span className="capitalize">{params.category.split('-').slice(0, -1).join(' ')}</span>
         </div>
-        <div className="grid grid-cols-[120px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] gap-3 sm:gap-4 min-h-[79vh]">
-          <aside className="bg-white p-2 sm:p-4 border-r border-l border-gray-200">
+
+        <div className="grid grid-cols-[120px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] gap-3 sm:gap-4">
+          <aside className="custom-scroll min-h-[78vh] max-h-[calc(81vh-0px)] overflow-y-auto bg-white p-2 sm:p-4 border-r border-l border-gray-200 sticky top-24">
             <div className="flex flex-col items-center px-0 md:px-2 lg:px-4 gap-3">
               {displaySub.map((s, i) => (
                 <div
                   key={i}
-                  className="w-full bg-gray-100 rounded shadow flex flex-col items-center p-2 cursor-pointer object-scale-down"
+                  className="w-full bg-gray-100 rounded shadow flex flex-col items-center p-2 cursor-pointer hover:bg-gray-200 transition"
                 >
                   <img
                     src={s.image}
                     alt={s.name}
-                    className="w-16 md:w-18 lg:w-18 h-full object-fill pt-3 mb-2"
+                    className="w-16 md:w-18 lg:w-18 h-full object-contain pt-3 mb-2"
                   />
                   <p className="text-center text-xs font-medium -mt-1 text-gray-700">
                     {s.name}
@@ -94,7 +95,8 @@ const ProductListPage = () => {
               ))}
             </div>
           </aside>
-          <main>
+
+          <main className="min-h-[78vh]">
             <div className="bg-white shadow-md rounded md:py-3 py-2 mb-4 flex justify-between items-center md:px-6 px-2">
               <h3 className="font-semibold md:text-xl text-gray-800 capitalize">
                 {params.subcategory.split('-').slice(0, -1).join(' ')}
