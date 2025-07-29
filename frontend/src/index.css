@@ -52,3 +52,10 @@ body {
   scrollbar-width: thin;
   scrollbar-color: rgb(181, 199, 186) white;
 }
+@media (min-width: 300px) and (max-width: 700px) {
+  .custom-scroll {
+  @apply rounded;
+  scrollbar-width: none;
+  scrollbar-color: rgb(181, 199, 186) white;
+}
+}
