@@ -246,7 +246,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                                 {/* Subcategory Dropdown */}
                                 <select
                                     className="w-full bg-transparent py-2 rounded px-4 outline-none border-t border-blue-100"
-                                    defaultValue=""
+                                    vlue=""
                                     onChange={(e) => {
                                         const value = e.target.value;
                                         const subCatObj = allSubCategoryData.find((el) => el._id === value);
