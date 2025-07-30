@@ -136,11 +136,8 @@ export const deleteProduct = async (req, res) => {
 }
 
 export const updateProduct = async (req, res) => {
-  console.log("Received sub_category:");
   try {
-
-    const { productId, sub_category, ...rest } = req.body;
-    console.log("Received sub_category:", sub_category);
+    const { productId, subCategory, ...rest } = req.body;
 
     if (!productId) {
       return res.status(400).json({ success: false, message: 'Product ID is required' });
@@ -148,11 +145,9 @@ export const updateProduct = async (req, res) => {
 
     const updateData = { ...rest };
 
-    if (Array.isArray(sub_category) && sub_category.every(id => typeof id === 'string')) {
-      updateData.subCategory = sub_category;
+    if (Array.isArray(subCategory) && subCategory.every(id => typeof id === 'string')) {
+      updateData.subCategory = subCategory;
     }
-    console.log("Received sub_category:", sub_category);
-console.log("Prepared updateData:", updateData);
 
 
     const updatedProduct = await ProductModel.findByIdAndUpdate(
@@ -170,10 +165,6 @@ console.log("Prepared updateData:", updateData);
     res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
   }
 };
-
-
-
-
 
 export const getAllProductsByCategory = async (req, res) => {
   try {

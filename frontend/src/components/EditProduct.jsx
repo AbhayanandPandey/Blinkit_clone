@@ -20,7 +20,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
         ...productData,
         image: productData.image || [],
         more_details: productData.more_details || {},
-        sub_category: [],
+        subCategory: [],
     });
 
     const [loading, setLoading] = useState({ upload: false, submit: false });
@@ -29,16 +29,22 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
     const [fieldName, setFieldName] = useState('');
 
     useEffect(() => {
-        if (
-            Array.isArray(productData.sub_category) &&
-            allSubCategoryData.length > 0
-        ) {
-            const preSelected = productData.sub_category
-                .map((id) => allSubCategoryData.find((sub) => sub._id === id))
+        const shouldHydrate =
+            Array.isArray(productData.subCategory) &&
+            productData.subCategory.length > 0 &&
+            allSubCategoryData.length > 0 &&
+            form.subCategory.length === 0;
+
+        if (shouldHydrate) {
+            const hydrated = productData.subCategory
+                .map((item) =>
+                    typeof item === 'object' ? item : allSubCategoryData.find((sub) => sub._id === item)
+                )
                 .filter(Boolean);
-            setForm((prev) => ({ ...prev, sub_category: preSelected }));
+
+            setForm((prev) => ({ ...prev, subCategory: hydrated }));
         }
-    }, [allSubCategoryData, productData.sub_category]);
+    }, [productData, allSubCategoryData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -67,30 +73,30 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
         }
     };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    setLoading((prev) => ({ ...prev, submit: true }));
-    const payload = {
-        productId: form._id,
-        ...form,
-        sub_category: form.sub_category.map(s => s._id)
-      };
-      const { data } = await Axios({ ...Api.updateProduct, data: payload });
-      if (data.success) {
-        SuccessAlert(data.message);
-        fetchData();
-        close();
-      } else {
-        toast.error(data.message);
-      }
-  } catch (err) {
-    AxiosToastError(err);
-  } finally {
-    setLoading((prev) => ({ ...prev, submit: false }));
-  }
-};
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading((prev) => ({ ...prev, submit: true }));
+            const payload = {
+                productId: form._id,
+                ...form,
+                subCategory: form.subCategory.map((s) => s._id),
+            };
 
+            const { data } = await Axios({ ...Api.updateProduct, data: payload });
+            if (data.success) {
+                SuccessAlert(data.message);
+                fetchData();
+                close();
+            } else {
+                toast.error(data.message);
+            }
+        } catch (err) {
+            AxiosToastError(err);
+        } finally {
+            setLoading((prev) => ({ ...prev, submit: false }));
+        }
+    };
 
     const removeImage = (index) => {
         const newImages = [...form.image];
@@ -111,24 +117,6 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
             setAddField(false);
         }
     };
-    useEffect(() => {
-  if (
-    Array.isArray(productData.sub_category) &&
-    productData.sub_category.length > 0 &&
-    allSubCategoryData.length > 0
-  ) {
-    const hydratedSubs = productData.sub_category
-      .map((id) => allSubCategoryData.find((sub) => sub._id === id))
-      .filter(Boolean); // Remove undefined
-
-    setForm((prev) => ({
-      ...prev,
-      sub_category: hydratedSubs,
-    }));
-  }
-}, [allSubCategoryData, productData.sub_category]);
-
-
 
     return (
         <section className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
@@ -148,7 +136,6 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                             name="name"
                             value={form.name}
                             onChange={handleChange}
-                            placeholder="Product name"
                             required
                             className="w-full p-2 border border-blue-200 outline-none bg-blue-50 rounded"
                         />
@@ -160,7 +147,6 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                             name="description"
                             value={form.description}
                             onChange={handleChange}
-                            placeholder="Product description"
                             rows="3"
                             required
                             className="w-full p-2 border border-blue-200 outline-none bg-blue-50 rounded resize-none"
@@ -168,20 +154,29 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                     </div>
 
                     <div className="grid gap-1">
-                        <p className="mb-0 font-semibold text-gray-700">Images</p>
+                        <label className="font-semibold">Images</label>
                         <label htmlFor="image" className="bg-blue-50 h-28 border-2 border-dashed border-blue-300 rounded-lg flex justify-center items-center cursor-pointer hover:bg-blue-100 transition-all duration-200">
-                            <div className="text-center flex flex-col items-center justify-center text-blue-500">
-                                {loading.upload ? <ImSpinner8 className="animate-spin" size={26} /> : <><FaCloudUploadAlt size={30} /><p className="text-sm mt-1">Click to upload</p></>}
+                            <div className="text-center text-blue-500">
+                                {loading.upload ? (
+                                    <ImSpinner8 className="animate-spin mx-auto" size={26} />
+                                ) : (
+                                    <>
+                                        <FaCloudUploadAlt size={30} className="mx-auto" />
+                                        <p className="text-sm">Click to upload</p>
+                                    </>
+                                )}
                             </div>
                             <input type="file" id="image" className="hidden" accept="image/*" onChange={handleImageUpload} />
                         </label>
 
-                        {Array.isArray(form.image) && form.image.length > 0 && (
+                        {form.image?.length > 0 && (
                             <div className="mt-3 flex flex-wrap gap-4">
                                 {form.image.map((img, i) => (
-                                    <div key={img + i} className="relative h-24 w-24 border border-gray-200 rounded-md overflow-hidden group">
+                                    <div key={i} className="relative h-24 w-24 border rounded-md overflow-hidden group">
                                         <img src={img} alt={`img-${i}`} className="w-full h-full object-scale-down" onClick={() => setImageView(img)} />
-                                        <button type="button" onClick={() => removeImage(i)} className="absolute bottom-0 cursor-pointer right-1 bg-white rounded-full p-1 text-red-600 hover:text-red-800 group-hover:opacity-100 opacity-0 transition-all" title="Remove">&times;</button>
+                                        <button type="button" onClick={() => removeImage(i)} className="absolute bottom-0 right-1 bg-white rounded-full p-1 text-red-600 hover:text-red-800 group-hover:opacity-100 opacity-0 transition-all" title="Remove">
+                                            &times;
+                                        </button>
                                     </div>
                                 ))}
                             </div>
@@ -199,40 +194,36 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                                     setForm((prev) => ({
                                         ...prev,
                                         category: value,
-                                        sub_category: [],
+                                        subCategory: [],
                                     }));
                                 }}
                             >
                                 <option value="" disabled>
                                     -- Select Category --
                                 </option>
-                                {allcategoryData.map((category) => (
-                                    <option value={category._id} key={category._id}>
-                                        {category.name}
+                                {allcategoryData.map((cat) => (
+                                    <option key={cat._id} value={cat._id}>
+                                        {cat.name}
                                     </option>
                                 ))}
                             </select>
                         </div>
 
-                        <div className="grid gap-1">
-                            <label className="font-medium">Select Sub Category</label>
+                        <div>
+                            <label className="font-medium">Subcategory</label>
                             <div className="border border-blue-200 rounded">
-                                {/* Selected Subcategories as Chips */}
                                 <div className="flex flex-wrap gap-2 p-2">
-                                    {form.sub_category.map((sub) => (
-                                        <p
-                                            key={sub._id}
-                                            className="bg-white shadow-md px-2 py-1 flex items-center gap-2 rounded text-sm"
-                                        >
+                                    {form.subCategory.map((sub) => (
+                                        <p key={sub._id} className="bg-white shadow px-2 py-1 flex items-center gap-2 rounded text-sm">
                                             {sub.name}
                                             <span
+                                                className="cursor-pointer hover:text-red-600"
                                                 onClick={() =>
                                                     setForm((prev) => ({
                                                         ...prev,
-                                                        sub_category: prev.sub_category.filter((el) => el._id !== sub._id),
+                                                        subCategory: prev.subCategory.filter((el) => el._id !== sub._id),
                                                     }))
                                                 }
-                                                className="hover:text-red-600 cursor-pointer"
                                             >
                                                 <IoClose size={16} />
                                             </span>
@@ -240,17 +231,16 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                                     ))}
                                 </div>
 
-                                {/* Subcategory Dropdown */}
                                 <select
                                     className="w-full bg-transparent py-2 rounded px-4 outline-none border-t border-blue-100"
-                                    vlue=""
+                                    defaultValue=""
                                     onChange={(e) => {
                                         const value = e.target.value;
                                         const subCatObj = allSubCategoryData.find((el) => el._id === value);
-                                        if (subCatObj && !form.sub_category.some((sub) => sub._id === value)) {
+                                        if (subCatObj && !form.subCategory.some((sub) => sub._id === value)) {
                                             setForm((prev) => ({
                                                 ...prev,
-                                                sub_category: [...prev.sub_category, subCatObj],
+                                                subCategory: [...prev.subCategory, subCatObj],
                                             }));
                                         }
                                     }}
@@ -259,14 +249,20 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                                     <option value="" disabled>
                                         -- Select Sub Category --
                                     </option>
+
                                     {allSubCategoryData
                                         .filter((sub) => {
                                             const catIds = Array.isArray(sub.category)
                                                 ? sub.category.map((c) => (typeof c === 'object' ? c._id : c))
-                                                : [sub.category];
+                                                : [typeof sub.category === 'object' ? sub.category._id : sub.category];
 
-                                            return catIds.some((catId) => form.category.includes(String(catId))) &&
-                                                !form.sub_category.some((s) => s._id === sub._id);
+                                            const matchesCategory = catIds.some((catId) =>
+                                                form.category.includes(catId)
+                                            );
+
+                                            const alreadySelected = form.subCategory.some((s) => s._id === sub._id);
+
+                                            return matchesCategory && !alreadySelected;
                                         })
                                         .map((sub) => (
                                             <option key={sub._id} value={sub._id}>
@@ -278,7 +274,6 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                             </div>
                         </div>
 
-
                         <div>
                             <label className="font-medium">Unit</label>
                             <input
@@ -286,7 +281,6 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                                 name="unit"
                                 value={form.unit}
                                 onChange={handleChange}
-                                placeholder="e.g. Kg, Liter"
                                 className="w-full p-2 border border-blue-200 outline-none bg-blue-50 rounded"
                             />
                         </div>
