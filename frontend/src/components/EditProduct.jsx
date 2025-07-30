@@ -115,17 +115,22 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
         }
     };
     useEffect(() => {
-        if (Array.isArray(productData.sub_category)) {
-            const enrichedSubCategories = productData.sub_category
-                .map((id) => allSubCategoryData.find((sub) => sub._id === id))
-                .filter(Boolean);
+  if (
+    Array.isArray(productData.sub_category) &&
+    productData.sub_category.length > 0 &&
+    allSubCategoryData.length > 0
+  ) {
+    const hydratedSubs = productData.sub_category
+      .map((id) => allSubCategoryData.find((sub) => sub._id === id))
+      .filter(Boolean); // Remove undefined
 
-            setForm((prev) => ({
-                ...prev,
-                sub_category: enrichedSubCategories,
-            }));
-        }
-    }, [allSubCategoryData, productData.sub_category]);
+    setForm((prev) => ({
+      ...prev,
+      sub_category: hydratedSubs,
+    }));
+  }
+}, [allSubCategoryData, productData.sub_category]);
+
 
 
     return (
