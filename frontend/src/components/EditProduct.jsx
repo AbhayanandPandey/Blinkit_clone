@@ -67,33 +67,30 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
         }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            setLoading((prev) => ({ ...prev, submit: true }));
-            const response = await Axios({
-                ...Api.updateProduct,
-                data: {
-                    productId: form._id,
-                    ...form,
-                    sub_category: form.sub_category.map((sub) => sub._id),
-                },
-            });
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    setLoading((prev) => ({ ...prev, submit: true }));
+    const payload = {
+        productId: form._id,
+        ...form,
+        sub_category: form.sub_category.map(s => s._id)
+      };
+      const { data } = await Axios({ ...Api.updateProduct, data: payload });
+      if (data.success) {
+        SuccessAlert(data.message);
+        fetchData();
+        close();
+      } else {
+        toast.error(data.message);
+      }
+  } catch (err) {
+    AxiosToastError(err);
+  } finally {
+    setLoading((prev) => ({ ...prev, submit: false }));
+  }
+};
 
-            const { data: resData } = response;
-            if (resData.success) {
-                SuccessAlert(resData.message);
-                fetchData();
-                close();
-            } else {
-                toast.error(resData.message || 'Update failed');
-            }
-        } catch (err) {
-            AxiosToastError(err);
-        } finally {
-            setLoading((prev) => ({ ...prev, submit: false }));
-        }
-    };
 
     const removeImage = (index) => {
         const newImages = [...form.image];

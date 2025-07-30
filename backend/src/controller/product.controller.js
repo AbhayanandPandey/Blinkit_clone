@@ -136,15 +136,24 @@ export const deleteProduct = async (req, res) => {
 }
 
 export const updateProduct = async (req, res) => {
+  console.log("Received sub_category:");
   try {
-    const { productId, ...updateData } = req.body;
+
+    const { productId, sub_category, ...rest } = req.body;
+    console.log("Received sub_category:", sub_category);
 
     if (!productId) {
-      return res.status(400).json({
-        success: false,
-        message: "Product ID is required",
-      });
+      return res.status(400).json({ success: false, message: 'Product ID is required' });
     }
+
+    const updateData = { ...rest };
+
+    if (Array.isArray(sub_category) && sub_category.every(id => typeof id === 'string')) {
+      updateData.subCategory = sub_category;
+    }
+    console.log("Received sub_category:", sub_category);
+console.log("Prepared updateData:", updateData);
+
 
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       productId,
@@ -153,25 +162,18 @@ export const updateProduct = async (req, res) => {
     );
 
     if (!updatedProduct) {
-      return res.status(404).json({
-        success: false,
-        message: "Product not found",
-      });
+      return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Product updated successfully",
-      product: updatedProduct,
-    });
+    res.status(200).json({ success: true, message: 'Product updated successfully', product: updatedProduct });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
   }
 };
+
+
+
+
 
 export const getAllProductsByCategory = async (req, res) => {
   try {
@@ -184,7 +186,7 @@ export const getAllProductsByCategory = async (req, res) => {
         message: "Category ID is required",
       });
     }
-    const products = await ProductModel.find({ category: { $in : id } }).limit(15)
+    const products = await ProductModel.find({ category: { $in: id } }).limit(15)
 
 
     res.status(200).json({
