@@ -190,7 +190,8 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
   <div>
     <label className="font-medium">Category</label>
     <div className="border border-blue-200 rounded min-h-[40px]">
-      <div className="flex p-2 flex-wrap gap-2">
+      <div className="flex p-2 gap-2 overflow-x-auto whitespace-nowrap flex-nowrap scrollbar-hide">
+
         {form.category.map((catId) => {
           const category = allcategoryData.find((c) => c._id === catId);
           return (
@@ -248,7 +249,8 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
     <label className="font-medium">Subcategory</label>
     <div className="border border-blue-200 rounded">
       {/* Chips */}
-      <div className="flex flex-wrap gap-2 p-2">
+      <div className="flex p-2 gap-2 overflow-x-auto whitespace-nowrap flex-nowrap scrollbar-hide">
+
         {form.subCategory.map((sub) => (
           <span key={sub._id} className="bg-white shadow px-2 py-1 flex items-center gap-1 rounded text-sm">
             {sub.name}
