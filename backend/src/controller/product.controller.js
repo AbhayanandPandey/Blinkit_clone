@@ -137,7 +137,7 @@ export const deleteProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   try {
-    const { productId, subCategory, ...rest } = req.body;
+    const { productId, category, subCategory, ...rest } = req.body;
 
     if (!productId) {
       return res.status(400).json({ success: false, message: 'Product ID is required' });
@@ -145,10 +145,21 @@ export const updateProduct = async (req, res) => {
 
     const updateData = { ...rest };
 
-    if (Array.isArray(subCategory) && subCategory.every(id => typeof id === 'string')) {
-      updateData.subCategory = subCategory;
+    if (Array.isArray(category)) {
+      updateData.category = category;
+    } else if (typeof category === 'string') {
+      updateData.category = [category];
+    } else if (category === null || category === '') {
+      updateData.category = [];
     }
 
+    if (Array.isArray(subCategory)) {
+      updateData.subCategory = subCategory;
+    } else if (typeof subCategory === 'string') {
+      updateData.subCategory = [subCategory];
+    } else if (subCategory === null || subCategory === '') {
+      updateData.subCategory = [];
+    }
 
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       productId,
@@ -160,9 +171,17 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    res.status(200).json({ success: true, message: 'Product updated successfully', product: updatedProduct });
+    res.status(200).json({
+      success: true,
+      message: 'Product updated successfully',
+      product: updatedProduct,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
   }
 };
 

@@ -21,6 +21,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
         image: productData.image || [],
         more_details: productData.more_details || {},
         subCategory: [],
+        category: productData.category ? (Array.isArray(productData.category) ? productData.category : [productData.category]) : [],
     });
 
     const [loading, setLoading] = useState({ upload: false, submit: false });
@@ -80,6 +81,7 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
             const payload = {
                 productId: form._id,
                 ...form,
+                category: form.category,
                 subCategory: form.subCategory.map((s) => s._id),
             };
 
@@ -184,140 +186,121 @@ const EditProduct = ({ data: productData, close, fetchData }) => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="font-medium">Category</label>
-                            <select
-                                className="w-full p-2 border border-blue-200 outline-none bg-blue-50 rounded"
-                                value={form.category || ''}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    setForm((prev) => ({
-                                        ...prev,
-                                        category: value,
-                                        subCategory: [],
-                                    }));
-                                }}
-                            >
-                                <option value="" disabled>
-                                    -- Select Category --
-                                </option>
-                                {allcategoryData.map((cat) => (
-                                    <option key={cat._id} value={cat._id}>
-                                        {cat.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+  {/* Category Selection */}
+  <div>
+    <label className="font-medium">Category</label>
+    <div className="border border-blue-200 rounded min-h-[40px]">
+      <div className="flex p-2 flex-wrap gap-2">
+        {form.category.map((catId) => {
+          const category = allcategoryData.find((c) => c._id === catId);
+          return (
+            <span key={catId} className="bg-white  shadow px-2 py-1 flex items-center gap-1 rounded text-sm">
+              {category?.name}
+              <IoClose
+                className="cursor-pointer text-red-500"
+                size={16}
+                onClick={() => {
+                  const updatedCategories = form.category.filter((id) => id !== catId);
+                  const updatedSubCategories = form.subCategory.filter((sub) => {
+                    const catIds = Array.isArray(sub.category)
+                      ? sub.category.map((c) => (typeof c === 'object' ? c._id : c))
+                      : [typeof sub.category === 'object' ? sub.category._id : sub.category];
+                    return catIds.some((id) => updatedCategories.includes(id));
+                  });
 
-                        <div>
-                            <label className="font-medium">Subcategory</label>
-                            <div className="border border-blue-200 rounded">
-                                <div className="flex flex-wrap gap-2 p-2">
-                                    {form.subCategory.map((sub) => (
-                                        <p key={sub._id} className="bg-white shadow px-2 py-1 flex items-center gap-2 rounded text-sm">
-                                            {sub.name}
-                                            <span
-                                                className="cursor-pointer hover:text-red-600"
-                                                onClick={() =>
-                                                    setForm((prev) => ({
-                                                        ...prev,
-                                                        subCategory: prev.subCategory.filter((el) => el._id !== sub._id),
-                                                    }))
-                                                }
-                                            >
-                                                <IoClose size={16} />
-                                            </span>
-                                        </p>
-                                    ))}
-                                </div>
+                  setForm((prev) => ({
+                    ...prev,
+                    category: updatedCategories,
+                    subCategory: updatedSubCategories,
+                  }));
+                }}
+              />
+            </span>
+          );
+        })}
+      </div>
 
-                                <select
-                                    className="w-full bg-transparent py-2 rounded px-4 outline-none border-t border-blue-100"
-                                    defaultValue=""
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        const subCatObj = allSubCategoryData.find((el) => el._id === value);
-                                        if (subCatObj && !form.subCategory.some((sub) => sub._id === value)) {
-                                            setForm((prev) => ({
-                                                ...prev,
-                                                subCategory: [...prev.subCategory, subCatObj],
-                                            }));
-                                        }
-                                    }}
-                                    disabled={!form.category || form.category.length === 0}
-                                >
-                                    <option value="" disabled>
-                                        -- Select Sub Category --
-                                    </option>
+      <select
+        className="w-full bg-transparent py-2 px-4 border-t border-blue-100 outline-none"
+        defaultValue=""
+        onChange={(e) => {
+          const selectedId = e.target.value;
+          if (selectedId && !form.category.includes(selectedId)) {
+            setForm((prev) => ({
+              ...prev,
+              category: [...prev.category, selectedId],
+            }));
+          }
+        }}
+      >
+        <option value="" disabled>-- Select Category --</option>
+        {allcategoryData
+          .filter((cat) => !form.category.includes(cat._id))
+          .map((cat) => (
+            <option key={cat._id} value={cat._id}>{cat.name}</option>
+          ))}
+      </select>
+    </div>
+  </div>
 
-                                    {allSubCategoryData
-                                        .filter((sub) => {
-                                            const catIds = Array.isArray(sub.category)
-                                                ? sub.category.map((c) => (typeof c === 'object' ? c._id : c))
-                                                : [typeof sub.category === 'object' ? sub.category._id : sub.category];
+  {/* Subcategory Selection */}
+  <div>
+    <label className="font-medium">Subcategory</label>
+    <div className="border border-blue-200 rounded">
+      {/* Chips */}
+      <div className="flex flex-wrap gap-2 p-2">
+        {form.subCategory.map((sub) => (
+          <span key={sub._id} className="bg-white shadow px-2 py-1 flex items-center gap-1 rounded text-sm">
+            {sub.name}
+            <IoClose
+              size={16}
+              className="cursor-pointer text-red-500"
+              onClick={() =>
+                setForm((prev) => ({
+                  ...prev,
+                  subCategory: prev.subCategory.filter((el) => el._id !== sub._id),
+                }))
+              }
+            />
+          </span>
+        ))}
+      </div>
 
-                                            const matchesCategory = catIds.some((catId) =>
-                                                form.category.includes(catId)
-                                            );
+      {/* Dropdown */}
+      <select
+        className="w-full bg-transparent py-2 px-4 border-t border-blue-100 outline-none"
+        defaultValue=""
+        onChange={(e) => {
+          const selectedSubId = e.target.value;
+          const subCatObj = allSubCategoryData.find((el) => el._id === selectedSubId);
+          if (subCatObj && !form.subCategory.some((sub) => sub._id === selectedSubId)) {
+            setForm((prev) => ({
+              ...prev,
+              subCategory: [...prev.subCategory, subCatObj],
+            }));
+          }
+        }}
+        disabled={form.category.length === 0}
+      >
+        <option value="" disabled>-- Select Subcategory --</option>
+        {allSubCategoryData
+          .filter((sub) => {
+            const catIds = Array.isArray(sub.category)
+              ? sub.category.map((c) => (typeof c === 'object' ? c._id : c))
+              : [typeof sub.category === 'object' ? sub.category._id : sub.category];
 
-                                            const alreadySelected = form.subCategory.some((s) => s._id === sub._id);
+            const isMatch = catIds.some((catId) => form.category.includes(catId));
+            const alreadySelected = form.subCategory.some((s) => s._id === sub._id);
+            return isMatch && !alreadySelected;
+          })
+          .map((sub) => (
+            <option key={sub._id} value={sub._id}>{sub.name}</option>
+          ))}
+      </select>
+    </div>
+  </div>
+</div>
 
-                                            return matchesCategory && !alreadySelected;
-                                        })
-                                        .map((sub) => (
-                                            <option key={sub._id} value={sub._id}>
-                                                {sub.name}
-                                            </option>
-                                        ))}
-                                </select>
-
-                            </div>
-                        </div>
-
-                        <div>
-                            <label className="font-medium">Unit</label>
-                            <input
-                                type="text"
-                                name="unit"
-                                value={form.unit}
-                                onChange={handleChange}
-                                className="w-full p-2 border border-blue-200 outline-none bg-blue-50 rounded"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="font-medium">Stock</label>
-                            <input
-                                type="number"
-                                name="stock"
-                                value={form.stock}
-                                onChange={handleChange}
-                                className="w-full p-2 border border-blue-200 outline-none bg-blue-50 rounded"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="font-medium">Price</label>
-                            <input
-                                type="number"
-                                name="price"
-                                value={form.price}
-                                onChange={handleChange}
-                                className="w-full p-2 border border-blue-200 outline-none bg-blue-50 rounded"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="font-medium">Discount (%)</label>
-                            <input
-                                type="number"
-                                name="discount"
-                                value={form.discount}
-                                onChange={handleChange}
-                                className="w-full p-2 border border-blue-200 outline-none bg-blue-50 rounded"
-                            />
-                        </div>
-                    </div>
 
                     {Object.entries(form.more_details).map(([key, val], i) => (
                         <div key={i}>
