@@ -34,7 +34,6 @@ function Home() {
 
   return (
     <section className="bg-white">
-      <div className="w-full mx-auto px-4 py-2 pb-4">
         <div className={`w-full h-auto rounded overflow-hidden bg-blue-100 relative ${!loaded && 'animate-pulse'}`}>
           <img
             src={banner}
@@ -46,10 +45,11 @@ function Home() {
             src={bannerMobile}
             alt="banner mobile"
             onLoad={() => setLoaded(true)}
-            className={`w-full h-auto sm:hidden transition-opacity duration-500 cursor-pointer ${loaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full h-auto sm:hidden -px-4 transition-opacity duration-500 cursor-pointer ${loaded ? 'opacity-100' : 'opacity-0'}`}
           />
           {!loaded && <div className="absolute inset-0 bg-blue-100 animate-pulse" />}
         </div>
+      <div className="w-full mx-auto px-4 py-2 pb-4">
 
         <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-10 mt-6 gap-4">
           {loadingCategory ? (
