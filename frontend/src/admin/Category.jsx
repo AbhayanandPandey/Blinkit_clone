@@ -5,7 +5,7 @@ import Axios from '../utils/Axios';
 import Api from '../config/Api';
 import { MdOutlineEdit, MdOutlineDelete } from 'react-icons/md';
 import AxiosToastError from '../utils/AxiosToastError';
-import SkeletonCard from '../skeleton/SkeletonCard';
+import SkeletonCard from '../Skeleton/SkeletonCards';
 import EditCategory from '../components/EditCategory';
 import ConfirmDelete from '../components/ConfirmDelete';
 import toast from 'react-hot-toast';
