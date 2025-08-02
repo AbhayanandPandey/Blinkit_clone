@@ -6,6 +6,7 @@ import Api from '../config/Api';
 import Loading from '../components/Loading';
 import CardProduct from '../components/CardProduct';
 import { useSelector } from 'react-redux';
+import CardProductSkeleton from '../Skeleton/CardProductSkeleton';
 
 const ProductListPage = () => {
   const [data, setData] = useState([]);
@@ -119,16 +120,14 @@ const ProductListPage = () => {
             </div>
 
             <div className="p-2 grid grid-cols-1 place-items-center sm:grid-cols-2 md:grid-cols-2 three-cols-900 lg:grid-cols-4 gap-3 sm:gap-4">
-              {data.map((product, i) => (
-                <CardProduct key={product._id || i} data={product} />
-              ))}
+              {loading
+                ? Array.from({ length: 8 }).map((_, i) => (
+                  <CardProductSkeleton key={i} />
+                ))
+                : data.map((product, i) => (
+                  <CardProduct key={product._id || i} data={product} />
+                ))}
             </div>
-
-            {loading && (
-              <div className="flex justify-center my-4">
-                <Loading />
-              </div>
-            )}
 
             {!loading && page < totalPage && (
               <div className="flex justify-center my-6">
