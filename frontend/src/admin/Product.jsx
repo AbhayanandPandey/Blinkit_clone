@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AxiosToastError from '../utils/AxiosToastError';
 import Api from '../config/Api';
 import Axios from '../utils/Axios';
-import SkeletonCardProduct from '../Skeleton/skeletonCardProduct';
+import SkeletonCardProduct from '../skeleton/SkeletonCardProduct';
 import ProductCardAdmin from '../components/ProductCardAdmin';
 import NoData from '../components/NoData';
 import ConfirmDelete from '../components/ConfirmDelete';
