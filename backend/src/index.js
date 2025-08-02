@@ -3,6 +3,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
+import path from 'path';
+import __dirname from './utils.js'; // Import __dirname from utils.js
+
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
@@ -32,6 +35,7 @@ app.use(cors({
   },
   credentials: true,
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
@@ -39,17 +43,27 @@ app.use(helmet({
   contentSecurityPolicy: false,
 }));
 
-// Routes
+// ✅ API Routes
 app.use('/api/user', userRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/file', uploadRouter);
 app.use('/api/sub-category', subCategoryRouter);
 app.use('/api/product', productRouter);
 
+// ✅ Serve React frontend build (must be built)
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
+// ✅ Catch-all route to serve React Router paths
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+// });
+
+// ✅ Root API test route
 app.get('/', (req, res) => {
   res.send('Backend server is up and running');
 });
 
+// ✅ Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
@@ -58,6 +72,7 @@ app.use((err, req, res, next) => {
   });
 });
 
+// ✅ Start server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
