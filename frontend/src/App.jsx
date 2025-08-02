@@ -16,13 +16,6 @@ function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
-  // 👇 Redirect to home on reload
-  useEffect(() => {
-    if (performance.getEntriesByType('navigation')[0].type === 'reload') {
-      window.location.replace('/');
-    }
-  }, []);
-
   const fetchUser = async () => {
     try {
       const fetchUserData = await fetchUserDetails();
