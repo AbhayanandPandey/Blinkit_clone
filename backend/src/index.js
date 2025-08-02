@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
@@ -15,7 +16,11 @@ import productRouter from './routes/product.route.js';
 
 import './config/db.js';
 
+dotenv.config();
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
@@ -39,17 +44,22 @@ app.use(helmet({
   contentSecurityPolicy: false,
 }));
 
-// Routes
+// ✅ API Routes
 app.use('/api/user', userRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/file', uploadRouter);
 app.use('/api/sub-category', subCategoryRouter);
 app.use('/api/product', productRouter);
 
-app.get('/', (req, res) => {
-  res.send('Backend server is up and running');
+// ✅ Serve React frontend
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// ✅ React Router fallback: send index.html for non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
+// ✅ Error Handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
