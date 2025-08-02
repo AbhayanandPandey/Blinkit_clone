@@ -6,7 +6,7 @@ import Api from '../config/Api';
 import Loading from '../components/Loading';
 import CardProduct from '../components/CardProduct';
 import { useSelector } from 'react-redux';
-import CardProductSkeleton from '../skeleton/CardProductSkeleton';
+import CardProductSkeleton from '../Skeleton/CardProductSkeleton';
 
 const ProductListPage = () => {
   const [data, setData] = useState([]);
