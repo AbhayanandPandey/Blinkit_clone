@@ -13,18 +13,19 @@ const UserMenuMobile = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const handleLogout = async () => {
-    try {
-      const response = await Axios({ ...Api.logout });
-      if (response.data.success) {
-        dispatch(logout());
-        localStorage.clear();
-        toast.success(response.data.message);
-        navigate('/');
-      }
-    } catch (err) {
-      AxiosToastError(err);
+  try {
+    const response = await Axios({ ...Api.logout });
+    if (response.data.success) {
+      dispatch(logout());
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      toast.success(response.data.message);
+      navigate('/');
     }
-  };
+  } catch (err) {
+    AxiosToastError(err);
+  }
+};
 
   const wrapClose = (cb) => (e) => {
     cb?.(e);

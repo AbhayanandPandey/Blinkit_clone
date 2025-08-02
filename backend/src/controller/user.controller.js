@@ -243,34 +243,38 @@ export async function loginUser(req, res) {
 }
 
 export async function logoutUser(req, res) {
-    try {
-        const userid = req.userId
-        const cookieOption = {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'None'
-        }
-        res.clearCookie('accessToken', cookieOption)
-        res.clearCookie('refreshToken', cookieOption)
-        localStorage.removeItem(accessToken)
-        localStorage.removeItem(refreshToken)
+  try {
+    const userId = req.userId;
 
+    // Set cookie clearing options
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+    };
 
-        const removereRefshToken = await UserModel.findByIdAndUpdate(userid, { refresh_token: '' })
+    // ✅ Clear cookies (these are client-side)
+    res.clearCookie('accessToken', cookieOptions);
+    res.clearCookie('refreshToken', cookieOptions);
 
-        return res.status(200).json({
-            message: 'logout successfully',
-            error: false,
-            success: true
-        })
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message || error,
-            error: true,
-            success: false
-        })
-    }
+    // ✅ Remove refresh token from DB
+    await UserModel.findByIdAndUpdate(userId, { refresh_token: '' });
+
+    // ✅ Return success response
+    return res.status(200).json({
+      message: 'Logout successfully',
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
 }
+
 
 export async function updateAvatar(req, res) {
     try {
