@@ -11,7 +11,7 @@ import EditSubCategory from '../components/EditSubCategory'
 import ConfirmDelete from '../components/ConfirmDelete'
 import toast from 'react-hot-toast'
 import { createColumnHelper } from '@tanstack/react-table'
-import SkeletonCardForSubCategory from '../Skeleton/SkeletonCardForSubCategory'
+import SkeletonCardForSubCategory from '../skeleton/SkeletonCardForSubCategory'
 
 const SubCategory = () => {
   const [openAddSub, setOpenAddSub] = useState(false)
