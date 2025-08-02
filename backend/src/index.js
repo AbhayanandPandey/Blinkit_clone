@@ -51,12 +51,14 @@ app.use('/api/sub-category', subCategoryRouter);
 app.use('/api/product', productRouter);
 
 // ✅ Serve React frontend build (must be built)
-app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+// Serve static frontend
+app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 
-// ✅ Catch-all route to serve React Router paths
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
-// });
+// Catch-all to serve React Router routes
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+});
+
 
 // ✅ Root API test route
 app.get('/', (req, res) => {
