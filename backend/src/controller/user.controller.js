@@ -155,21 +155,17 @@ export async function logoutUser(req, res) {
   try {
     const userId = req.userId;
 
-    // Set cookie clearing options
     const cookieOptions = {
       httpOnly: true,
       secure: true,
       sameSite: 'None',
     };
 
-    // ✅ Clear cookies (these are client-side)
     res.clearCookie('accessToken', cookieOptions);
     res.clearCookie('refreshToken', cookieOptions);
 
-    // ✅ Remove refresh token from DB
     await UserModel.findByIdAndUpdate(userId, { refresh_token: '' });
 
-    // ✅ Return success response
     return res.status(200).json({
       message: 'Logout successfully',
       error: false,
@@ -183,7 +179,6 @@ export async function logoutUser(req, res) {
     });
   }
 }
-
 
 export async function updateAvatar(req, res) {
     try {
