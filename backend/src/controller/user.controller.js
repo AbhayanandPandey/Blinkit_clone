@@ -119,18 +119,14 @@ export async function loginUser(req, res) {
     const accessToken = await generateAccessToken(user._id);
     const refreshToken = await generateRefreshToken(user._id);
 
-    // ✅ Cookie options fix for local dev
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // false in dev (localhost)
       sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
     };
 
-    // ✅ Set cookies
     res.cookie('accessToken', accessToken, cookieOptions);
     res.cookie('refreshToken', refreshToken, cookieOptions);
 
-    // ✅ Update last login date
     await UserModel.updateOne(
       { _id: user._id },
       { $set: { last_login_date: Date.now() } }
