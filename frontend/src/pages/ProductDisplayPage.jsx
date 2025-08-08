@@ -12,7 +12,7 @@ const ProductDisplayPage = () => {
     name: '',
     image: [],
   })
-  const [image, setImage] = useState("")
+  const [image, setImage] = useState(0)
   const [loading, setLoading] = useState(false)
 
   const fetchProductDetails = async () => {
@@ -27,7 +27,6 @@ const ProductDisplayPage = () => {
       const { data: responseData } = response
       if (responseData.success) {
         setData(responseData.data)
-        setImage(responseData.data.image[0])
       }
     } catch (error) {
       AxiosToastError(error)
@@ -44,10 +43,11 @@ const ProductDisplayPage = () => {
   return (
     <section className='bg-white mx-auto p-4 grid lg:grid-cols-3 '>
       <div className='col-span-2'>
-        <div className=''>
+        <div className='bg-white rounded min-h-56 max-h-56 h-full w-full'>
           <img
-            src={image}
+            src={data.image[image]}
             alt=""
+            className='w-full h-full object-scale-down'
           />
         </div>
       </div>
