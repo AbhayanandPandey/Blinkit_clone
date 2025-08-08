@@ -1,5 +1,5 @@
-// export const baseURL = 'http://localhost:5001'
-export const baseURL = 'https://blinkit-clone-7swg.onrender.com'
+export const baseURL = 'http://localhost:5001'
+// export const baseURL = 'https://blinkit-clone-7swg.onrender.com'
 
 const Api = {
     register: {
@@ -102,6 +102,10 @@ const Api = {
         url: '/api/product/get-productbycategoryandsubcategory',
         method: 'post'
     }, 
+    getProductDetails: {
+        url: '/api/product/get-product-details',
+        method: 'post'
+    }
 }
 
 export default Api
