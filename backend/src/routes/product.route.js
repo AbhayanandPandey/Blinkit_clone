@@ -10,6 +10,6 @@ productRouter.delete('/delete-product', isAuthenticate,deleteProduct)
 productRouter.put('/update-product', isAuthenticate, updateProduct) 
 productRouter.post('/get-productbycategory',getAllProductsByCategory)
 productRouter.post('/get-productbycategoryandsubcategory', getProductByCategoryAndSubCategory)
-productRouter.post('/get-product-details', isAuthenticate,getProductDetails )
+productRouter.post('/get-product-details',getProductDetails )
 
 export default productRouter;
