@@ -67,7 +67,7 @@ const ProductDisplayPage = () => {
             {
               data.image.map((img, i) => {
                 return (
-                  <div className='md:h-35 md:w-35 lg:h-20 lg:w-20 h-20  min-h-20 min-w-20 cursor-pointer w-20 shadow  '>
+                  <div className='md:h-30 md:w-30 lg:h-20 lg:w-20 h-20  min-h-20 min-w-20 cursor-pointer w-20 shadow  '>
                     <img
                       src={img}
                       alt='dtat'
@@ -80,10 +80,9 @@ const ProductDisplayPage = () => {
               })
             }
           </div>
-
-          
         </div>
       </div>
+
       <div>
 
       </div>
