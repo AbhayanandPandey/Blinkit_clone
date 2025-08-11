@@ -51,7 +51,7 @@ const ProductDisplayPage = () => {
             className='w-full h-full object-scale-down'
           />
         </div>
-        <div className='flex items-center justify-center gap-3 '>
+        <div className='pt-2 flex items-center justify-center gap-3 '>
           {
             data.image.map((img, i) => {
               return (
