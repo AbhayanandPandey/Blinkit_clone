@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import Api from '../config/Api'
 import Axios from '../utils/Axios'
 import AxiosToastError from '../utils/AxiosToastError'
-import { FaAngleRight, FaAngleLeft } from 'react-icons/fa' 
 
 const ProductDisplayPage = () => {
   const params = useParams()
