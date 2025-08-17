@@ -103,19 +103,26 @@ const ProductDisplayPage = () => {
 
           <Divider />
 
-          <p className='mt-3'>Price</p>
-          <div className="border-2 bg-green-50 w-fit border-green-600 px-4 py-2 rounded flex items-center gap-1 ">
-            <span className="text-green-600 text-lg md:text-xl font-semibold ">₹{Math.round(discountedPrice)}</span>
-            {data.discount > 0 && (
-              <span className="text-sm line-through text-gray-500 ">₹{Math.round(data.price)}</span>
-            )}
+          <p className='mt-3 pb-1 px-0'>Price</p>
+          <div className="flex">
+            <div className="border-2 bg-green-50 w-fit border-green-600 px-4 py-2 rounded flex items-center gap-1 ">
+              <span className="text-green-600 text-lg md:text-xl font-semibold ">₹{Math.round(discountedPrice)}</span>
+              {data.discount > 0 && (
+                <span className="text-sm line-through text-gray-500 ">₹{Math.round(data.price)}</span>
+              )}
+            </div>
+            {
+              data.discount >= 1 && (
+                <div className='text-green-600 font-bold md:text-2xl text-xl p-2'>{data.discount}% <span className='text-base'>Discount</span></div>
+              )
+            }
           </div>
           {data.stock === 0 ? (
             <div>
-              <p className="text-lg text-red-500">Out of Stock</p>
+              <p className="py-2 text-lg text-red-500">Out of Stock</p>
               <button
                 disabled
-                className="my-4 px-4 py-1 bg-gray-400 text-gray-200 rounded cursor-not-allowed"
+                className="my-2 px-4 py-1 bg-gray-400 text-gray-200 rounded cursor-not-allowed"
               >
                 Add
               </button>
@@ -166,6 +173,8 @@ const ProductDisplayPage = () => {
               </div>
             </div>
           </div>
+
+          
         </div>
       </section>
     </>

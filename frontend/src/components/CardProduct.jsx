@@ -9,11 +9,11 @@ const CardProduct = ({ data }) => {
         : price;
 
     const formatSlug = str =>
-      str.toLowerCase().replace(/&|,/g, '').replace(/\s+/g, '-');
+        str.toLowerCase().replace(/&|,/g, '').replace(/\s+/g, '-');
 
     const url = `/product/${formatSlug(data.name)}-${data._id}`
 
-    const addToCart =(e)=>{
+    const addToCart = (e) => {
         e.preventDefault()
     }
 
@@ -40,11 +40,17 @@ const CardProduct = ({ data }) => {
                         <span className="text-sm line-through text-gray-500">₹{Math.round(price)}</span>
                     )}
                 </div>
-                <div className=" w-fit py-1">
-                    <button className='rounded cursor-pointer w-full bg-green-600 p-1 hover:bg-green-700 px-4 transition-all text-white' onClick={addToCart} >
-                        Add
-                    </button>
-                </div>
+                {
+                    data.stock == 0 ? (
+                        <p className='p-1 py-2 cursor-no-drop w-fit text-red-500 text-center'>Out of stock</p>
+                    ) : (
+                        <div className=" w-fit py-1">
+                            <button className='rounded cursor-pointer w-full bg-green-600 p-1 hover:bg-green-700 px-4 transition-all text-white' onClick={addToCart} >
+                                Add
+                            </button>
+                        </div>
+                    )
+                }
             </div>
         </Link >
     );
