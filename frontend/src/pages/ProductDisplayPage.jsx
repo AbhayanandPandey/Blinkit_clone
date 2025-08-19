@@ -139,6 +139,7 @@ const ProductDisplayPage = () => {
 
           <h2 className='font-semibold'>Why shop from blinkyt ?</h2>
           <div >
+
             <div className='flex items-center gap-4 my-4'>
               <img
                 src={img1}
@@ -150,6 +151,7 @@ const ProductDisplayPage = () => {
                 <p className='font-semibold'>Get your order delivered to your doorstep at the earliest from dark stores near you.</p>
               </div>
             </div>
+
             <div className='flex items-center gap-4 my-4'>
               <img
                 src={img2}
@@ -161,6 +163,7 @@ const ProductDisplayPage = () => {
                 <p className='font-semibold'>Best price destination with offers directly from the manufacturers </p>
               </div>
             </div>
+
             <div className='flex items-center gap-4 my-4'>
               <img
                 src={img3}
@@ -172,6 +175,7 @@ const ProductDisplayPage = () => {
                 <p className='font-semibold'>Choose from 5000+ product accross whole personal care, household & other category </p>
               </div>
             </div>
+            
           </div>
 
           
