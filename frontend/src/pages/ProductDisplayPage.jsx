@@ -7,7 +7,7 @@ import Divider from '../components/Divider'
 import img1 from '../assets/minute_delivery.png'
 import img2 from '../assets/Best_Prices_Offers.png'
 import img3 from '../assets/Wide_Assortment.png'
-import ProductsSkeleton from '../skeleton/ProductsSkeleton'
+import ProductsSkeleton from '../skeleton/ProductsSkeleton.jsx'
 
 
 const ProductDisplayPage = () => {
