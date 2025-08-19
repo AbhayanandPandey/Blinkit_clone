@@ -53,7 +53,7 @@ const ProductDisplayPage = () => {
   return (
     <>
       {
-        !loading ? (
+        loading ? (
           <ProductsSkeleton />
         ) : (
           <>
