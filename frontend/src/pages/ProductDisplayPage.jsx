@@ -48,7 +48,6 @@ const ProductDisplayPage = () => {
     fetchProductDetails()
   }, [params])
 
-
   console.log(data)
   return (
     <>
@@ -94,6 +93,7 @@ const ProductDisplayPage = () => {
           <div>
 
           </div>
+          
         </div>
 
         <div className='col-span-1 p-4 px-0 pt-3 lg:pt-4 lg:pl-6 text-base md:text-lg'>
@@ -135,9 +135,10 @@ const ProductDisplayPage = () => {
             </button>
           )}
 
+          <h2 className='font-semibold'>
+            Why shop from blinkyt ?
+          </h2>
 
-
-          <h2 className='font-semibold'>Why shop from blinkyt ?</h2>
           <div >
 
             <div className='flex items-center gap-4 my-4'>
@@ -175,11 +176,36 @@ const ProductDisplayPage = () => {
                 <p className='font-semibold'>Choose from 5000+ product accross whole personal care, household & other category </p>
               </div>
             </div>
-            
-          </div>
 
+          </div>
           
         </div>
+        
+      </section>
+      <section className='bg-white mx-automd:px-8 p-4 px-4 grid lg:px-8
+       '>
+        <div className='my-4 grid gap-4 text-base md:text-xl'>
+            <div>
+              <p className='font-semibold'>Description</p>
+              <p className='text-base md:text-lg'>{data.description}</p>
+            </div>
+
+            <div>
+              <p className='font-semibold'>Unit</p>
+              <p className='text-base md:text-lg'>{data.unit}</p>
+            </div>
+
+            {
+              data?.more_details && Object.keys(data?.more_details).map((e,i)=>{
+                return(
+                  <div>
+              <p className='font-semibold'>{e}</p>
+              <p className='text-base md:text-lg'>{data?.more_details[e]}</p>
+            </div>
+                )
+              })
+            }
+          </div>
       </section>
     </>
   )
