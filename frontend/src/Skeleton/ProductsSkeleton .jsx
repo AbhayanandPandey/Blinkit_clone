@@ -1,4 +1,3 @@
-// src/components/skeletons/ProductsSkeleton.jsx
 import React from "react";
 
 const ProductsSkeleton = () => {
@@ -7,7 +6,7 @@ const ProductsSkeleton = () => {
             <section className="bg-white mx-auto lg:px-8 md:px-8 p-4 px-4 grid lg:grid-cols-2 h-screen gap-6">
                 <div className="col-span-1 sticky top-0 self-start">
                     <div className="bg-gray-200 animate-pulse rounded w-full flex items-center justify-center aspect-square md:aspect-[4/3]">
-                        <div className="h-1/2 w-1/2 bg-gray-300 rounded animate-pulse"></div>
+                        
                     </div>
 
                     <div className="pt-4 flex items-center justify-center gap-3">
