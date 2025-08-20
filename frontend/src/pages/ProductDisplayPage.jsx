@@ -59,7 +59,7 @@ const ProductDisplayPage = () => {
           <>
             <section className='bg-white mx-auto lg:px-8 md:px-8 p-4 px-4 grid lg:grid-cols-2 '>
               <div className='col-span-1'>
-                <div className='bg-white lg:min-h-[60vh] lg:max-h-[60vh] md:min-h-[55vh] md:max-h-[55vh] rounded min-h-65 max-h-70 h-full w-full'>
+                <div className='bg-white lg:min-h-[60vh] lg:max-h-[60vh] md:min-h-[50vh] md:max-h-[50vh] rounded min-h-65 max-h-70 h-full w-full'>
                   <img
                     src={data.image[image]}
                     alt=""
@@ -128,14 +128,14 @@ const ProductDisplayPage = () => {
                     <p className="py-2 text-lg text-red-500">Out of Stock</p>
                     <button
                       disabled
-                      className="my-2 px-4 py-1 bg-gray-400 text-gray-200 rounded cursor-not-allowed"
+                      className="my-2 px-4 py-2 md:px-8 md:py-2 bg-gray-400 text-gray-200 rounded cursor-not-allowed"
                     >
                       Add
                     </button>
                   </div>
                 ) : (
                   <button
-                    className="my-4 px-4 py-1 bg-green-600 hover:bg-green-700 text-white rounded cursor-pointer"
+                    className="my-4 px-8 border-2 border-green-600 hover:border-green-700 md:px-8 md:py-2 py-2 bg-green-600 hover:bg-green-700 text-white rounded cursor-pointer"
                   >
                     Add
                   </button>
@@ -188,7 +188,7 @@ const ProductDisplayPage = () => {
               </div>
 
             </section>
-            <section className='bg-white mx-automd:px-8 p-4 px-4 grid lg:px-8
+            <section className='bg-white mx-auto md:px-8 p-4 px-4 grid  lg:px-8
        '>
               <div className='my-4 grid gap-4 text-base md:text-xl'>
                 <div>

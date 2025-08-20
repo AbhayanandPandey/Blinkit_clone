@@ -3,8 +3,8 @@ import React from "react";
 const ProductsSkeleton = () => {
     return (
         <>
-            <section className="bg-white mx-auto lg:px-8 md:px-8 p-4 px-4 grid lg:grid-cols-2 h-screen gap-6">
-                <div className="col-span-1 sticky top-0 self-start">
+            <section className="bg-white mx-auto lg:px-8 md:px-8 p-4 px-4 grid lg:grid-cols-2 h-fit gap-6">
+                <div className="col-span-1  top-0 self-start">
                     <div className="bg-gray-200 animate-pulse rounded w-full flex items-center justify-center aspect-square md:aspect-[4/3]">
                         
                     </div>
@@ -32,7 +32,7 @@ const ProductsSkeleton = () => {
                     </div>
                 </div>
 
-                <div className="col-span-1 p-4 px-0 pt-3 lg:pt-4 lg:pl-6 text-base md:text-lg overflow-y-auto">
+                <div className="col-span-1 p-4 px-0 pt-3 lg:pt-4 lg:pl-6 text-base md:text-lg ">
                     <div className="h-6 w-16 bg-gray-200 rounded animate-pulse mb-2"></div>
 
                     <div className="h-6 w-2/3 bg-gray-200 rounded animate-pulse mb-2"></div>
