@@ -48,8 +48,6 @@ const ProductDisplayPage = () => {
   useEffect(() => {
     fetchProductDetails()
   }, [params])
-
-  console.log(data)
   return (
     <>
       {
