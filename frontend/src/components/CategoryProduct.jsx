@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AxiosToastError from '../utils/AxiosToastError'
 import Axios from '../utils/Axios'
 import Api from '../config/Api'
@@ -7,6 +7,7 @@ import CardLoading from './CardLoading'
 import CardProduct from './CardProduct'
 // import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6'
 import { TfiAngleLeft, TfiAngleRight  } from "react-icons/tfi";
+import { useSelector } from 'react-redux'
 
 const CategoryProduct = ({ id, name }) => {
     const [data, setData] = useState([])
@@ -45,13 +46,35 @@ const CategoryProduct = ({ id, name }) => {
         }
     }
 
+    
+  const subCategoryData = useSelector(state => state.product.subcategory);
+  const navigate = useNavigate();
+
+  const handleRedirectProduct = (categoryId, categoryName) => {
+    const subcate = subCategoryData.find(sub =>
+      sub.category?.some(c => c._id === categoryId)
+    );
+
+    if (!subcate) return;
+
+    const formatSlug = str =>
+      str.toLowerCase().replace(/&|,/g, '').replace(/\s+/g, '-');
+
+    const categorySlug = `${formatSlug(categoryName)}-${categoryId}`;
+    const subcategorySlug = `${formatSlug(subcate.name)}-${subcate._id}`;
+
+    navigate(`/${categorySlug}/${subcategorySlug}`);
+  };
+
     const loadingCard = new Array(7).fill(null)
- 
+
     return (
         <div className="relative">
             <div className='mx-auto px-2 flex items-center justify-between p-4 md:mt-2 mt-2'>
                 <h3 className=' text-xl md:text-lg font-semibold '>{name}</h3>
-                <Link to='' className='text-green-600 hover:text-green-700'>See All</Link>
+                <button className='text-green-600 cursor-pointer hover:text-green-700'
+                onClick={() => handleRedirectProduct(id, name)}
+                >See All</button>
             </div>
 
             <div className='relative'>
