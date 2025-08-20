@@ -46,7 +46,7 @@ const CategoryProduct = ({ id, name }) => {
     }
 
     const loadingCard = new Array(7).fill(null)
-
+ 
     return (
         <div className="relative">
             <div className='mx-auto px-2 flex items-center justify-between p-4 md:mt-2 mt-2'>

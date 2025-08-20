@@ -1,7 +1,7 @@
 @import "tailwindcss";
 html{
   scroll-behavior: smooth;
-  width: fit-content;
+  background-color: white;
 }
 body {
    font-family: "Open Sans", sans-serif;

@@ -69,7 +69,7 @@ const ProductListPage = () => {
 
   return (
     <section className="bg-white pb-4 lg:py-2">
-      <div className="max-w-screen-xl mx-auto px-2 sm:px-4 lg:px-4 py-3 pt-0 lg:pt-3">
+      <div className="max-w-screen-xl mx-auto px-2 sm:px-4 lg:px-4 py-3 pt-0 lg:pt-3 md:min-h-[86vh] lg:max-w-screen-xl">
         <div className="text-sm md:text-[16px] lg:text-[18px] mb-2 text-gray-700 ml-2 lg:ml-0">
           <Link to="/" className="hover:text-blue-600 font-medium transition">Home</Link>
           <span className="mx-1">/</span>
