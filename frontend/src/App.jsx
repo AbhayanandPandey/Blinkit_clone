@@ -12,6 +12,7 @@ import { Outlet } from 'react-router-dom';
 import Api from './config/Api';
 import { setAllCategory, setLoadingCategory, setSubCategory } from './store/ProductSlice';
 import AxiosToastError from './utils/AxiosToastError';
+import ScrollToTop from './layouts/ScrollToTop.jsx';
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
   return (
     <>
       <Header />
+      <ScrollToTop />
       <main className="min-h-[78vh]">
         <Outlet />
       </main>
