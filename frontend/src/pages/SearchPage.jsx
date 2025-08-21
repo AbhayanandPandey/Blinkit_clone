@@ -6,6 +6,7 @@ import Axios from '../utils/Axios'
 import CardProduct from '../components/CardProduct'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useLocation } from 'react-router-dom'
+import NoDataImage from '../assets/nothing_here_yet.webp'
 
 const SearchPage = () => {
   const [data, setData] = useState([])
@@ -76,6 +77,7 @@ const SearchPage = () => {
               )
             })
           }
+          
           {
             loading && (
               loadingCard.map((_, i) => {
@@ -88,6 +90,20 @@ const SearchPage = () => {
 
         </div>
       </InfiniteScroll>
+      {
+            !data[0] && !loading && (
+              <div className='flex justify-center items-center'>
+                <div className=''>
+                <img 
+                  src={NoDataImage}
+                  alt='NoData'
+                  className='w-full h-full md:w-90 md:h-80 lg:w-120 lg:h-100'
+                />
+                <p className='text-center'>No Data Found !!!</p>
+              </div>
+              </div>
+            )
+          }
     </div>
     </section >
   )
