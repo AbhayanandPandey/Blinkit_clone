@@ -1,17 +1,80 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchSkeleton from '../Skeleton/SearchSkeleton'
+import Api from '../config/Api'
+import AxiosToastError from '../utils/AxiosToastError'
+import Axios from '../utils/Axios'
+import CardProduct from '../components/CardProduct'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 const SearchPage = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const loadingCard = new Array(12).fill(null)
+  const loadingCard = new Array(10).fill(null)
+  const [page, setPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(1)
+
+  const fetchData = async () => {
+    try {
+      setLoading(true)
+
+      const response = await Axios({
+        ...Api.searchProducts,
+        data: {
+          search: "",
+          page:page,
+        }
+      })
+
+      const { data: responseData } = response
+      if (responseData.success) {
+        if (responseData.page == 1) {
+          setData(responseData.data)
+        } else {
+          setData((preve) => {
+            return [
+              ...preve,
+              ...responseData.data
+            ]
+          })
+        }
+        setTotalPage(responseData.totalPage)
+      }
+    } catch (error) {
+      AxiosToastError(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [page])
+
+  const handleFetch = ()=>{
+    if(totalPage>page){
+      setPage(preve=> preve+1)
+    }
+  }
   return (
     <section className='bg-white lg:min-h-[79vh]  md:min-h-[81vh] min-h-[78vh]'>
       <div className=' mx-auto p-4 md:px-6'>
         <p className='font-semibold'>Search Results: {data.length}</p>
-        <div className='py-4 grid grid-cols-2 place-items-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 grid-c gap-5'>
+        <InfiniteScroll 
+          dataLength={data.length}
+          hasMore={true}
+          next={handleFetch}
+        >
+        <div className='py-4 grid grid-cols-2 place-items-center md:grid-cols-3  lg:grid-cols-4 grid-c gap-5'>
+          
           {
-            !loading && (
+            data.map((p, i) => {
+              return (
+                <CardProduct data={p} key={p._id + 'searct'} />
+              )
+            })
+          }
+          {
+            loading && (
               loadingCard.map((_, i) => {
                 return (
                   <SearchSkeleton key={i} />
@@ -21,8 +84,9 @@ const SearchPage = () => {
           }
 
         </div>
-      </div>
-    </section>
+      </InfiniteScroll>
+    </div>
+    </section >
   )
 }
 

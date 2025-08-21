@@ -309,3 +309,48 @@ export const getProductDetails = async (req, res) => {
     });
   } 
 };
+
+export const SearchProducts = async (req, res) => {
+  try {
+    let { search, page, limit } = req.body;
+
+    if(!page ) { page = 1; }
+    if(!limit) { limit = 10; }
+
+    const query = search ?{
+      $text: {
+        $search: search,
+      },
+    } : {}
+
+    const [data,dataCount] = await Promise.all([
+      ProductModel.find(query)
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .populate('category', 'subCategory'),
+      ProductModel.countDocuments(query),
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      error: false,
+      message: "Products retrieved successfully",
+      data: data,
+      page: page,
+      limit: limit,
+      count: data.length,
+      search: search || '',
+      totalCount: dataCount,
+      totalPage: Math.ceil(dataCount / limit),
+      currentPage: page,
+    });
+    
+  } catch (error) {
+     res.status(500).json({
+      success: false,
+      message: error.message || error,
+      error: true,
+    });
+  } 
+}
