@@ -10,12 +10,19 @@ const Search = () => {
     const [isFocused, setIsFocused] = useState(false);
     const [isSearch, setIsSearch] = useState(false)
     const [isMobile] = useMobile()
+    const params = useLocation()
+    const sText = params.search.slice(3)
     useEffect(() => {
         const isSearcha = location.pathname === '/search'
         setIsSearch(isSearcha)
     }, [location])
     const redToSearch = () => {
         navigae('/search')
+    }
+    const handleOnchange = (e) => {
+        const value = e.target.value
+        const url = `/search?q=${value}`
+        navigae(url)
     }
     return (
         <>
@@ -90,7 +97,9 @@ const Search = () => {
                                         onBlur={() => setIsFocused(false)}
                                         placeholder='Search for Milk Bread and more...'
                                         autoFocus
+                                        defaultValue={sText}
                                         className='bg-transparent w-full h-full outline-none'
+                                        onChange={handleOnchange}
                                     />
                                 </div>
                             )
