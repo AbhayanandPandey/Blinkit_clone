@@ -99,7 +99,7 @@ const SearchPage = () => {
                   alt='NoData'
                   className='w-full h-full md:w-90 md:h-80 lg:w-120 lg:h-100'
                 />
-                <p className='text-center'>No Data Found !!!</p>
+                <p className='text-center font-semibold'>No Data Found !!!</p>
               </div>
               </div>
             )
