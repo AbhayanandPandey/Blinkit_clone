@@ -34,6 +34,14 @@ body {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+@media (min-width:1250px) and (max-width:1824px){
+  .grid-c{
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .grid-w{
+    width: calc(var(--spacing) * 54)
+  }
+}
 .custom-scroll::-webkit-scrollbar {
   border-radius: 10px;
   width: 8px;
