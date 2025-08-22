@@ -9,6 +9,7 @@ import img2 from '../assets/Best_Prices_Offers.png'
 import img3 from '../assets/Wide_Assortment.png'
 import ProductsSkeleton from '../Skeleton/ProductsSkeletonTemp.jsx'
 import ViewImage from '../components/ViewImageTrans.jsx'  // ✅ import your modal
+import AddToCart from '../components/AddToCart.jsx'
 
 const ProductDisplayPage = () => {
   const params = useParams()
@@ -134,11 +135,10 @@ const ProductDisplayPage = () => {
                   </button>
                 </div>
               ) : (
-                <button
-                  className="my-4 px-8 border-2 border-green-600 hover:border-green-700 md:px-8 md:py-2 py-2 bg-green-600 hover:bg-green-700 text-white rounded cursor-pointer"
-                >
-                  Add
-                </button>
+                <div className='py-4'>
+                <AddToCart data={data} />
+
+                </div>
               )}
 
               <h2 className='font-semibold'>Why shop from blinkyt ?</h2>

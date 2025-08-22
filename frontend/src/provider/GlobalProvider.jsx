@@ -27,42 +27,43 @@ const GlobalProvider = ({ children }) => {
   };
 
   const handleUpdateQty = async (id, qty, oldQty) => {
-  try {
-    const response = await Axios({
-      ...Api.updateCartItem,
-      data: {
-        _id: id,
-        qty: qty
-      }
-    });
+    try {
+      const response = await Axios({
+        ...Api.updateCartItem,
+        data: {
+          _id: id,
+          qty: qty
+        }
+      });
 
-    const { data: responseData } = response;
+      const { data: responseData } = response;
 
-    if (responseData.success) {
-      if (qty > oldQty) {
-        toast.success("Item Added");
-      } else if (qty < oldQty) {
-        toast.success("Item Removed");
+      if (responseData.success) {
+        if (qty > oldQty) {
+          toast.success("Item Added");
+          fetchCartItems();
+        } else if (qty < oldQty) {
+          fetchCartItems();
+          toast.success("Item Removed");
+        }
+        fetchCartItems();
       }
-      fetchCartItems();
+    } catch (error) {
+      AxiosToastError(error);
     }
-  } catch (error) {
-    AxiosToastError(error);
-  }
-};
+  };
 
 
-  const deleteCartItem = async(cardId)=>{
+  const deleteCartItem = async (cardId) => {
     try {
       const response = await Axios({
         ...Api.deleteCartItem,
-        data:{
-          _id : cardId
+        data: {
+          _id: cardId
         }
       })
-      const {data : responseData} = response;
-      if(responseData.success)
-      {
+      const { data: responseData } = response;
+      if (responseData.success) {
         toast.success(responseData.message)
         fetchCartItems()
       }
@@ -76,8 +77,9 @@ const GlobalProvider = ({ children }) => {
   }, []);
 
   return (
-    <GlobalContext.Provider value={{ 
-      fetchCartItems,handleUpdateQty,deleteCartItem }}>
+    <GlobalContext.Provider value={{
+      fetchCartItems, handleUpdateQty, deleteCartItem
+    }}>
       {children}
     </GlobalContext.Provider>
   );

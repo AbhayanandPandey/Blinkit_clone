@@ -80,17 +80,17 @@ const AddToCart = ({ data }) => {
     <div className="relative w-full max-w-[150px]">
       {
         isAblableCaet ? (
-          <div className='flex pb-2'>
+          <div className='flex pb-2 w-full h-fit'>
             <button
               onClick={decreseQty}
-              className='bg-green-600 hover:bg-green-700 text-white px-1 py-1 rounded flex-1 w-full cursor-pointer'
+              className='bg-green-600 hover:bg-green-700 text-white px-1 py-1 rounded flex-1 w-full cursor-pointer flex items-center justify-center'
             >
               <FaMinus />
             </button>
-            <p className='flex-1 w-full font-semibold px-1'>{qty}</p>
+            <p className='flex-1 w-full font-semibold px-1 flex items-center justify-center'>{qty}</p>
             <button
               onClick={increseQty}
-              className='bg-green-600 hover:bg-green-700 text-white px-1 py-1 rounded flex-1 w-full cursor-pointer'
+              className='bg-green-600 hover:bg-green-700 text-white px-1 py-1 rounded flex-1 w-full cursor-pointer flex items-center justify-center'
             >
               <FaPlus />
             </button>
