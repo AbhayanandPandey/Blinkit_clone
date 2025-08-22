@@ -14,7 +14,9 @@ import { setAllCategory, setLoadingCategory, setSubCategory } from './store/Prod
 import AxiosToastError from './utils/AxiosToastError';
 import ScrollToTop from './layouts/ScrollToTop.jsx';
 import { handleAddItemCart } from './store/CartProduct.js';
-import GlobalProvider from './provider/GlobalProvider.jsx'
+import GlobalProvider, { useGlobal } from './provider/GlobalProvider.jsx'
+import { FaCartPlus, FaCartShopping } from 'react-icons/fa6';
+import CartMobile from './components/CartMobile.jsx';
 
 
 function App() {
@@ -77,6 +79,9 @@ function App() {
       </main>
       <Footer />
       <Toaster />
+        
+        <CartMobile />
+        
     </GlobalProvider>
   );
 }

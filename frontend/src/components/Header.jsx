@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
 import { useEffect, useState } from 'react'
 import UserMenu from './UserMenu'
+import { useGlobal } from '../provider/GlobalProvider'
 function Header() {
   const [isMobile] = useMobile()
   const location = useLocation()
@@ -15,10 +16,7 @@ function Header() {
   const user = useSelector((state) => state?.user)
   const [openUser, setOpenUser] = useState(false)
   const cartItem = useSelector(state => state.cartItem.cartProducts)
-  const [totoalPrice,setTotalPrice] = useState(0)
-  const [totalQty,setTotalQty] = useState(0)
-
-  console.log(cartItem);
+  const {totoalPrice, totalQty} = useGlobal()
 
 
   const handleLogin = () => {
@@ -36,31 +34,6 @@ function Header() {
     }
     navigate('/user')
   }
-
-  useEffect(() => {
-  const qty = cartItem.reduce(
-    (preve, cur) => preve + (cur.quantity || 0), 
-    0
-  );
-
-  const price = parseFloat(
-  cartItem.reduce(
-    (preve, cur) => 
-      preve + ((cur.productId.price - (cur.productId.price * (cur.productId.discount || 0) / 100)) * (cur.quantity || 0)), 
-    0
-  ).toFixed(2)
-);
-
-
-
-  setTotalQty(qty);
-  setTotalPrice(price);
-
-  console.log("Qty:", qty, "Price:", price);
-}, [cartItem]);
-
-
-
 
   return (
     <header className=' h-28 lg:h-20  sticky top-0 flex items-center flex-col lg:shadow  lg:pb-0 bg-white z-10'>
@@ -132,9 +105,9 @@ function Header() {
                     <button onClick={handleLogin} className='cursor-pointer text-lg px-2'> Login</button>
                   )
                 }
-                <button className='flex items-center gap-2 bg-green-700 px-3 py-2 rounded text-white cursor-pointer hover:bg-green-600'>
+                <button className='flex items-center gap-2 bg-green-700 px-3 py-1 rounded text-white cursor-pointer hover:bg-green-600'>
                   <div className='cursor-pointer animate-bounce'>
-                    <BsCart4 size={28} />
+                    <BsCart4 size={26 } />
                   </div>
                   {
                     cartItem[0] ? (
@@ -148,7 +121,7 @@ function Header() {
 
                       </div>
                     ) : (
-                      <div className='font-semibold'>
+                      <div className='font-semibold py-2'>
                         <p>My Cart</p>
                       </div>
                     )
