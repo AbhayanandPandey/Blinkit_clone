@@ -1,11 +1,12 @@
+import { request } from 'express';
 import CartProductModel from '../model/cartproduct.model.js'
 import UserModel from '../model/user.model.js'
 
 export const addToCart = async (req, res) => {
     try {
-       const userId = req.userId;
-       const { productId } = req.body;
-         if (!productId) {
+        const userId = req.userId;
+        const { productId } = req.body;
+        if (!productId) {
             return res.status(400).json({
                 error: true,
                 success: false,
@@ -23,17 +24,17 @@ export const addToCart = async (req, res) => {
         }
 
         const existingCartProduct = new CartProductModel({
-            userId : userId,
-            productId : productId,
-            quantity : 1
+            userId: userId,
+            productId: productId,
+            quantity: 1
         });
         const savedCartProduct = await existingCartProduct.save();
 
         const updateCart = await UserModel.
-        updateOne(
-            { _id: userId },
-            { $push: { shopping_cart : productId } }
-        );
+            updateOne(
+                { _id: userId },
+                { $push: { shopping_cart: productId } }
+            );
         if (!updateCart) {
             return res.status(500).json({
                 error: true,
@@ -50,7 +51,7 @@ export const addToCart = async (req, res) => {
     } catch (error) {
         res.status(500).json(
             {
-                error:true,
+                error: true,
                 success: false,
                 message: error.message || error
             });
@@ -70,9 +71,52 @@ export const getCartItems = async (req, res) => {
     } catch (error) {
         res.status(500).json(
             {
-                error:true,
+                error: true,
                 success: false,
                 message: error.message || error
             });
+    }
+}
+
+export const updateItems = async (req, res) => {
+    try {
+        const userId = request.userId;
+        const { _id, qty } = req.body;
+
+        if (!_id) {
+            res.status(400).json({
+                erroe: true,
+                success: false,
+                message: 'Cart item ID is required'
+            })
+        }
+        if (!qty || qty <= 0) {
+            res.status(400).json({
+                error: true,
+                success: false,
+                message: 'Quantity must be greater than 0'
+            })
+        }
+
+        const updatedItem = await CartProductModel.updateOne(
+            { _id: _id },
+            { quantity: qty }
+        );
+
+        return res.status(200).json(
+            {
+                error: false,
+                success: true,
+                message: 'Item added',
+                data: updatedItem
+            }
+        );
+
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            success: false,
+            message: ErrorEvent.message || erroe
+        })
     }
 }

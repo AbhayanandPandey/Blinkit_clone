@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Api from '../config/Api';
-import Axios from '../utils/Axios'
-import AxiosToastError from '../utils/AxiosToastError'
-import toast from 'react-hot-toast';
-import { useGlobal } from '../provider/GlobalProvider';
+import AddToCart from './AddToCart';
 
 const CardProduct = ({ data }) => {
     const { name, image, price, discount, unit } = data;
-    const [loading, setLoading] = useState(false)
-    const { fetchCartItems } = useGlobal()
     const discountedPrice = discount
         ? (price - price * (discount / 100)).toFixed(2)
         : price;
@@ -18,33 +12,6 @@ const CardProduct = ({ data }) => {
         str.toLowerCase().replace(/&|,/g, '').replace(/\s+/g, '-');
 
     const url = `/product/${formatSlug(data.name)}-${data._id}`
-
-    const addToCart = async (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-
-        try {
-            setLoading(true)
-            const response = await Axios({
-                ...Api.addToCart,
-                data: {
-                    productId: data?._id
-                }
-            })
-
-            const { data: responseData } = response
-            if (responseData.success) {
-                toast.success(responseData.message)
-                if (fetchCartItems) {
-                    fetchCartItems()
-                }
-            }
-        } catch (error) {
-            AxiosToastError(error)
-        } finally {
-            setLoading(false)
-        }
-    }
 
     return (
         <Link to={url} className="border border-gray-200 p-3 rounded-lg shadow-sm transition-all lg:min-w-50 md:min-w-46 min-w-46 max-w-53 w-full">
@@ -74,9 +41,7 @@ const CardProduct = ({ data }) => {
                         <p className='p-1 py-2 cursor-no-drop w-fit text-red-500 text-center'>Out of stock</p>
                     ) : (
                         <div className=" w-fit py-1">
-                            <button className='rounded cursor-pointer w-full bg-green-600 p-1 hover:bg-green-700 px-4 transition-all text-white' onClick={addToCart} >
-                                Add
-                            </button>
+                            <AddToCart data={data}  />
                         </div>
                     )
                 }
