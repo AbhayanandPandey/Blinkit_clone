@@ -83,18 +83,11 @@ export const updateItems = async (req, res) => {
         const userId = request.userId;
         const { _id, qty } = req.body;
 
-        if (!_id) {
+        if (!_id || !qty) {
             res.status(400).json({
                 erroe: true,
                 success: false,
-                message: 'Cart item ID is required'
-            })
-        }
-        if (!qty || qty <= 0) {
-            res.status(400).json({
-                error: true,
-                success: false,
-                message: 'Quantity must be greater than 0'
+                message: 'Cart item ID and quantity are required'
             })
         }
 
@@ -118,5 +111,42 @@ export const updateItems = async (req, res) => {
             success: false,
             message: ErrorEvent.message || erroe
         })
+    }
+}
+
+export const deleteCartItem = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const { _id } = req.body;
+
+        if (!_id) {
+            return res.status(400).json({
+                error: true,
+                success: false,
+                message: 'Cart item ID is required'
+            });
+        }
+
+        const deletedItem = await CartProductModel.deleteOne({ _id: _id, userId: userId });
+
+        if (deletedItem.deletedCount === 0) {
+            return res.status(404).json({
+                error: true,
+                success: false,
+                message: 'Cart item not found'
+            });
+        }
+
+        res.status(200).json({
+            error: false,
+            success: true,
+            message: 'Cart item deleted successfully'
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: true,
+            success: false,
+            message: error.message || error
+        });
     }
 }
