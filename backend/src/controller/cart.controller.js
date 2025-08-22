@@ -12,6 +12,16 @@ export const addToCart = async (req, res) => {
                 message: 'Product ID is required'
             });
         }
+
+        const checkItem = await CartProductModel.findOne({ userId: userId, productId: productId });
+        if (checkItem) {
+            return res.status(400).json({
+                error: true,
+                success: false,
+                message: 'Product already in cart'
+            });
+        }
+
         const existingCartProduct = new CartProductModel({
             userId : userId,
             productId : productId,
@@ -36,6 +46,26 @@ export const addToCart = async (req, res) => {
             success: true,
             message: 'Product added successfully',
             data: savedCartProduct
+        });
+    } catch (error) {
+        res.status(500).json(
+            {
+                error:true,
+                success: false,
+                message: error.message || error
+            });
+    }
+}
+
+export const getCartItems = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const cartItems = await CartProductModel.find({ userId: userId }).populate('productId');
+        res.status(200).json({
+            error: false,
+            success: true,
+            message: 'Cart items retrieved successfully',
+            data: cartItems
         });
     } catch (error) {
         res.status(500).json(

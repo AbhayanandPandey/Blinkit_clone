@@ -6,7 +6,7 @@ import useMobile from '../hooks/useMobile'
 import { BsCart4 } from 'react-icons/bs'
 import { useSelector } from 'react-redux'
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import UserMenu from './UserMenu'
 function Header() {
   const [isMobile] = useMobile()
@@ -14,22 +14,53 @@ function Header() {
   const navigate = useNavigate()
   const user = useSelector((state) => state?.user)
   const [openUser, setOpenUser] = useState(false)
+  const cartItem = useSelector(state => state.cartItem.cartProducts)
+  const [totoalPrice,setTotalPrice] = useState(0)
+  const [totalQty,setTotalQty] = useState(0)
+
+  console.log(cartItem);
+
 
   const handleLogin = () => {
     navigate('/login')
   }
-  const handleClose = ()=>{
+  const handleClose = () => {
     setOpenUser(false)
   }
   const isSearchPage = location.pathname === '/search'
 
-  const handleMobile =() =>{
-    if(!user.id){
+  const handleMobile = () => {
+    if (!user.id) {
       navigate('/login')
-      return 
+      return
     }
-      navigate('/user')
+    navigate('/user')
   }
+
+  useEffect(() => {
+  const qty = cartItem.reduce(
+    (preve, cur) => preve + (cur.quantity || 0), 
+    0
+  );
+
+  const price = parseFloat(
+  cartItem.reduce(
+    (preve, cur) => 
+      preve + ((cur.productId.price - (cur.productId.price * (cur.productId.discount || 0) / 100)) * (cur.quantity || 0)), 
+    0
+  ).toFixed(2)
+);
+
+
+
+  setTotalQty(qty);
+  setTotalPrice(price);
+
+  console.log("Qty:", qty, "Price:", price);
+}, [cartItem]);
+
+
+
 
   return (
     <header className=' h-28 lg:h-20  sticky top-0 flex items-center flex-col lg:shadow  lg:pb-0 bg-white z-10'>
@@ -105,9 +136,23 @@ function Header() {
                   <div className='cursor-pointer animate-bounce'>
                     <BsCart4 size={28} />
                   </div>
-                  <div className='font-semibold'>
-                    <p>My Cart</p>
-                  </div>
+                  {
+                    cartItem[0] ? (
+                      <div>
+                        <p>
+                          {totalQty} Items
+                        </p>
+                        <p>
+                          {totoalPrice} ₹
+                        </p>
+
+                      </div>
+                    ) : (
+                      <div className='font-semibold'>
+                        <p>My Cart</p>
+                      </div>
+                    )
+                  }
                 </button>
               </div>
             </div>

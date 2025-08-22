@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Api from '../config/Api';
+import Axios from '../utils/Axios'
+import AxiosToastError from '../utils/AxiosToastError'
+import toast from 'react-hot-toast';
+import { useGlobal } from '../provider/GlobalProvider';
 
 const CardProduct = ({ data }) => {
     const { name, image, price, discount, unit } = data;
-
+    const [loading, setLoading] = useState(false)
+    const { fetchCartItems } = useGlobal()
     const discountedPrice = discount
         ? (price - price * (discount / 100)).toFixed(2)
         : price;
@@ -13,8 +19,31 @@ const CardProduct = ({ data }) => {
 
     const url = `/product/${formatSlug(data.name)}-${data._id}`
 
-    const addToCart = (e) => {
+    const addToCart = async (e) => {
         e.preventDefault()
+        e.stopPropagation()
+
+        try {
+            setLoading(true)
+            const response = await Axios({
+                ...Api.addToCart,
+                data: {
+                    productId: data?._id
+                }
+            })
+
+            const { data: responseData } = response
+            if (responseData.success) {
+                toast.success(responseData.message)
+                if (fetchCartItems) {
+                    fetchCartItems()
+                }
+            }
+        } catch (error) {
+            AxiosToastError(error)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (

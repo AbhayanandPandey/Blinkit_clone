@@ -13,6 +13,8 @@ import Api from './config/Api';
 import { setAllCategory, setLoadingCategory, setSubCategory } from './store/ProductSlice';
 import AxiosToastError from './utils/AxiosToastError';
 import ScrollToTop from './layouts/ScrollToTop.jsx';
+import { handleAddItemCart } from './store/CartProduct.js';
+import GlobalProvider from './provider/GlobalProvider.jsx'
 
 
 function App() {
@@ -23,7 +25,7 @@ function App() {
     try {
       const fetchUserData = await fetchUserDetails();
       dispatch(setUserDetails(fetchUserData.data));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchCategory = async () => {
@@ -51,9 +53,14 @@ function App() {
     }
   };
 
+
   useEffect(() => {
     const loadApp = async () => {
-      await Promise.all([fetchUser(), fetchCategory(), fetchSubCategory()]);
+      await Promise.all([
+        fetchUser(),
+        fetchCategory(),
+        fetchSubCategory(),
+      ]);
       setLoading(false);
     };
     loadApp();
@@ -62,7 +69,7 @@ function App() {
   if (loading) return <FullPageLoader />;
 
   return (
-    <>
+    <GlobalProvider>
       <Header />
       <ScrollToTop />
       <main className="min-h-[78vh]">
@@ -70,7 +77,7 @@ function App() {
       </main>
       <Footer />
       <Toaster />
-    </>
+    </GlobalProvider>
   );
 }
 
