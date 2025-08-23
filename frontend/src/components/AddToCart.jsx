@@ -94,21 +94,21 @@ const AddToCart = ({ data }) => {
           <div className='flex pb-2 w-full h-fit'>
             <button
               onClick={decreseQty}
-              className='bg-green-600 hover:bg-green-700 text-white px-1 py-1 rounded flex-1 w-full cursor-pointer flex items-center justify-center'
+              className='bg-green-600 hover:bg-green-700 text-white px-1 py-2 rounded flex-1 w-full cursor-pointer flex items-center justify-center'
             >
               <FaMinus />
             </button>
             <p className='flex-1 w-full font-semibold px-1 flex items-center justify-center'>{qty}</p>
             <button
               onClick={increseQty}
-              className='bg-green-600 hover:bg-green-700 text-white px-1 py-1 rounded flex-1 w-full cursor-pointer flex items-center justify-center'
+              className='bg-green-600 hover:bg-green-700 text-white px-1 py-2 rounded flex-1 w-full cursor-pointer flex items-center justify-center'
             >
               <FaPlus />
             </button>
           </div>
         ) : (
           <button
-            className="rounded cursor-pointer w-full bg-green-600 p-1 hover:bg-green-700 px-4 transition-all text-white"
+            className="rounded cursor-pointer w-full bg-green-600 py-2 hover:bg-green-700 px-4 transition-all text-white"
             onClick={addToCart}
             disabled={loading}
           >
