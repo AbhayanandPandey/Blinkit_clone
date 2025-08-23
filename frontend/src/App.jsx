@@ -74,13 +74,13 @@ function App() {
     <GlobalProvider>
       <Header />
       <ScrollToTop />
+        <CartMobile />
       <main className="min-h-[78vh]">
         <Outlet />
       </main>
       <Footer />
       <Toaster />
         
-        <CartMobile />
         
     </GlobalProvider>
   );
