@@ -19,6 +19,7 @@ function Header() {
   const cartItem = useSelector(state => state.cartItem.cartProducts)
   const {totoalPrice, totalQty} = useGlobal()
   const [openCartSection, setOpenCartSection]  = useState(false)
+    const { fetchCartItems} = useGlobal()
 
 
   const handleLogin = () => {
@@ -36,6 +37,11 @@ function Header() {
     }
     navigate('/user')
   }
+  useEffect(()=>{
+    if(!user.id){
+      fetchCartItems()
+    }
+  },[cartItem,totoalPrice])
 
   return (
     <header className=' h-28 lg:h-20  sticky top-0 flex items-center flex-col lg:shadow  lg:pb-0 bg-white z-10'>
