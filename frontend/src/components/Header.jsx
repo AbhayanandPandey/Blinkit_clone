@@ -9,6 +9,7 @@ import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
 import { useEffect, useState } from 'react'
 import UserMenu from './UserMenu'
 import { useGlobal } from '../provider/GlobalProvider'
+import CartPageDataLg from './CartPageDataLg'
 function Header() {
   const [isMobile] = useMobile()
   const location = useLocation()
@@ -17,6 +18,7 @@ function Header() {
   const [openUser, setOpenUser] = useState(false)
   const cartItem = useSelector(state => state.cartItem.cartProducts)
   const {totoalPrice, totalQty} = useGlobal()
+  const [openCartSection, setOpenCartSection]  = useState(false)
 
 
   const handleLogin = () => {
@@ -105,7 +107,7 @@ function Header() {
                     <button onClick={handleLogin} className='cursor-pointer text-lg px-2'> Login</button>
                   )
                 }
-                <button className='flex items-center gap-2 bg-green-700 px-3 py-1 rounded text-white cursor-pointer hover:bg-green-600'>
+                <button onClick={ ()=>setOpenCartSection(true) } className='flex items-center gap-2 bg-green-700 px-3 py-1 rounded text-white cursor-pointer hover:bg-green-600'>
                   <div className='cursor-pointer animate-bounce'>
                     <BsCart4 size={26 } />
                   </div>
@@ -140,6 +142,11 @@ function Header() {
         </div>
 
       </div>
+      {
+        openCartSection && (
+          <CartPageDataLg close={()=>setOpenCartSection(false)} />
+        )
+      }
     </header>
   )
 }

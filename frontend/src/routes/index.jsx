@@ -21,7 +21,7 @@ import PrivateAdminRoute from "../routes/PrivateAdminRoute";
 import LoginSignupForgot from "./LoginSignupForgot";
 import ProductListPage from "../pages/ProductListPage";
 import ProductDisplayPage from "../pages/ProductDisplayPage";
-import CartPageData from "../pages/CartPageData";
+import CartPageDataLg from "../components/CartPageDataLg";
 
 const router = createHashRouter ([
   {
@@ -76,8 +76,8 @@ const router = createHashRouter ([
       },
       {
         path:'cart',
-        element:<CartPageData />
-      }
+        element:<CartPageDataLg />
+      },
     ],
   },
 ]);

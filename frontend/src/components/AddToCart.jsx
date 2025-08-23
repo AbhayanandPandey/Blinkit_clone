@@ -7,6 +7,7 @@ import { useGlobal } from '../provider/GlobalProvider';
 import Loading from './Loading';
 import { useSelector } from 'react-redux';
 import { FaMinus, FaPlus } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const AddToCart = ({ data }) => {
   const [loading, setLoading] = useState(false)
@@ -15,6 +16,7 @@ const AddToCart = ({ data }) => {
   const [cartItemDetails, setCartItemDetails] = useState()
   const [qty, setQty] = useState(1)
   const { fetchCartItems, handleUpdateQty, deleteCartItem } = useGlobal()
+  const navigate = useNavigate()
 
   const addToCart = async (e) => {
     e.preventDefault()
@@ -22,12 +24,14 @@ const AddToCart = ({ data }) => {
 
     try {
       setLoading(true)
+
       const response = await Axios({
         ...Api.addToCart,
         data: {
           productId: data?._id
         }
       })
+
       const { data: responseData } = response
       if (responseData.success) {
         toast.success(responseData.message)
@@ -36,7 +40,14 @@ const AddToCart = ({ data }) => {
         }
       }
     } catch (error) {
-      AxiosToastError(error)
+      if (error?.code === "ERR_NETWORK") {
+        toast.error("Server unreachable. Please try again later.");
+      } else if (error?.response?.data?.message === "invalid token") {
+        toast.error("Unable to Add, Please login first!");
+        navigate("/login");
+      } else {
+        AxiosToastError(error)
+      }
     } finally {
       setLoading(false)
     }
@@ -69,7 +80,7 @@ const AddToCart = ({ data }) => {
       if (qty === 1) {
         await deleteCartItem(cartItemDetails._id)
       } else {
-        await handleUpdateQty(cartItemDetails._id, qty - 1,qty)
+        await handleUpdateQty(cartItemDetails._id, qty - 1, qty)
       }
     } finally {
       setLoading(false)

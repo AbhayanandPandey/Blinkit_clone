@@ -27,7 +27,6 @@ const GlobalProvider = ({ children }) => {
         dispatch(handleAddItemCart(responseData.data));
       }
     } catch (error) {
-      AxiosToastError(error)
     }
   };
 
