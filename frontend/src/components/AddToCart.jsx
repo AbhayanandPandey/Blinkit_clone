@@ -108,7 +108,7 @@ const AddToCart = ({ data }) => {
           </div>
         ) : (
           <button
-            className="rounded cursor-pointer w-full bg-green-600 py-2 hover:bg-green-700 px-4 transition-all text-white"
+            className="rounded cursor-pointer w-full bg-green-600 py-2 hover:bg-green-700 px-6 text-md font-medium transition-all text-white"
             onClick={addToCart}
             disabled={loading}
           >

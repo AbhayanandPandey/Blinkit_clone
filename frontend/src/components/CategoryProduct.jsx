@@ -79,7 +79,7 @@ const CategoryProduct = ({ id, name }) => {
 
             <div className='relative'>
                 <div
-                    className='flex items-start gap-4 md:gap-6 lg:gap-5.5 mx-auto p-2 overflow-x-auto scrollbar-hide scroll-smooth'
+                    className='flex items-start gap-2 md:gap-6 lg:gap-5.5 mx-auto p-2 overflow-x-auto scrollbar-hide scroll-smooth'
                     ref={scrollRef}
 
                 >
