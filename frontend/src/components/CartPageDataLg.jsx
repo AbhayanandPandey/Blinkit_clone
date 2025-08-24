@@ -57,7 +57,6 @@ const CartPageDataLg = ({ close }) => {
 
                 <div className="flex-1 overflow-y-auto scrollbar-hidden scrollbar-hide px-3 min-h-[75vh] h-full max-h[100vh-200px] py-2">
                     {loading ? (
-                        // skeleton loader
                         Array(3).fill("").map((_, i) => (
                             <div key={i} className="flex items-center gap-3 bg-white rounded-lg p-3 shadow-sm animate-pulse">
                                 <div className="w-16 h-16 bg-gray-200 rounded" />
