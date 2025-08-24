@@ -34,6 +34,14 @@ body {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 @media (min-width:1250px) and (max-width:1824px){
   .grid-c{
     grid-template-columns: repeat(6, minmax(0, 1fr));

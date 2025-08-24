@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import { useGlobal } from "../provider/GlobalProvider";
 import { FaCaretRight } from "react-icons/fa6";
@@ -14,16 +14,28 @@ const CartPageDataLg = ({ close }) => {
     const [coupon, setCoupon] = useState("");
     const [couponDiscount, setCouponDiscount] = useState(0);
     const [showCouponBox, setShowCouponBox] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    // simulate loading when cart opens
+    useEffect(() => {
+        setLoading(true);
+        const timer = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timer);
+    }, [cartItems.length]);
 
     // handle coupon
     const applyCoupon = () => {
-        if (coupon.toLowerCase() === "new10") {
-            setCouponDiscount(200);
-            setShowCouponBox(false);
-        } else {
-            setCouponDiscount(0);
-            alert("Invalid Coupon");
-        }
+        setLoading(true);
+        setTimeout(() => {
+            if (coupon.toLowerCase() === "new10") {
+                setCouponDiscount(200);
+                setShowCouponBox(false);
+            } else {
+                setCouponDiscount(0);
+                alert("Invalid Coupon");
+            }
+            setLoading(false);
+        }, 800);
     };
 
     const finalPrice = Math.max(totoalPrice - couponDiscount, 0);
@@ -43,8 +55,21 @@ const CartPageDataLg = ({ close }) => {
                     </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto scrollbar-hidden scrollbar-hide px-3 space-y-3 py-2">
-                    {cartItems.length > 0 ? (
+                <div className="flex-1 overflow-y-auto scrollbar-hidden scrollbar-hide px-3 min-h-[75vh] h-full max-h[100vh-200px] py-2">
+                    {loading ? (
+                        // skeleton loader
+                        Array(3).fill("").map((_, i) => (
+                            <div key={i} className="flex items-center gap-3 bg-white rounded-lg p-3 shadow-sm animate-pulse">
+                                <div className="w-16 h-16 bg-gray-200 rounded" />
+                                <div className="flex-1 space-y-2">
+                                    <div className="h-4 bg-gray-200 rounded w-2/3" />
+                                    <div className="h-3 bg-gray-200 rounded w-1/3" />
+                                    <div className="h-3 bg-gray-200 rounded w-1/4" />
+                                </div>
+                                <div className="w-[90px] h-8 bg-gray-200 rounded" />
+                            </div>
+                        ))
+                    ) : cartItems.length > 0 ? (
                         cartItems.map((item, i) => {
                             const price = item?.productId?.price || 0;
                             const discount = item?.productId?.discount || 0;
@@ -83,7 +108,7 @@ const CartPageDataLg = ({ close }) => {
                                     </div>
 
                                     <div className="w-[90px] flex-shrink-0">
-                                        <AddToCart data={item.productId} />
+                                        <AddToCart data={item.productId} setLoading={setLoading} />
                                     </div>
                                 </div>
                             );
@@ -94,7 +119,7 @@ const CartPageDataLg = ({ close }) => {
                         </div>
                     )}
                     <Divider />
-                    {cartItems.length > 0 && (
+                    {cartItems.length > 0 && !loading && (
                         <div className=" bg-white">
                             <div className="px-4 py-3 space-y-2 text-sm text-gray-700">
                                 <div className="flex justify-between">
@@ -145,18 +170,15 @@ const CartPageDataLg = ({ close }) => {
                                     </div>
                                 )}
                             </div>
-
-
                         </div>
                     )}
                 </div>
 
-
                 <Divider />
                 <div className="p-3">
                     <div className="flex items-center justify-between bg-green-700 text-white p-4 font-bold rounded-lg text-lg">
-                        <span>{finalPrice} ₹</span>
-                        <button className="flex items-center gap-1 cursor-pointer hover:gap-2 transition-all">
+                        <span>{loading ? "..." : `${finalPrice} ₹`}</span>
+                        <button className="flex items-center gap-1 cursor-pointer hover:gap-2 transition-all" disabled={loading}>
                             Proceed <FaCaretRight />
                         </button>
                     </div>
@@ -167,3 +189,4 @@ const CartPageDataLg = ({ close }) => {
 };
 
 export default CartPageDataLg;
+    
