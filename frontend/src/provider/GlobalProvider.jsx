@@ -14,6 +14,7 @@ const GlobalProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [totoalPrice, setTotalPrice] = useState(0)
   const [totalQty, setTotalQty] = useState(0)
+  const [notDiscountPrice, setNotDiscountPrice] = useState(0)
   const cartItem = useSelector(state => state.cartItem.cartProducts)
 
 
@@ -85,6 +86,8 @@ const GlobalProvider = ({ children }) => {
       (preve, cur) => preve + (cur.quantity || 0),
       0
     );
+    setTotalQty(qty);
+
     const price = parseFloat(
       cartItem.reduce(
         (preve, cur) =>
@@ -92,14 +95,19 @@ const GlobalProvider = ({ children }) => {
         0
       ).toFixed(2)
     );
-    setTotalQty(qty);
     setTotalPrice(price);
+
+    const dixPrice = cartItem.reduce(
+      (preve, cur) => {
+        return preve + (cur.productId.price * cur.quantity)
+      }, 0)
+    setNotDiscountPrice(dixPrice)
   }, [cartItem]);
 
 
   return (
     <GlobalContext.Provider value={{
-      fetchCartItems, handleUpdateQty, deleteCartItem, totoalPrice, totalQty
+      fetchCartItems, handleUpdateQty, deleteCartItem, totoalPrice, totalQty, notDiscountPrice
     }}>
       {children}
     </GlobalContext.Provider>
