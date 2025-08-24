@@ -5,7 +5,7 @@ import { FaCaretRight } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import Divider from "./Divider";
 import AddToCart from "./AddToCart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";   // ✅ added useNavigate
 
 const CartPageDataLg = ({ close }) => {
     const { notDiscountPrice, totoalPrice } = useGlobal();
@@ -15,6 +15,8 @@ const CartPageDataLg = ({ close }) => {
     const [couponDiscount, setCouponDiscount] = useState(0);
     const [showCouponBox, setShowCouponBox] = useState(false);
     const [loading, setLoading] = useState(true);
+
+    const navigate = useNavigate();   // ✅ initialize navigate
 
     // simulate loading when cart opens
     useEffect(() => {
@@ -79,7 +81,18 @@ const CartPageDataLg = ({ close }) => {
                                     key={i}
                                     className="flex items-center gap-3 bg-white rounded-lg p-3 shadow-sm"
                                 >
-                                    <div className="w-16 h-16 flex-shrink-0 shadow-md rounded overflow-hidden">
+                                    {/* ✅ Make image clickable */}
+                                    <div
+                                        className="w-16 h-16 flex-shrink-0 shadow-md rounded overflow-hidden cursor-pointer"
+                                        onClick={() => {
+                                            if (window.innerWidth >= 1024) {
+                                                close(); // lg and above
+                                            }
+                                            navigate(
+                                                `/product/${item?.productId?.name?.split(" ").join("-")}-${item?.productId?._id}`
+                                            );
+                                        }}
+                                    >
                                         <img
                                             src={item?.productId?.image?.[0]}
                                             alt={item?.productId?.name}
@@ -87,24 +100,30 @@ const CartPageDataLg = ({ close }) => {
                                         />
                                     </div>
 
-                                    <div className="flex flex-col flex-1">
+                                    {/* ✅ Make name/details clickable */}
+                                    <div
+                                        className="flex flex-col flex-1 cursor-pointer"
+                                        onClick={() => {
+                                            if (window.innerWidth >= 1024) {
+                                                close(); // lg and above
+                                            }
+                                            navigate(
+                                                `/product/${item?.productId?.name?.split(" ").join("-")}-${item?.productId?._id}`
+                                            );
+                                        }}
+                                    >
                                         <p className="font-medium text-gray-800 line-clamp-1">
                                             {item?.productId?.name}
                                         </p>
                                         <div className="flex items-center gap-2 text-sm">
-                                            <span className="text-green-600 font-semibold">
-                                                {final} ₹
-                                            </span>
+                                            <span className="text-green-600 font-semibold">{final} ₹</span>
                                             {discount > 0 && (
-                                                <span className="text-gray-400 line-through text-xs">
-                                                    {price} ₹
-                                                </span>
+                                                <span className="text-gray-400 line-through text-xs">{price} ₹</span>
                                             )}
                                         </div>
-                                        <p className="text-xs text-gray-500">
-                                            Qty: {item?.quantity}
-                                        </p>
+                                        <p className="text-xs text-gray-500">Qty: {item?.quantity}</p>
                                     </div>
+
 
                                     <div className="w-[90px] flex-shrink-0">
                                         <AddToCart data={item.productId} setLoading={setLoading} />
@@ -188,4 +207,3 @@ const CartPageDataLg = ({ close }) => {
 };
 
 export default CartPageDataLg;
-    

@@ -12,7 +12,7 @@ const CartMobile = () => {
         <Link to={'/cart'}>
             <div className=' sticky lg:hidden bottom-5 z-10 '>
                 <div className="fixed bottom-10 left-1/2 -translate-x-1/2">
-                    <div className="bg-green-700 px-4 py-3 rounded-full shadow-xl flex items-center gap-5 text-neutral-100 min-w-40 sm:min-w-45 justify-center transition-all duration-300 hover:scale-105">
+                    <div className="bg-green-700 px-4 py-3 rounded-full shadow-xl flex items-center gap-5 text-neutral-100 min-w-56 max-w-64 sm:min-w-45 justify-center transition-all duration-300 hover:scale-105">
                         <div className="p-2 sm:p-3 bg-green-600 rounded-full">
                             <FaCartShopping size={22} />
                         </div>
