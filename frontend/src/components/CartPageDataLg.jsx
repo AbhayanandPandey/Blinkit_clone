@@ -55,9 +55,9 @@ const CartPageDataLg = ({ close }) => {
                     </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto scrollbar-hidden scrollbar-hide px-3 min-h-[75vh] h-full max-h[100vh-200px] py-2">
+                <div className="flex-1 overflow-y-auto scrollbar-hidden scrollbar-hide px-3 min-h-[75vh] max-h-[100vh-150px] py-2">
                     {loading ? (
-                        Array(3).fill("").map((_, i) => (
+                        Array(10).fill("").map((_, i) => (
                             <div key={i} className="flex items-center gap-3 bg-white rounded-lg p-3 shadow-sm animate-pulse">
                                 <div className="w-16 h-16 bg-gray-200 rounded" />
                                 <div className="flex-1 space-y-2">
@@ -174,7 +174,7 @@ const CartPageDataLg = ({ close }) => {
                 </div>
 
                 <Divider />
-                <div className="p-3">
+                <div className="p-3 sticky bottom-1 md:bottom-3">
                     <div className="flex items-center justify-between bg-green-700 text-white p-4 font-bold rounded-lg text-lg">
                         <span>{loading ? "..." : `${finalPrice} ₹`}</span>
                         <button className="flex items-center gap-1 cursor-pointer hover:gap-2 transition-all" disabled={loading}>
