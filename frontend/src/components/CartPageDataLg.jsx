@@ -43,7 +43,6 @@ const CartPageDataLg = ({ close }) => {
                     </button>
                 </div>
 
-                {/* Cart List (scrollable) */}
                 <div className="flex-1 overflow-y-auto scrollbar-hidden scrollbar-hide px-3 space-y-3 py-2">
                     {cartItems.length > 0 ? (
                         cartItems.map((item, i) => {
@@ -56,7 +55,6 @@ const CartPageDataLg = ({ close }) => {
                                     key={i}
                                     className="flex items-center gap-3 bg-white rounded-lg p-3 shadow-sm"
                                 >
-                                    {/* Image */}
                                     <div className="w-16 h-16 flex-shrink-0 shadow-md rounded overflow-hidden">
                                         <img
                                             src={item?.productId?.image?.[0]}
@@ -65,7 +63,6 @@ const CartPageDataLg = ({ close }) => {
                                         />
                                     </div>
 
-                                    {/* Info */}
                                     <div className="flex flex-col flex-1">
                                         <p className="font-medium text-gray-800 line-clamp-1">
                                             {item?.productId?.name}
@@ -85,7 +82,6 @@ const CartPageDataLg = ({ close }) => {
                                         </p>
                                     </div>
 
-                                    {/* AddToCart (fixed width) */}
                                     <div className="w-[90px] flex-shrink-0">
                                         <AddToCart data={item.productId} />
                                     </div>
@@ -100,7 +96,6 @@ const CartPageDataLg = ({ close }) => {
                     <Divider />
                     {cartItems.length > 0 && (
                         <div className=" bg-white">
-                            {/* Price Breakup */}
                             <div className="px-4 py-3 space-y-2 text-sm text-gray-700">
                                 <div className="flex justify-between">
                                     <span>Total (w/o discount)</span>
@@ -123,7 +118,6 @@ const CartPageDataLg = ({ close }) => {
                                 </div>
                             </div>
 
-                            {/* Coupon Option */}
                             <div className="px-4 pb-3">
                                 {!showCouponBox ? (
                                     <button
@@ -152,13 +146,11 @@ const CartPageDataLg = ({ close }) => {
                                 )}
                             </div>
 
-                            {/* Footer */}
 
                         </div>
                     )}
                 </div>
 
-                {/* Bottom Section (fixed) */}
 
                 <Divider />
                 <div className="p-3">
