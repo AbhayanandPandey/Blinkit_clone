@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import NoCartData from '../assets/empty_cart.webp'
 import SuccessAlert from "../utils/SuccessAlert";
 import ErrorAlert from "../utils/ErrorAlert";
+import toast from "react-hot-toast";
 const CartPageDataLg = ({ close }) => {
     const { notDiscountPrice, totoalPrice } = useGlobal();
     const cartItems = useSelector((state) => state.cartItem.cartProducts);
@@ -27,27 +28,44 @@ const CartPageDataLg = ({ close }) => {
 
     const applyCoupon = () => {
         setLoading(true);
-        if(totoalPrice>=400)
-        {
+        if (totoalPrice >= 400) {
             setTimeout(() => {
-            if (coupon.toLowerCase() === "new10") {
-                setCouponDiscount(200);
-                SuccessAlert('Hurray you got ₹ 200 discount')
-                setShowCouponBox(false);
-            } else {
-                setCouponDiscount(0);
-                ErrorAlert('Invalid Coupon')
-            }
+                if (coupon.toLowerCase() === "new10") {
+                    setCouponDiscount(200);
+                    SuccessAlert('Hurray you got ₹ 200 discount');
+                    setShowCouponBox(false);
+                } else {
+                    setCouponDiscount(0);
+                    ErrorAlert('Invalid Coupon');
+                }
+                setLoading(false);
+            }, 800);
+        } else {
+            setCouponDiscount(0);
+            setShowCouponBox(false);
             setLoading(false);
-        }, 800);
-        }
-        else{
-            ErrorAlert('Add items worth 400 to apply this coupon')
-            close()
+            toast.error('Add items worth ₹400 for this coupon');
         }
     };
 
+    useEffect(() => {
+        if (totoalPrice < 400) {
+            setCouponDiscount(0);
+            setShowCouponBox(false);
+        }
+    }, [totoalPrice]);
+
+    const getServiceChargeRate = (price) => {
+        if (price <= 200) return 0.085;
+        if (price > 200 && price <= 400) return 0.07;
+        if (price > 400 && price <= 1000) return 0.06;
+        return 0.05;
+    };
+
+
     const finalPrice = Math.max(totoalPrice - couponDiscount, 0);
+    const serviceCharge = finalPrice * getServiceChargeRate(finalPrice);
+    const grandTotal = finalPrice + serviceCharge;
 
     return (
         <>
@@ -177,22 +195,32 @@ const CartPageDataLg = ({ close }) => {
                                         <span>Total (w/o discount)</span>
                                         <span>{notDiscountPrice} ₹</span>
                                     </div>
+
                                     <div className="flex justify-between text-green-600">
                                         <span>Discount</span>
                                         <span>- {(notDiscountPrice - totoalPrice).toFixed(2)} ₹</span>
                                     </div>
+
                                     {couponDiscount > 0 && (
                                         <div className="flex justify-between text-blue-600">
                                             <span>Coupon Applied</span>
                                             <span>- {couponDiscount} ₹</span>
                                         </div>
                                     )}
+
+                                    <div className="flex justify-between text-orange-600">
+                                        <span>Service Charge</span>
+                                        <span>+ {serviceCharge.toFixed(2)} ₹</span>
+                                    </div>
+
                                     <Divider />
+
                                     <div className="flex justify-between font-semibold text-lg">
                                         <span>Final Amount</span>
-                                        <span>{finalPrice} ₹</span>
+                                        <span>{grandTotal.toFixed(2)} ₹</span>
                                     </div>
                                 </div>
+
 
                                 <div className="px-4 pb-3">
                                     {!showCouponBox ? (
