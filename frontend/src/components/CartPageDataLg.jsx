@@ -7,6 +7,8 @@ import Divider from "./Divider";
 import AddToCart from "./AddToCart";
 import { Link, useNavigate } from "react-router-dom";
 import NoCartData from '../assets/empty_cart.webp'
+import SuccessAlert from "../utils/SuccessAlert";
+import ErrorAlert from "../utils/ErrorAlert";
 const CartPageDataLg = ({ close }) => {
     const { notDiscountPrice, totoalPrice } = useGlobal();
     const cartItems = useSelector((state) => state.cartItem.cartProducts);
@@ -25,16 +27,24 @@ const CartPageDataLg = ({ close }) => {
 
     const applyCoupon = () => {
         setLoading(true);
-        setTimeout(() => {
+        if(totoalPrice>=400)
+        {
+            setTimeout(() => {
             if (coupon.toLowerCase() === "new10") {
                 setCouponDiscount(200);
+                SuccessAlert('Hurray you got ₹ 200 discount')
                 setShowCouponBox(false);
             } else {
                 setCouponDiscount(0);
-                alert("Invalid Coupon");
+                ErrorAlert('Invalid Coupon')
             }
             setLoading(false);
         }, 800);
+        }
+        else{
+            ErrorAlert('Add items worth 400 to apply this coupon')
+            close()
+        }
     };
 
     const finalPrice = Math.max(totoalPrice - couponDiscount, 0);
