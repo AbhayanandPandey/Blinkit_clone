@@ -59,7 +59,7 @@ const CartPageDataLg = ({ close }) => {
         if (price <= 200) return 0.085;
         if (price > 200 && price <= 400) return 0.07;
         if (price > 400 && price <= 1000) return 0.06;
-        return 0.05;
+        return 0.01;
     };
 
 
@@ -254,18 +254,23 @@ const CartPageDataLg = ({ close }) => {
                     </div>
 
 
-                    <Divider />
                     {
                         cartItems.length <= 0 ? (
-                            <div className="p-3 sticky bottom-1 md:bottom-3 cursor-no-drop ">
-                                <div className="flex items-center justify-between bg-green-200 text-white p-4 font-bold rounded-lg text-lg">
-                                    <span>{loading ? "..." : `${finalPrice} ₹`}</span>
-                                    <button className="flex items-center gap-1 cursor-no-drop transition-all" disabled>
-                                        Proceed <FaCaretRight />
-                                    </button>
+                            <>
+                                <Divider />
+
+                                <div className="p-3 sticky bottom-1 md:bottom-3 cursor-no-drop ">
+                                    <div className="flex items-center justify-between bg-green-200 text-white p-4 font-bold rounded-lg text-lg">
+                                        <span>{loading ? "..." : `${finalPrice} ₹`}</span>
+                                        <button className="flex items-center gap-1 cursor-no-drop transition-all" disabled>
+                                            Proceed <FaCaretRight />
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            </>
                         ) : (
+                            <>
+                                <Divider />
                             <div className="p-3 sticky bottom-1 md:bottom-3">
                                 <div className="flex items-center justify-between bg-green-700 text-white p-4 font-bold rounded-lg text-lg">
                                     <span>{loading ? "..." : `${finalPrice} ₹`}</span>
@@ -274,6 +279,7 @@ const CartPageDataLg = ({ close }) => {
                                     </button>
                                 </div>
                             </div>
+                            </>
                         )
                     }
 
