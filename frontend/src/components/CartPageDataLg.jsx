@@ -5,8 +5,7 @@ import { FaCaretRight } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import Divider from "./Divider";
 import AddToCart from "./AddToCart";
-import { Link, useNavigate } from "react-router-dom";   // ✅ added useNavigate
-
+import { Link, useNavigate } from "react-router-dom";  
 const CartPageDataLg = ({ close }) => {
     const { notDiscountPrice, totoalPrice } = useGlobal();
     const cartItems = useSelector((state) => state.cartItem.cartProducts);
@@ -16,16 +15,13 @@ const CartPageDataLg = ({ close }) => {
     const [showCouponBox, setShowCouponBox] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    const navigate = useNavigate();   // ✅ initialize navigate
-
-    // simulate loading when cart opens
+    const navigate = useNavigate();  
     useEffect(() => {
         setLoading(true);
         const timer = setTimeout(() => setLoading(false), 1000);
         return () => clearTimeout(timer);
     }, [cartItems.length]);
 
-    // handle coupon
     const applyCoupon = () => {
         setLoading(true);
         setTimeout(() => {
@@ -81,12 +77,11 @@ const CartPageDataLg = ({ close }) => {
                                     key={i}
                                     className="flex items-center gap-3 bg-white rounded-lg p-3 shadow-sm"
                                 >
-                                    {/* ✅ Make image clickable */}
                                     <div
                                         className="w-16 h-16 flex-shrink-0 shadow-md rounded overflow-hidden cursor-pointer"
                                         onClick={() => {
                                             if (window.innerWidth >= 1024) {
-                                                close(); // lg and above
+                                                close();
                                             }
                                             navigate(
                                                 `/product/${item?.productId?.name?.split(" ").join("-")}-${item?.productId?._id}`
@@ -100,12 +95,11 @@ const CartPageDataLg = ({ close }) => {
                                         />
                                     </div>
 
-                                    {/* ✅ Make name/details clickable */}
                                     <div
                                         className="flex flex-col flex-1 cursor-pointer"
                                         onClick={() => {
                                             if (window.innerWidth >= 1024) {
-                                                close(); // lg and above
+                                                close(); 
                                             }
                                             navigate(
                                                 `/product/${item?.productId?.name?.split(" ").join("-")}-${item?.productId?._id}`
