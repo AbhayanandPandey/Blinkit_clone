@@ -18,6 +18,7 @@ const CartPageDataLg = ({ close }) => {
     const [couponDiscount, setCouponDiscount] = useState(0);
     const [showCouponBox, setShowCouponBox] = useState(false);
     const [loading, setLoading] = useState(true);
+    const user = useSelector(state => state.user)
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -47,6 +48,17 @@ const CartPageDataLg = ({ close }) => {
             toast.error('Add items worth ₹400 for this coupon');
         }
     };
+
+    const handleCheckOut = () => {
+        if (user.id) {
+            navigate('/checkout')
+            if (close) {
+                close()
+            }
+            return
+        }
+        toast.error('please login')
+    }
 
     useEffect(() => {
         if (totoalPrice < 400) {
@@ -271,14 +283,14 @@ const CartPageDataLg = ({ close }) => {
                         ) : (
                             <>
                                 <Divider />
-                            <div className="p-3 sticky bottom-1 md:bottom-3">
-                                <div className="flex items-center justify-between bg-green-700 text-white p-4 font-bold rounded-lg text-lg">
-                                    <span>{loading ? "..." : `${finalPrice} ₹`}</span>
-                                    <button className="flex items-center gap-1 cursor-pointer hover:gap-2 transition-all" disabled={loading}>
-                                        Proceed <FaCaretRight />
-                                    </button>
+                                <div className="p-3 sticky bottom-1 md:bottom-3">
+                                    <div className="flex items-center justify-between bg-green-700 text-white p-4 font-bold rounded-lg text-lg">
+                                        <span>{loading ? "..." : `${finalPrice} ₹`}</span>
+                                        <button className="flex items-center gap-1 cursor-pointer hover:gap-2 transition-all" disabled={loading} onClick={handleCheckOut} >
+                                            Proceed <FaCaretRight />
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
                             </>
                         )
                     }

@@ -22,6 +22,7 @@ import LoginSignupForgot from "./LoginSignupForgot";
 import ProductListPage from "../pages/ProductListPage";
 import ProductDisplayPage from "../pages/ProductDisplayPage";
 import CartPageDataLg from "../components/CartPageDataLg";
+import CheckOutPage from "../pages/CheckOutPage";
 
 const router = createHashRouter ([
   {
@@ -78,6 +79,10 @@ const router = createHashRouter ([
         path:'cart',
         element:<CartPageDataLg />
       },
+      {
+        path:'checkout',
+        element:<CheckOutPage />
+      }
     ],
   },
 ]);
