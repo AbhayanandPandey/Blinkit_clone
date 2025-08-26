@@ -207,22 +207,27 @@ const CartPageDataLg = ({ close }) => {
                                         <span>Total (w/o discount)</span>
                                         <span>{notDiscountPrice} ₹</span>
                                     </div>
+                                    <div className="flex justify-between">
+                                        <span>Total Items</span>
+                                        <span>
+                                            {cartItems?.reduce((total, item) => total + item.quantity, 0) } items
+                                        </span>
+                                    </div>
 
                                     <div className="flex justify-between text-green-600">
                                         <span>Discount</span>
                                         <span>- {(notDiscountPrice - totoalPrice).toFixed(2)} ₹</span>
                                     </div>
 
-                                    {couponDiscount > 0 && (
-                                        <div className="flex justify-between text-blue-600">
-                                            <span>Coupon Applied</span>
-                                            <span>- {couponDiscount} ₹</span>
-                                        </div>
-                                    )}
+                                    
 
                                     <div className="flex justify-between text-orange-600">
                                         <span>Service Charge</span>
                                         <span>+ {serviceCharge.toFixed(2)} ₹</span>
+                                    </div>
+                                    <div className="flex justify-between text-neutral-700-600">
+                                        <span>Deliery Charge</span>
+                                        <span>Free</span>
                                     </div>
 
                                     <Divider />
@@ -285,7 +290,7 @@ const CartPageDataLg = ({ close }) => {
                                 <Divider />
                                 <div className="p-3 sticky bottom-1 md:bottom-3">
                                     <div className="flex items-center justify-between bg-green-700 text-white p-4 font-bold rounded-lg text-lg">
-                                        <span>{loading ? "..." : `${finalPrice} ₹`}</span>
+                                        <span>{loading ? "..." : `${(finalPrice + serviceCharge).toFixed(2) } ₹`}</span>
                                         <button className="flex items-center gap-1 cursor-pointer hover:gap-2 transition-all" disabled={loading} onClick={handleCheckOut} >
                                             Proceed <FaCaretRight />
                                         </button>
