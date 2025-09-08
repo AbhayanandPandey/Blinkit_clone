@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useGlobal } from "../provider/GlobalProvider";
 import Divider from "../components/Divider";
+import AddAddress from "./AddAddress";
 
 const CheckOutPage = () => {
   const { notDiscountPrice, totoalPrice } = useGlobal();
@@ -17,6 +18,8 @@ const CheckOutPage = () => {
     return 0.01;
   };
 
+  const [openAddress,setOpenAddress] = useState(false)
+
   const serviceCharge = finalPrice * getServiceChargeRate(finalPrice);
   const grandTotal = finalPrice + serviceCharge;
 
@@ -28,7 +31,7 @@ const CheckOutPage = () => {
           <h3 className="text-xl font-semibold text-gray-800">
             Choose your address
           </h3>
-          <div className="h-16 mt-6 border-2 border-dashed border-gray-300 rounded-xl flex justify-center items-center cursor-pointer hover:border-blue-500 transition">
+          <div onClick={ () => setOpenAddress(true) } className="h-16 mt-6 border-2 border-dashed border-gray-300 rounded-xl flex justify-center items-center cursor-pointer hover:border-blue-500 transition">
             <span className="text-blue-600 font-medium">+ Add Address</span>
           </div>
         </div>
@@ -85,6 +88,12 @@ const CheckOutPage = () => {
           </div>
         </div>
       </div>
+
+      {
+        openAddress && (
+          <AddAddress close={ () => setOpenAddress(false) } />
+        )
+      }
     </section>
   );
 };
