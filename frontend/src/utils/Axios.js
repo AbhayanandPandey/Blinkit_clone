@@ -6,7 +6,6 @@ const Axios = axios.create({
     withCredentials: true,
 });
 
-// ✅ Request interceptor
 Axios.interceptors.request.use(
     async (config) => {
         const accessToken = localStorage.getItem('accessToken');
@@ -18,7 +17,6 @@ Axios.interceptors.request.use(
     (err) => Promise.reject(err)
 );
 
-// ❌ you had request.use again, changing it to response interceptor
 Axios.interceptors.response.use(
     (res) => res,
     async (error) => {
@@ -44,7 +42,6 @@ Axios.interceptors.response.use(
     }
 );
 
-// ✅ function stays, but improve error handling
 const refreshAccessToken = async (refreshToken) => {
     try {
         const response = await Axios({
