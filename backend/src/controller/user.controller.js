@@ -461,46 +461,42 @@ export async function refreshToken(req, res) {
                 message: 'Invalid token, access denied',
                 error: true,
                 success: false
-            });
+            })
         }
-
-        const checkToken = await jwt.verify(reftoken, process.env.SECRET_KEY_REFRESH);
+        const checkToken = await jwt.verify(reftoken, process.env.SECRET_KEY_REFRESH)
         if (!checkToken) {
             return res.status(401).json({
-                message: 'Token expired',
+                message: 'token expired',
                 error: true,
                 success: false
-            });
+            })
         }
+        const userId = checkToken?._id;
+        const newAccessToken = await generateAccessToken(userId)
 
-        // ✅ fix: use "id" not "_id"
-        const userId = checkToken.id;  
-
-        const newAccessToken = await generateAccessToken(userId);
-
-        const cookieOption = {
+        const cookieOption =
+        {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax"
-        };
-
-        res.cookie('accessToken', newAccessToken, cookieOption);
+            secure: true,
+            sameSite: 'None'
+        }
+        res.cookie('accessToken', newAccessToken, cookieOption)
 
         return res.json({
-            message: 'New access token generated',
+            message: 'new access token generated',
             error: false,
             success: true,
             data: {
                 accessToken: newAccessToken
             }
-        });
+        })
 
     } catch (error) {
         return res.status(500).json({
             message: error.message || error,
             error: true,
             success: false
-        });
+        })
     }
 }
 
