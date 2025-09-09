@@ -5,9 +5,12 @@ import AxiosToastError from '../utils/AxiosToastError'
 import Axios from '../utils/Axios'
 import Api from '../config/Api'
 import toast from 'react-hot-toast'
+import { useGlobal } from '../provider/GlobalProvider'
 
 const AddAddress = ({ close }) => {
     const { register, handleSubmit, reset } = useForm()
+
+    const { fetchAddress } = useGlobal()
 
     const onSubmit = async (formData) => {
         try {
@@ -29,6 +32,7 @@ const AddAddress = ({ close }) => {
                 if (close) {
                     close()
                     reset()
+                    fetchAddress()
                 }
             }
         } catch (error) {

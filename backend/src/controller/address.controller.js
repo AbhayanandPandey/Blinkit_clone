@@ -47,15 +47,85 @@ export const getAddress = async (req, res) => {
     try {
         const userId = req.userId;
 
-        const user = await userModel.findById(userId).populate('address_details');
+        const data = await AddressModel.find({ userId: userId }).sort({ createdAt: -1 });
+        return res.status(200).json({
+            message: "Address fetched Successfully",
+            data: data,
+            error: false,
+            success: true
+        });
+    } catch (error) {
+        return res.status(500).json(
+            {
+                message: error.message || error,
+                error: true,
+                success: false
+            });
+    }
+}
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
+export const deleteAddress = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const { _id } = req.body;
+
+        if (!_id) {
+            return res.status(400).json({ message: "Address ID is required" });
         }
 
+        const address = await AddressModel.findOne({ _id: _id, userId: userId });
+        if (!address) {
+            return res.status(404).json({ message: "Address not found" });
+        }
+
+        await AddressModel.deleteOne({ _id: _id, userId: userId });
+
+        await userModel.updateOne(
+            { _id: userId },
+            { $pull: { address_details: _id } }
+        );
+
         return res.status(200).json({
-            message: "Address fetched successfully",
-            addresses: user.address_details,
+            message: "Address deleted Successfully",
+            error: false,
+            success: true
+        });
+    } catch (error) {
+        return res.status(500).json(
+            {
+                message: error.message || error,
+                error: true,
+                success: false
+            });
+    }
+}
+
+export const updateAddress = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const { _id, address_line, city, state, pincode, country, mobile } = req.body;
+
+        if (!_id || !address_line || !city || !state || !pincode || !country || !mobile) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const address = await AddressModel.findOne({ _id: _id, userId: userId });
+        if (!address) {
+            return res.status(404).json({ message: "Address not found" });
+        }
+
+        address.address_line = address_line;
+        address.city = city;
+        address.state = state;
+        address.pincode = pincode;
+        address.country = country;
+        address.mobile = mobile;
+
+        const updatedAddress = await address.save();
+
+        return res.status(200).json({
+            message: "Address updated Successfully",
+            data: updatedAddress,
             error: false,
             success: true
         });

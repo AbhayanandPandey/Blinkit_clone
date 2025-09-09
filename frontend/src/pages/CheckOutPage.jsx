@@ -18,25 +18,49 @@ const CheckOutPage = () => {
     return 0.01;
   };
 
-  const [openAddress,setOpenAddress] = useState(false)
+  const addressList = useSelector(state => state.addresses.addressList)
+  console.log(addressList);
+
+  const [openAddress, setOpenAddress] = useState(false)
 
   const serviceCharge = finalPrice * getServiceChargeRate(finalPrice);
   const grandTotal = finalPrice + serviceCharge;
 
+  
+
   return (
     <section className="bg-white min-h-screen lg:py-8 px-4 sm:px-6 lg:px-12">
       <div className="max-w-8xl mx-auto lg:flex lg:gap-15 justify-between w-full">
-        
+
         <div className="lg:w-[60%] bg-white  rounded-2xl lg:p-6">
           <h3 className="text-xl font-semibold text-gray-800">
             Choose your address
           </h3>
-          <div onClick={ () => setOpenAddress(true) } className="h-16 mt-6 border-2 border-dashed border-gray-300 rounded-xl flex justify-center items-center cursor-pointer hover:border-blue-500 transition">
+
+          <div className="mt-4 grid gap-4">
+            {addressList.map((a, i) => {
+              return (
+                <div
+                  key={a._id || i}
+                  className="shadow-md rounded-xl bg-white px-5 py-4 border border-gray-200 
+                   hover:border-blue-100 hover:shadow-lg transition-all cursor-pointer"
+                >
+                  <p className="font-semibold text-gray-800">{a.address_line}</p>
+                  <p className="text-gray-600">{a.city}, {a.state}</p>
+                  <p className="text-gray-600">{a.country} - {a.pincode}</p>
+                  <p className="text-sm text-gray-500">Mobile: {a.mobile}</p>
+                </div>
+              );
+            })}
+          </div>
+
+
+          <div onClick={() => setOpenAddress(true)} className="h-16 mt-6 border-2 border-dashed border-gray-300 rounded-xl flex justify-center items-center cursor-pointer hover:border-blue-500 transition">
             <span className="text-blue-600 font-medium">+ Add Address</span>
           </div>
         </div>
 
-        <div className="lg:w-[40%] mt-6 lg:mt-0 bg-white shadow-lg rounded-2xl p-6">
+        <div className="lg:w-[40%] mt-6 bg-white shadow-lg rounded-2xl p-6 lg:h-fit lg:mt-15">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">
             Order Summary
           </h3>
@@ -91,7 +115,7 @@ const CheckOutPage = () => {
 
       {
         openAddress && (
-          <AddAddress close={ () => setOpenAddress(false) } />
+          <AddAddress close={() => setOpenAddress(false)} />
         )
       }
     </section>
