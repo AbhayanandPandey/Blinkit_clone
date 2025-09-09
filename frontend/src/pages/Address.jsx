@@ -10,7 +10,6 @@ const Address = () => {
   const [openAddress, setOpenAddress] = useState(false);
 
   useEffect(() => {
-    // fetch addresses when page loads
     fetchAddress();
   }, [dispatch, fetchAddress]);
 
@@ -42,7 +41,6 @@ const Address = () => {
           )}
         </div>
 
-        {/* Add new address button */}
         <div
           onClick={() => setOpenAddress(true)}
           className="h-16 mt-6 border-2 border-dashed border-gray-300 rounded-xl 
@@ -53,12 +51,11 @@ const Address = () => {
         </div>
       </div>
 
-      {/* AddAddress Modal */}
       {openAddress && (
         <AddAddress
           close={() => {
             setOpenAddress(false);
-            fetchAddress(); // refresh address list after closing modal
+            fetchAddress(); 
           }}
         />
       )}
