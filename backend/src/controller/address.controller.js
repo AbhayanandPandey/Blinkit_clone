@@ -16,7 +16,8 @@ export const addAddress = async (req, res) => {
             state,
             pincode,
             country,
-            mobile
+            mobile,
+            userId: userId
         });
 
         const savedAddress = await newAddress.save();
@@ -34,9 +35,36 @@ export const addAddress = async (req, res) => {
         });
     } catch (error) {
         return res.status(500).json(
-            {   message: error.message||error,
+            {
+                message: error.message || error,
                 error: true,
-                success: false 
+                success: false
+            });
+    }
+}
+
+export const getAddress = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        const user = await userModel.findById(userId).populate('address_details');
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        return res.status(200).json({
+            message: "Address fetched successfully",
+            addresses: user.address_details,
+            error: false,
+            success: true
+        });
+    } catch (error) {
+        return res.status(500).json(
+            {
+                message: error.message || error,
+                error: true,
+                success: false
             });
     }
 }

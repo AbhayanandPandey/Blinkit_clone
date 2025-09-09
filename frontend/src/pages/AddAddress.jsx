@@ -14,7 +14,7 @@ const AddAddress = ({ close }) => {
             const response = await Axios({
                 ...Api.addAddress,
                 data: {
-                    address_line: formData.addressline, // ✅ map correctly
+                    address_line: formData.addressline,
                     city: formData.city,
                     state: formData.state,
                     pincode: formData.pincode,
