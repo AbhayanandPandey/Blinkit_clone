@@ -19,7 +19,6 @@ const CheckOutPage = () => {
   };
 
   const addressList = useSelector(state => state.addresses.addressList)
-  console.log(addressList);
 
   const [openAddress, setOpenAddress] = useState(false)
 
