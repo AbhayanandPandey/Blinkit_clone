@@ -33,7 +33,6 @@ const Address = () => {
   const handleDeleteAddress = async () => {
     try {
       setLoading(true);
-      // 🔹 Replace with delete API
       toast.success("Address deleted successfully");
       await loadAddresses();
       setOpenDelete(false);
@@ -62,7 +61,20 @@ const Address = () => {
         </button>
       </div>
 
-      <div className="bg-white min-h-screen py-8 px-4 sm:px-6 mt-2 lg:px-12"> <div className="max-w-5xl mx-auto bg-white rounded-2xl  p-6">  <div className="grid gap-4"> {addressList && addressList.length > 0 ? (addressList.map((a) => (<div key={a._id} className="shadow-md rounded-xl bg-white px-5 py-4 border border-gray-200 hover:border-blue-100 hover:shadow-lg transition-all cursor-pointer" > <p className="font-semibold text-gray-800">{a.address_line}</p> <p className="text-gray-600"> {a.city}, {a.state} </p> <p className="text-gray-600"> {a.country} - {a.pincode} </p> <p className="text-sm text-gray-500">Mobile: {a.mobile}</p> </div>))) : (<p className="text-gray-500">No addresses found. Add one below 👇</p>)} </div> </div> </div>
+      <div className="bg-white min-h-screen py-8 px-4 sm:px-6 mt-2 lg:px-12">
+        <div className="max-w-5xl mx-auto bg-white rounded-2xl  p-6">
+          <div className="grid gap-4">
+            {addressList && addressList.length > 0 ?
+              (
+                addressList.map((a) => (
+                  <div key={a._id} className="shadow-md rounded-xl bg-white px-5 py-4 border border-gray-200 hover:border-blue-100 hover:shadow-lg transition-all cursor-pointer" >
+                    <p className="font-semibold text-gray-800">
+                      {a.address_line}
+                    </p>
+                    <p className="text-gray-600"> {a.city}, {a.state} </p> <p className="text-gray-600"> {a.country} - {a.pincode} </p>
+                    <p className="text-sm text-gray-500">Mobile: {a.mobile}</p>
+                  </div>))) :
+              (<p className="text-gray-500">No addresses found.</p>)} </div> </div> </div>
 
       {openAddress && (
         <AddAddress
