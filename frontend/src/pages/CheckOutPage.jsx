@@ -18,6 +18,8 @@ const CheckOutPage = () => {
     return 0.01;
   };
 
+  const [selectedAddress,setSelectedAddress] = useState(0)
+
   const addressList = useSelector(state => state.addresses.addressList)
 
   const [openAddress, setOpenAddress] = useState(false)
@@ -25,7 +27,7 @@ const CheckOutPage = () => {
   const serviceCharge = finalPrice * getServiceChargeRate(finalPrice);
   const grandTotal = finalPrice + serviceCharge;
 
-  
+
 
   return (
     <section className="bg-white min-h-screen lg:py-8 px-4 sm:px-6 lg:px-12">
@@ -42,12 +44,17 @@ const CheckOutPage = () => {
                 <div
                   key={a._id || i}
                   className="shadow-md rounded-xl bg-white px-5 py-4 border border-gray-200 
-                   hover:border-blue-100 hover:shadow-lg transition-all cursor-pointer"
+                   hover:border-blue-100 hover:shadow-lg transition-all cursor-pointer flex gap-3"
                 >
-                  <p className="font-semibold text-gray-800">{a.address_line}</p>
-                  <p className="text-gray-600">{a.city}, {a.state}</p>
-                  <p className="text-gray-600">{a.country} - {a.pincode}</p>
-                  <p className="text-sm text-gray-500">Mobile: {a.mobile}</p>
+                  <div>
+                    <input type='radio' value={i} onChange={(e)=> console.log(e.target.value)} name='address' />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-800">{a.address_line}</p>
+                    <p className="text-gray-600">{a.city}, {a.state}</p>
+                    <p className="text-gray-600">{a.country} - {a.pincode}</p>
+                    <p className="text-sm text-gray-500">Mobile: {a.mobile}</p>
+                  </div>
                 </div>
               );
             })}
