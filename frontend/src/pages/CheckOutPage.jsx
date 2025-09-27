@@ -18,7 +18,7 @@ const CheckOutPage = () => {
     return 0.01;
   };
 
-  const [selectedAddress,setSelectedAddress] = useState(0)
+  const [selectedAddress, setSelectedAddress] = useState(0)
 
   const addressList = useSelector(state => state.addresses.addressList)
 
@@ -27,7 +27,7 @@ const CheckOutPage = () => {
   const serviceCharge = finalPrice * getServiceChargeRate(finalPrice);
   const grandTotal = finalPrice + serviceCharge;
 
-
+  console.log(addressList[selectedAddress])
 
   return (
     <section className="bg-white min-h-screen lg:py-8 px-4 sm:px-6 lg:px-12">
@@ -41,22 +41,39 @@ const CheckOutPage = () => {
           <div className="mt-4 grid gap-4">
             {addressList.map((a, i) => {
               return (
-                <div
-                  key={a._id || i}
-                  className="shadow-md rounded-xl bg-white px-5 py-4 border border-gray-200 
-                   hover:border-blue-100 hover:shadow-lg transition-all cursor-pointer flex gap-3"
-                >
-                  <div>
-                    <input type='radio' value={i} onChange={(e)=> console.log(e.target.value)} name='address' />
+                <label htmlFor={"address" + i} key={a._id || i}>
+                  <div
+                    className={`shadow-md rounded-xl px-5 py-4 border flex gap-3 cursor-pointer transition-all 
+        ${selectedAddress == i
+                        ? "bg-blue-50 border-blue-400 shadow-lg"
+                        : "bg-white border-gray-200 hover:border-blue-100 hover:shadow-lg"}`
+                    }
+                  >
+                    <div>
+                      <input
+                        type="radio"
+                        id={"address" + i}
+                        value={i}
+                        checked={selectedAddress == i}
+                        onChange={(e) => setSelectedAddress(Number(e.target.value))} 
+                        name="address"
+                        className="accent-blue-600 cursor-pointer"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">{a.address_line}</p>
+                      <p className="text-gray-600">
+                        {a.city}, {a.state}
+                      </p>
+                      <p className="text-gray-600">
+                        {a.country} - {a.pincode}
+                      </p>
+                      <p className="text-sm text-gray-500">Mobile: {a.mobile}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">{a.address_line}</p>
-                    <p className="text-gray-600">{a.city}, {a.state}</p>
-                    <p className="text-gray-600">{a.country} - {a.pincode}</p>
-                    <p className="text-sm text-gray-500">Mobile: {a.mobile}</p>
-                  </div>
-                </div>
+                </label>
               );
+
             })}
           </div>
 
