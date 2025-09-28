@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import UserMenu from './UserMenu'
 import { useGlobal } from '../provider/GlobalProvider'
 import CartPageDataLg from './CartPageDataLg'
+
 function Header() {
   const [isMobile] = useMobile()
   const location = useLocation()
@@ -17,10 +18,8 @@ function Header() {
   const user = useSelector((state) => state?.user)
   const [openUser, setOpenUser] = useState(false)
   const cartItem = useSelector(state => state.cartItem.cartProducts)
-  const {totoalPrice, totalQty} = useGlobal()
-  const [openCartSection, setOpenCartSection]  = useState(false)
-    const { fetchCartItems} = useGlobal()
-
+  const { notDiscountPrice, totoalPrice, totalQty, fetchCartItems } = useGlobal()
+  const [openCartSection, setOpenCartSection] = useState(false)
 
   const handleLogin = () => {
     navigate('/login')
@@ -37,18 +36,33 @@ function Header() {
     }
     navigate('/user')
   }
-  useEffect(()=>{
-    if(!user.id){
+
+  useEffect(() => {
+    if (!user.id) {
       fetchCartItems()
     }
-  },[cartItem,totoalPrice])
+  }, [cartItem, totoalPrice])
+
+  // ✅ Same service charge logic as checkout page
+  const getServiceChargeRate = (price) => {
+    if (price <= 200) return 0.085;
+    if (price > 200 && price <= 400) return 0.07;
+    if (price > 400 && price <= 1000) return 0.06;
+    return 0.01;
+  };
+
+  const couponDiscount = 0;
+  const finalPrice = Math.max(totoalPrice - couponDiscount, 0);
+  const serviceCharge = finalPrice * getServiceChargeRate(finalPrice);
+  const grandTotal = finalPrice + serviceCharge;
 
   return (
-    <header className=' h-28 lg:h-20  sticky top-0 flex items-center flex-col lg:shadow  lg:pb-0 bg-white z-10'>
+    <header className=' h-28 lg:h-20 sticky top-0 flex items-center flex-col lg:shadow lg:pb-0 bg-white z-10'>
       {
         !(isSearchPage && isMobile) && (
           <div className='w-full flex items-center h-full lg:py-4 justify-between pb-1 pt-0 pl-4 lg:pl-7 lg:pr-10 pr-4 mx-1'>
-            <div className='' >
+            {/* Logo */}
+            <div>
               <Link to={"/"} className=' flex justify-center items-center mix-blend-multiply'>
                 <img
                   src={logo}
@@ -56,46 +70,41 @@ function Header() {
                   height={60}
                   alt='logo'
                   className='bg mix-blend-multiply hidden lg:block mt-2'
-                >
-                </img>
+                />
                 <img
                   src={logo}
                   width={90}
                   height={60}
                   alt='logo'
                   className='bg mix-blend-multiply lg:hidden mt-2'
-                >
-                </img>
+                />
               </Link>
             </div>
 
+            {/* Search */}
             <div className='hidden lg:block'>
               <Search />
             </div>
 
+            {/* Account + Cart */}
             <div>
               <button className='text-neutral-600 lg:hidden' onClick={handleMobile}>
                 <FaRegCircleUser size={25} />
               </button>
               <div className='hidden lg:flex items-center gap-6'>
+                {/* ✅ Account Section */}
                 {
                   user?.id ? (
                     <div className=' relative'>
                       <div onClick={() => setOpenUser(preve => !preve)} className='flex items-center gap-2 cursor-pointer'>
-                        <p>
-                          Account
-                        </p>
+                        <p className="font-semibold text-gray-800">Account</p>
                         {
                           openUser ? (
                             <GoTriangleUp size={22} />
-
                           ) : (
-
                             <GoTriangleDown size={22} />
                           )
                         }
-
-                        <p></p>
                       </div>
                       {
                         openUser && (
@@ -106,27 +115,25 @@ function Header() {
                           </div>
                         )
                       }
-
                     </div>
                   ) : (
-
                     <button onClick={handleLogin} className='cursor-pointer text-lg px-2'> Login</button>
                   )
                 }
-                <button onClick={ ()=>setOpenCartSection(true) } className='flex items-center gap-2 bg-green-700 px-3 py-1 rounded text-white cursor-pointer hover:bg-green-600'>
+
+                {/* ✅ Cart Section */}
+                <button
+                  onClick={() => setOpenCartSection(true)}
+                  className='flex items-center gap-2 bg-green-700 px-3 py-1 rounded text-white cursor-pointer hover:bg-green-600'
+                >
                   <div className='cursor-pointer animate-bounce'>
-                    <BsCart4 size={26 } />
+                    <BsCart4 size={26} />
                   </div>
                   {
                     cartItem[0] ? (
                       <div>
-                        <p>
-                          {totalQty} Items
-                        </p>
-                        <p>
-                          {totoalPrice} ₹
-                        </p>
-
+                        <p>{totalQty} Items</p>
+                        <p>{grandTotal.toFixed(2)} ₹</p>
                       </div>
                     ) : (
                       <div className='font-semibold py-2'>
@@ -137,24 +144,25 @@ function Header() {
                 </button>
               </div>
             </div>
-
           </div>
         )
       }
 
+      {/* Mobile Search */}
       <div className='w-full h-auto pb-4 bg-transparent flex justify-center items-center'>
         <div className={`w-full px-4 mx-auto lg:hidden ${location.pathname === '/search' ? 'mt-9' : 'mt-0'}`}>
           <Search />
         </div>
-
       </div>
+
+      {/* Cart Overlay */}
       {
         openCartSection && (
-          <CartPageDataLg close={()=>setOpenCartSection(false)} />
+          <CartPageDataLg close={() => setOpenCartSection(false)} />
         )
       }
     </header>
   )
 }
 
-export default Header 
+export default Header
