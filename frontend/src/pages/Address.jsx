@@ -61,7 +61,7 @@ const Address = () => {
         </button>
       </div>
 
-      <div className="bg-white min-h-screen py-8 px-4 sm:px-6 mt-2 lg:px-12">
+      <div className="bg-white min-h-fit py-8 pb-4 px-1 sm:px-1 mt-2 lg:px-12">
         <div className="max-w-5xl mx-auto bg-white rounded-2xl  p-6">
           <div className="grid gap-4">
             {addressList && addressList.length > 0 ?
