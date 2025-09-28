@@ -64,10 +64,9 @@ const CheckOutPage = () => {
   };
 
   return (
-    <section className="bg-white min-h-screen lg:py-8 px-4 sm:px-6 lg:px-12">
+    <section className="bg-white min-h-screen lg:py-8 px-4 sm:px-6 lg:px-12 pb-4">
       <div className="max-w-8xl mx-auto lg:flex lg:gap-15 justify-between w-full">
 
-        {/* Address Section */}
         <div className="lg:w-[60%] bg-white  rounded-2xl lg:p-6">
           <h3 className="text-xl font-semibold text-gray-800">
             Choose your address
@@ -106,7 +105,6 @@ const CheckOutPage = () => {
                         <p className="text-sm text-gray-500">Mobile: {a.mobile}</p>
                       </div>
 
-                      {/* Edit & Delete */}
                       <div className="flex flex-col justify-between gap-2">
                         <button
                           className="cursor-pointer bg-green-400 text-white hover:bg-green-500 rounded p-2"
@@ -116,7 +114,7 @@ const CheckOutPage = () => {
                             setEditData(a);
                           }}
                         >
-                          <MdEdit size={18} />
+                          <MdEdit size={16} />
                         </button>
 
                         <button
@@ -127,7 +125,7 @@ const CheckOutPage = () => {
                             setDeleteData(a);
                           }}
                         >
-                          <MdDelete size={18} />
+                          <MdDelete size={16} />
                         </button>
                       </div>
                     </div>
@@ -145,7 +143,6 @@ const CheckOutPage = () => {
           </div>
         </div>
 
-        {/* Order Summary */}
         <div className="lg:w-[40%] mt-6 bg-white shadow-lg rounded-2xl p-6 lg:h-fit lg:mt-15">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">
             Order Summary
@@ -198,7 +195,6 @@ const CheckOutPage = () => {
         </div>
       </div>
 
-      {/* Modals */}
       {openAddress && (
         <AddAddress close={() => {
           setOpenAddress(false);
