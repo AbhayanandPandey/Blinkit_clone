@@ -119,7 +119,7 @@ function Header() {
                 <button
                   onClick={() => setOpenCartSection(true)}
                   className="flex items-center gap-3 px-4 py-2 rounded-xl cursor-pointer text-white font-medium 
-             bg-gradient-to-r from-green-600 to-green-700 
+             bg-gradient-to-r from-green-500 to-green-700 
              shadow-md hover:shadow-lg 
              hover:from-green-700 hover:to-green-800 
              transform hover:scale-103 
