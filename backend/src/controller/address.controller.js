@@ -105,36 +105,38 @@ export const updateAddress = async (req, res) => {
         const userId = req.userId;
         const { _id, address_line, city, state, pincode, country, mobile } = req.body;
 
-        if (!_id || !address_line || !city || !state || !pincode || !country || !mobile) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
+        const address = await AddressModel.findOneAndUpdate(
+            { _id, userId },
+            {
+                address_line,
+                city,
+                state,
+                pincode,
+                country,
+                mobile
+            },
+            { new: true } // return updated doc
+        );
 
-        const address = await AddressModel.findOne({ _id: _id, userId: userId });
         if (!address) {
-            return res.status(404).json({ message: "Address not found" });
+            return res.status(404).json({
+                message: "Address not found",
+                error: true,
+                success: false
+            });
         }
-
-        address.address_line = address_line;
-        address.city = city;
-        address.state = state;
-        address.pincode = pincode;
-        address.country = country;
-        address.mobile = mobile;
-
-        const updatedAddress = await address.save();
 
         return res.status(200).json({
-            message: "Address updated Successfully",
-            data: updatedAddress,
+            message: "Address updated successfully",
+            data: address,
             error: false,
             success: true
         });
     } catch (error) {
-        return res.status(500).json(
-            {
-                message: error.message || error,
-                error: true,
-                success: false
-            });
+        return res.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
     }
-}
+};

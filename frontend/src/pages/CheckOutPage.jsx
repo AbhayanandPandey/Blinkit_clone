@@ -3,9 +3,16 @@ import { useSelector } from "react-redux";
 import { useGlobal } from "../provider/GlobalProvider";
 import Divider from "../components/Divider";
 import AddAddress from "./AddAddress";
+import EditAddress from "../components/EditAddress";
+import ConfirmDelete from "../components/ConfirmDelete";
+import { MdEdit, MdDelete } from "react-icons/md";
+import toast from "react-hot-toast";
+import Axios from "../utils/Axios";
+import Api from "../config/Api";
+import AxiosToastError from "../utils/AxiosToastError";
 
 const CheckOutPage = () => {
-  const { notDiscountPrice, totoalPrice } = useGlobal();
+  const { notDiscountPrice, totoalPrice, fetchAddress } = useGlobal();
   const cartItems = useSelector((state) => state.cartItem.cartProducts);
 
   const couponDiscount = 0;
@@ -18,21 +25,49 @@ const CheckOutPage = () => {
     return 0.01;
   };
 
-  const [selectedAddress, setSelectedAddress] = useState(0)
+  const [selectedAddress, setSelectedAddress] = useState(0);
+  const addressList = useSelector((state) => state.addresses.addressList);
 
-  const addressList = useSelector(state => state.addresses.addressList)
-
-  const [openAddress, setOpenAddress] = useState(false)
+  const [openAddress, setOpenAddress] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [editData, setEditData] = useState({});
+  const [openDelete, setOpenDelete] = useState(false);
+  const [deleteData, setDeleteData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const serviceCharge = finalPrice * getServiceChargeRate(finalPrice);
   const grandTotal = finalPrice + serviceCharge;
 
-  console.log(addressList[selectedAddress])
+  const handleDeleteAddress = async () => {
+    if (!deleteData?._id) return;
+
+    try {
+      setLoading(true);
+      const response = await Axios({
+        ...Api.deleteAddress,
+        data: { _id: deleteData._id },
+      });
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        await fetchAddress();
+      } else {
+        toast.error(response.data.message || "Failed to delete");
+      }
+    } catch (error) {
+      AxiosToastError(error);
+    } finally {
+      setLoading(false);
+      setOpenDelete(false);
+      setDeleteData(null);
+    }
+  };
 
   return (
     <section className="bg-white min-h-screen lg:py-8 px-4 sm:px-6 lg:px-12">
       <div className="max-w-8xl mx-auto lg:flex lg:gap-15 justify-between w-full">
 
+        {/* Address Section */}
         <div className="lg:w-[60%] bg-white  rounded-2xl lg:p-6">
           <h3 className="text-xl font-semibold text-gray-800">
             Choose your address
@@ -46,8 +81,7 @@ const CheckOutPage = () => {
                     className={`shadow-md rounded-xl px-5 py-4 border flex gap-3 cursor-pointer transition-all 
         ${selectedAddress == i
                         ? "bg-blue-50 border-blue-400 shadow-lg"
-                        : "bg-white border-gray-200 hover:border-blue-100 hover:shadow-lg"}`
-                    }
+                        : "bg-white border-gray-200 hover:border-blue-100 hover:shadow-lg"}`}
                   >
                     <div>
                       <input
@@ -55,34 +89,63 @@ const CheckOutPage = () => {
                         id={"address" + i}
                         value={i}
                         checked={selectedAddress == i}
-                        onChange={(e) => setSelectedAddress(Number(e.target.value))} 
+                        onChange={(e) => setSelectedAddress(Number(e.target.value))}
                         name="address"
                         className="accent-blue-600 cursor-pointer"
                       />
                     </div>
-                    <div>
-                      <p className="font-semibold text-gray-800">{a.address_line}</p>
-                      <p className="text-gray-600">
-                        {a.city}, {a.state}
-                      </p>
-                      <p className="text-gray-600">
-                        {a.country} - {a.pincode}
-                      </p>
-                      <p className="text-sm text-gray-500">Mobile: {a.mobile}</p>
+                    <div className="flex justify-between w-full">
+                      <div>
+                        <p className="font-semibold text-gray-800">{a.address_line}</p>
+                        <p className="text-gray-600">
+                          {a.city}, {a.state}
+                        </p>
+                        <p className="text-gray-600">
+                          {a.country} - {a.pincode}
+                        </p>
+                        <p className="text-sm text-gray-500">Mobile: {a.mobile}</p>
+                      </div>
+
+                      {/* Edit & Delete */}
+                      <div className="flex flex-col justify-between gap-2">
+                        <button
+                          className="cursor-pointer bg-green-400 text-white hover:bg-green-500 rounded p-2"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenEdit(true);
+                            setEditData(a);
+                          }}
+                        >
+                          <MdEdit size={18} />
+                        </button>
+
+                        <button
+                          className="cursor-pointer text-white bg-red-400 hover:bg-red-500 rounded p-2"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenDelete(true);
+                            setDeleteData(a);
+                          }}
+                        >
+                          <MdDelete size={18} />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </label>
               );
-
             })}
           </div>
 
-
-          <div onClick={() => setOpenAddress(true)} className="h-16 mt-6 border-2 border-dashed border-gray-300 rounded-xl flex justify-center items-center cursor-pointer hover:border-blue-500 transition">
+          <div
+            onClick={() => setOpenAddress(true)}
+            className="h-16 mt-6 border-2 border-dashed border-gray-300 rounded-xl flex justify-center items-center cursor-pointer hover:border-blue-500 transition"
+          >
             <span className="text-blue-600 font-medium">+ Add Address</span>
           </div>
         </div>
 
+        {/* Order Summary */}
         <div className="lg:w-[40%] mt-6 bg-white shadow-lg rounded-2xl p-6 lg:h-fit lg:mt-15">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">
             Order Summary
@@ -97,8 +160,7 @@ const CheckOutPage = () => {
             <div className="flex justify-between">
               <span>Total Items</span>
               <span className="font-medium">
-                {cartItems?.reduce((total, item) => total + item.quantity, 0)}{" "}
-                items
+                {cartItems?.reduce((total, item) => total + item.quantity, 0)} items
               </span>
             </div>
 
@@ -136,11 +198,31 @@ const CheckOutPage = () => {
         </div>
       </div>
 
-      {
-        openAddress && (
-          <AddAddress close={() => setOpenAddress(false)} />
-        )
-      }
+      {/* Modals */}
+      {openAddress && (
+        <AddAddress close={() => {
+          setOpenAddress(false);
+          fetchAddress();
+        }} />
+      )}
+
+      {openEdit && (
+        <EditAddress
+          close={() => {
+            setOpenEdit(false);
+            fetchAddress();
+          }}
+          data={editData}
+        />
+      )}
+
+      {openDelete && (
+        <ConfirmDelete
+          close={() => setOpenDelete(false)}
+          cancle={() => setOpenDelete(false)}
+          confirm={handleDeleteAddress}
+        />
+      )}
     </section>
   );
 };
