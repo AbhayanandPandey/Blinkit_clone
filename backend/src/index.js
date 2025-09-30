@@ -12,6 +12,7 @@ import subCategoryRouter from './routes/subCategory.route.js';
 import productRouter from './routes/product.route.js';
 import cartRouter from './routes/cart.route.js';
 import addressRouter from './routes/address.route.js';
+import orderRouter from './routes/order.route.js ';
 
 import './config/db.js';
 
@@ -20,7 +21,7 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL, // e.g., https://blinkyt-client.onrender.com
+  process.env.FRONTEND_URL,
   'http://localhost:5173',
 ];
 
@@ -48,6 +49,7 @@ app.use('/api/sub-category', subCategoryRouter);
 app.use('/api/product', productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/address', addressRouter);
+app.use('/api/order',orderRouter)
 
 app.get('/', (req, res) => {
   res.send('Backend is running...');

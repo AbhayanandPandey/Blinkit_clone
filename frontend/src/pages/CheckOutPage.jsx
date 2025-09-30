@@ -35,6 +35,9 @@ const CheckOutPage = () => {
   const [deleteData, setDeleteData] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const cartItemProd = useSelector(state => state.cartItem.cartProducts)
+  
+
   const serviceCharge = finalPrice * getServiceChargeRate(finalPrice);
   const grandTotal = finalPrice + serviceCharge;
 
@@ -62,6 +65,27 @@ const CheckOutPage = () => {
       setDeleteData(null);
     }
   };
+
+  const handleCashOnDelivery = async()=>{
+    try {
+      const response = await Axios({
+        ...Api.cashOnDelivery,
+        data:{
+          list_items:cartItemProd,
+          totalAmt:grandTotal,
+          addressId:addressList[selectedAddress]?._id,
+          subTotalAmt:grandTotal,
+        }
+      })
+ 
+      const {data:responseData} = response 
+      if(responseData.success){
+        toast.success(responseData.message)
+      }
+    } catch (error) {
+      AxiosToastError(error)
+    }
+  }
 
   return (
     <section className="bg-white min-h-screen lg:py-8 px-4 sm:px-6 lg:px-12 pb-4">
@@ -188,7 +212,9 @@ const CheckOutPage = () => {
             <button className="w-full sm:w-1/2 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold hover:shadow-lg transition cursor-pointer">
               Online Payment
             </button>
-            <button className="w-full sm:w-1/2 py-3 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:border-blue-500 hover:text-blue-600 transition cursor-pointer">
+            <button className="w-full sm:w-1/2 py-3 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:border-blue-500 hover:text-blue-600 transition cursor-pointer"
+            onClick={handleCashOnDelivery}
+            >
               Cash On Delivery
             </button>
           </div>
