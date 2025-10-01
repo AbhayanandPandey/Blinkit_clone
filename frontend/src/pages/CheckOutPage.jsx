@@ -10,9 +10,10 @@ import toast from "react-hot-toast";
 import Axios from "../utils/Axios";
 import Api from "../config/Api";
 import AxiosToastError from "../utils/AxiosToastError";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const CheckOutPage = () => {
-  const { notDiscountPrice, totoalPrice, fetchAddress } = useGlobal();
+  const { notDiscountPrice, totoalPrice, fetchAddress, fetchCartItems } = useGlobal();
   const cartItems = useSelector((state) => state.cartItem.cartProducts);
 
   const couponDiscount = 0;
@@ -28,6 +29,7 @@ const CheckOutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState(0);
   const addressList = useSelector((state) => state.addresses.addressList);
 
+  const navigate = useNavigate()
   const [openAddress, setOpenAddress] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState({});
@@ -36,7 +38,7 @@ const CheckOutPage = () => {
   const [loading, setLoading] = useState(false);
 
   const cartItemProd = useSelector(state => state.cartItem.cartProducts)
-  
+
 
   const serviceCharge = finalPrice * getServiceChargeRate(finalPrice);
   const grandTotal = finalPrice + serviceCharge;
@@ -66,22 +68,25 @@ const CheckOutPage = () => {
     }
   };
 
-  const handleCashOnDelivery = async()=>{
+  const handleCashOnDelivery = async () => {
     try {
       const response = await Axios({
         ...Api.cashOnDelivery,
-        data:{
-          list_items:cartItemProd,
-          totalAmt:grandTotal,
-          addressId:addressList[selectedAddress]?._id,
-          subTotalAmt:grandTotal,
+        data: {
+          list_items: cartItemProd,
+          totalAmt: grandTotal,
+          addressId: addressList[selectedAddress]?._id,
+          subTotalAmt: grandTotal,
         }
       })
- 
-      const {data:responseData} = response 
-      if(responseData.success){
+
+      const { data: responseData } = response
+      if (responseData.success) {
         toast.success(responseData.message)
-        console.log(responseData)
+        if (fetchCartItems) {
+          fetchCartItems()
+        }
+        navigate('/success')
       }
     } catch (error) {
       AxiosToastError(error)
@@ -214,7 +219,7 @@ const CheckOutPage = () => {
               Online Payment
             </button>
             <button className="w-full sm:w-1/2 py-3 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:border-blue-500 hover:text-blue-600 transition cursor-pointer"
-            onClick={handleCashOnDelivery}
+              onClick={handleCashOnDelivery}
             >
               Cash On Delivery
             </button>
