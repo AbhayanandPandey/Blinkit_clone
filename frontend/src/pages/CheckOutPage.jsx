@@ -81,6 +81,7 @@ const CheckOutPage = () => {
       const {data:responseData} = response 
       if(responseData.success){
         toast.success(responseData.message)
+        console.log(responseData)
       }
     } catch (error) {
       AxiosToastError(error)
