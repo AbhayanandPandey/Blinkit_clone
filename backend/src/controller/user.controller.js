@@ -44,7 +44,6 @@ export async function registerUser(req, res) {
 
     const savedUser = await newUser.save();
 
-    // Send verification email BEFORE sending response
     await sendEmail({
       to: email,
       subject: "Verify Your Email from Blinkyt",
@@ -54,7 +53,6 @@ export async function registerUser(req, res) {
       })
     });
 
-    // Respond after email is sent
     return res.status(200).json({
       message: "User registered successfully, please verify your email",
       error: false,
@@ -69,7 +67,6 @@ export async function registerUser(req, res) {
     });
   }
 }
-
 
 export async function loginUser(req, res) {
   try {
