@@ -44,22 +44,22 @@ export async function registerUser(req, res) {
 
     const savedUser = await newUser.save();
 
-    // Respond immediately to frontend
-    res.status(200).json({
-      message: "User registered successfully, please verify your email",
-      error: false,
-      success: true
-    });
-
-    // Send verification email asynchronously
-    sendEmail({
+    // Send verification email BEFORE sending response
+    await sendEmail({
       to: email,
       subject: "Verify Your Email from Blinkyt",
       html: verifyEmailTemplate({
         name: capitalize(name),
         url: `${process.env.FRONTEND_URL}/verify-email?code=${savedUser._id}`
       })
-    }).catch(err => console.error("Email sending failed:", err));
+    });
+
+    // Respond after email is sent
+    return res.status(200).json({
+      message: "User registered successfully, please verify your email",
+      error: false,
+      success: true
+    });
 
   } catch (error) {
     return res.status(500).json({
@@ -69,6 +69,7 @@ export async function registerUser(req, res) {
     });
   }
 }
+
 
 export async function loginUser(req, res) {
   try {
