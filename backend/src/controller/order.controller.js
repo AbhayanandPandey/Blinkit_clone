@@ -108,7 +108,7 @@ export async function OnlinePayment(req, res) {
 export async function GetOrders(req, res) {
   try {
     const userId = req.userId;
-    const orders = await OrderModel.find({ userId }).sort({ createdAt: -1 });
+    const orders = await OrderModel.find({ userId }).sort({ createdAt: -1 }).populate('delivery_address').exec();
     return res.json({
       message: "Orders fetched successfully",
       error: false,

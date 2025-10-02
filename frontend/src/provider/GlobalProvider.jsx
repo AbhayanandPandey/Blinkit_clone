@@ -141,7 +141,7 @@ const GlobalProvider = ({ children }) => {
 
   return (
     <GlobalContext.Provider value={{
-      fetchCartItems, handleUpdateQty, deleteCartItem, totoalPrice, totalQty, notDiscountPrice, fetchAddress
+      fetchCartItems, handleUpdateQty, deleteCartItem, totoalPrice, totalQty, notDiscountPrice, fetchAddress,fetchOrder
     }}>
       {children}
     </GlobalContext.Provider>

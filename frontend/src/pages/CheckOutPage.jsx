@@ -13,7 +13,7 @@ import AxiosToastError from "../utils/AxiosToastError";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const CheckOutPage = () => {
-  const { notDiscountPrice, totoalPrice, fetchAddress, fetchCartItems } = useGlobal();
+  const { notDiscountPrice, totoalPrice, fetchAddress, fetchCartItems, fetchOrder } = useGlobal();
   const cartItems = useSelector((state) => state.cartItem.cartProducts);
 
   const couponDiscount = 0;
@@ -90,6 +90,7 @@ const CheckOutPage = () => {
       if (responseData.success) {
         toast.success(responseData.message);
         if (fetchCartItems) fetchCartItems();
+        if (fetchOrder) fetchOrder()
         navigate("/success", { state: { text: "Order" } });
       }
     } catch (error) {
@@ -116,7 +117,8 @@ const CheckOutPage = () => {
       if (responseData.success) {
         toast.success(responseData.message);
         if (fetchCartItems) fetchCartItems();
-        
+        if (fetchOrder) fetchOrder()
+
         navigate("/success", { state: { text: "Order" } });
       }
     } catch (error) {
