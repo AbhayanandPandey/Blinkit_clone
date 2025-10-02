@@ -26,7 +26,7 @@ const CheckOutPage = () => {
     return 0.01;
   };
 
-  const [selectedAddress, setSelectedAddress] = useState(0);
+  const [selectedAddress, setSelectedAddress] = useState(null); // Changed to null
   const addressList = useSelector((state) => state.addresses.addressList);
 
   const navigate = useNavigate()
@@ -39,9 +39,7 @@ const CheckOutPage = () => {
   const [loadingCash, setLoadingCash] = useState(false);
   const [loadingOnline, setLoadingOnline] = useState(false);
 
-
   const cartItemProd = useSelector(state => state.cartItem.cartProducts)
-
 
   const serviceCharge = finalPrice * getServiceChargeRate(finalPrice);
   const grandTotal = finalPrice + serviceCharge;
@@ -70,8 +68,6 @@ const CheckOutPage = () => {
       setDeleteData(null);
     }
   };
-
-
 
   const handleCashOnDelivery = async () => {
     try {
@@ -118,7 +114,6 @@ const CheckOutPage = () => {
         toast.success(responseData.message);
         if (fetchCartItems) fetchCartItems();
         if (fetchOrder) fetchOrder()
-
         navigate("/success", { state: { text: "Order" } });
       }
     } catch (error) {
@@ -127,7 +122,6 @@ const CheckOutPage = () => {
       setLoadingOnline(false);
     }
   };
-
 
   return (
     <section className="bg-white min-h-screen lg:py-8 px-4 sm:px-6 lg:px-12 pb-4">
@@ -250,11 +244,16 @@ const CheckOutPage = () => {
             </div>
           </div>
 
+          {/* Message if no address */}
+          {addressList.length === 0 && (
+            <p className="text-red-500 text-sm mt-3">Please add an address to continue</p>
+          )}
+
           <div className="mt-6 flex flex-col sm:flex-row gap-4">
             <button
               className="w-full sm:w-1/2 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold hover:shadow-lg transition cursor-pointer disabled:opacity-50"
               onClick={handleOnlineDelivery}
-              disabled={loadingOnline}
+              disabled={loadingOnline || addressList.length === 0 || selectedAddress === null}
             >
               {loadingOnline ? "Processing..." : "Online Payment"}
             </button>
@@ -262,12 +261,11 @@ const CheckOutPage = () => {
             <button
               className="w-full sm:w-1/2 py-3 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:border-blue-500 hover:text-blue-600 transition cursor-pointer disabled:opacity-50"
               onClick={handleCashOnDelivery}
-              disabled={loadingCash}
+              disabled={loadingCash || addressList.length === 0 || selectedAddress === null}
             >
               {loadingCash ? "Processing..." : "Cash On Delivery"}
             </button>
           </div>
-
 
         </div>
       </div>
