@@ -74,7 +74,7 @@ const GlobalProvider = ({ children }) => {
         fetchCartItems()
       }
     } catch (error) {
-      AxiosToastError(errer)
+      // AxiosToastError(errer)
     }
   }
 
@@ -114,7 +114,7 @@ const GlobalProvider = ({ children }) => {
         dispatch(setAddressList(responseData.data))
       }
     } catch (error) {
-      AxiosToastError(error)
+      // AxiosToastError(error)
     }
   }
 
