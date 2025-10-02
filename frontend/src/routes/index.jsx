@@ -23,6 +23,8 @@ import ProductListPage from "../pages/ProductListPage";
 import ProductDisplayPage from "../pages/ProductDisplayPage";
 import CartPageDataLg from "../components/CartPageDataLg";
 import CheckOutPage from "../pages/CheckOutPage";
+import Success from "../pages/Success";
+import Failed from "../pages/Failed";
 
 const router = createHashRouter ([
   {
@@ -82,6 +84,14 @@ const router = createHashRouter ([
       {
         path:'checkout',
         element:<CheckOutPage />
+      },
+      {
+        path:'success',
+        element:<Success />
+      },
+      {
+        path:'cancel',
+        element:<Failed />
       }
     ],
   },
