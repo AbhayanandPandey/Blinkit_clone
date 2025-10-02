@@ -103,7 +103,7 @@ const CheckOutPage = () => {
     try {
       setLoadingOnline(true);
       const response = await Axios({
-        ...Api.cashOnDelivery,
+        ...Api.onlinePayment,
         data: {
           list_items: cartItemProd,
           totalAmt: grandTotal,
@@ -116,6 +116,8 @@ const CheckOutPage = () => {
       if (responseData.success) {
         toast.success(responseData.message);
         if (fetchCartItems) fetchCartItems();
+        console.log(responseData);
+        
         navigate("/success", { state: { text: "Order" } });
       }
     } catch (error) {
