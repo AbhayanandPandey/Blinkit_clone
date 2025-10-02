@@ -13,61 +13,61 @@ function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 export async function registerUser(req, res) {
-    try {
-        const { name, email, password } = req.body;
+  try {
+    const { name, email, password } = req.body;
 
-        if (!name || !email || !password) {
-            return res.status(400).json({
-                message: "All fields are required",
-                error: true,
-                success: false
-            });
-        }
-
-        const existingUser = await UserModel.findOne({ email: email.toLowerCase() });
-        if (existingUser) {
-            return res.status(400).json({
-                message: "User already exists",
-                error: true,
-                success: false
-            });
-        }
-
-        const salt = await bcryptjs.genSalt(10);
-        const hashedPassword = await bcryptjs.hash(password, salt);
-
-        const newUser = new UserModel({
-            name: capitalize(name),
-            email: email.toLowerCase(),
-            password: hashedPassword,
-        });
-
-        const savedUser = await newUser.save();
-
-        const verifyEmailUrl = `${process.env.FRONTEND_URL}/verify-email?code=${savedUser._id}`;
-
-        await sendEmail({
-            to: email,
-            subject: "Verify Your Email from Blinkyt",
-            html: verifyEmailTemplate({
-                name: capitalize(name),
-                url: verifyEmailUrl
-            })
-        });
-
-        return res.status(200).json({
-            message: "User registered successfully, please verify your email",
-            error: false,
-            success: true
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message || "Something went wrong",
-            error: true,
-            success: false
-        });
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        message: "All fields are required",
+        error: true,
+        success: false
+      });
     }
+
+    const existingUser = await UserModel.findOne({ email: email.toLowerCase() });
+    if (existingUser) {
+      return res.status(400).json({
+        message: "User already exists",
+        error: true,
+        success: false
+      });
+    }
+
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(password, salt);
+
+    const newUser = new UserModel({
+      name: capitalize(name),
+      email: email.toLowerCase(),
+      password: hashedPassword,
+    });
+
+    const savedUser = await newUser.save();
+
+    // Respond immediately to frontend
+    res.status(200).json({
+      message: "User registered successfully, please verify your email",
+      error: false,
+      success: true
+    });
+
+    // Send verification email asynchronously
+    sendEmail({
+      to: email,
+      subject: "Verify Your Email from Blinkyt",
+      html: verifyEmailTemplate({
+        name: capitalize(name),
+        url: `${process.env.FRONTEND_URL}/verify-email?code=${savedUser._id}`
+      })
+    }).catch(err => console.error("Email sending failed:", err));
+
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "Something went wrong",
+      error: true,
+      success: false
+    });
+  }
 }
 
 export async function loginUser(req, res) {

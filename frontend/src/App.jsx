@@ -37,7 +37,7 @@ function App() {
       const { data: responseData } = response;
       dispatch(setAllCategory(responseData.success ? responseData.data : []));
     } catch (error) {
-      AxiosToastError(error);
+      // AxiosToastError(error);
       dispatch(setAllCategory([]));
     } finally {
       dispatch(setLoadingCategory(false));
@@ -50,7 +50,7 @@ function App() {
       const { data: responseData } = response;
       dispatch(setSubCategory(responseData.success ? responseData.data : []));
     } catch (error) {
-      AxiosToastError(error);
+      // AxiosToastError(error);
       dispatch(setSubCategory([]));
     }
   };

@@ -4,12 +4,9 @@ dotenv.config();
 const isAuthenticate = (req, res, next) => {
     try {
         const token = req.cookies.accessToken || req?.headers?.authorization?.split(' ')[1]
-        if (!token) {
-            return res.status(500).json({
-                message: 'invalid token',
-                error: true,
-                success: false
-            })
+         if (!token) {
+            req.userId = null;
+            return next();
         }
         const decode = jwt.verify(token,process.env.SECRET_KEY_ACCESS)
         if(!decode){

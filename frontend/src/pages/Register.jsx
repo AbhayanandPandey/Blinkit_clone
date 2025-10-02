@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Axios from '../utils/Axios';
 import Api from '../config/Api';
-import AxiosToastError from '../utils/AxiosToastError';
 
 const getPasswordStrength = (password) => {
   let strength = 0;
@@ -34,10 +33,7 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setData((prev) => ({ ...prev, [name]: value }));
   };
 
   const passwordsMatch = data.password === data.confirmPassword;
@@ -59,27 +55,17 @@ const Register = () => {
 
     try {
       setLoading(true);
-      const res = await Axios({
-        ...Api.register,
-        data: data,
-      });
+      const res = await Axios.post(Api.register.url, data);
 
       if (res.data.error) {
         toast.error(res.data.message);
-      }
-
-      if (res.data.success) {
+      } else if (res.data.success) {
         toast.success(res.data.message);
-        setData({
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
-        });
+        setData({ name: '', email: '', password: '', confirmPassword: '' });
         navigate('/login');
       }
     } catch (error) {
-      AxiosToastError(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -190,8 +176,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 font-semibold text-white rounded transition duration-200 ${isFormFilled && !loading ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-500 cursor-not-allowed'
-              }`}
+            className={`w-full py-3 font-semibold text-white rounded transition duration-200 ${isFormFilled && !loading ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-500 cursor-not-allowed'}`}
           >
             {loading ? 'Registering...' : 'Register'}
           </button>
