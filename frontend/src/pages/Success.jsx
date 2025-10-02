@@ -1,11 +1,12 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const Success = () => {
-    const useLocation = useLocation()
+    const location = useLocation()
     return (
-        <div className='m-2 w-full bg-green-200 p-4 rounded mx-auto max-w-sm'>
-            <p></p>
+        <div className='m-2 w-full bg-green-200 p-4 rounded mx-auto max-w-md py-5 flex flex-col justify-center items-center gap-5'>
+            <p className='text-green-800 font-bold text-lg text-center  '>{Boolean(location.state.text) ? location.state.text : "Payment"} Successfully</p>
+            <Link to={'/'} className='border border-green-900 px-4 py-1 text-green-900 hover:bg-green-800 hover:text-white rounded transition-all cursor-pointer'> Go To Home</Link>
         </div>
     )
 }
