@@ -116,7 +116,6 @@ const CheckOutPage = () => {
       if (responseData.success) {
         toast.success(responseData.message);
         if (fetchCartItems) fetchCartItems();
-        console.log(responseData);
         
         navigate("/success", { state: { text: "Order" } });
       }
