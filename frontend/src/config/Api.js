@@ -1,5 +1,5 @@
-// export const baseURL = 'http://localhost:5001'
-export const baseURL = 'https://blinkit-clone-7swg.onrender.com'
+export const baseURL = 'http://localhost:5001'
+// export const baseURL = 'https://blinkit-clone-7swg.onrender.com'
  
 const Api = {
     register: {
@@ -149,6 +149,10 @@ const Api = {
     onlinePayment: {
         url: '/api/order/online-payment',
         method: 'post'
+    },
+    orderHistory: {
+        url: '/api/order/order-history',
+        method: 'get'
     },
 }
 

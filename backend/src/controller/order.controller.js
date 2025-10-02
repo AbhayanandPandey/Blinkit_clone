@@ -16,7 +16,7 @@ export async function CashPayment(req, res) {
         name: el.productId.name,
         images: el.productId.image,
       },
-      paymentId: "",
+      paymentId: `PI-${new mongoose.Types.ObjectId().toString()}`,
       payment_status: "CASH ON DELIVERY",
       delivery_address: addressId,
       subTotalAmt: subTotalAmt,
@@ -67,7 +67,7 @@ export async function OnlinePayment(req, res) {
         name: el.productId.name,
         images: el.productId.image,
       },
-      paymentId: "",
+      paymentId: `PI-${new mongoose.Types.ObjectId().toString()}`,
       payment_status: "ONLINE PAYMENT",
       delivery_address: addressId,
       subTotalAmt: subTotalAmt,
@@ -95,6 +95,25 @@ export async function OnlinePayment(req, res) {
       error: false,
       success: true,
       data: generateOrder,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      success: false,
+      message: error.message || error,
+    });
+  }
+}
+
+export async function GetOrders(req, res) {
+  try {
+    const userId = req.userId;
+    const orders = await OrderModel.find({ userId }).sort({ createdAt: -1 });
+    return res.json({
+      message: "Orders fetched successfully",
+      error: false,
+      success: true,
+      data: orders,
     });
   } catch (error) {
     return res.status(500).json({

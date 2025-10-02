@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleAddItemCart } from "../store/CartProduct";
 import toast from "react-hot-toast";
 import { setAddressList } from "../store/addressSlice";
+import { setOrder } from "../store/orderSlice";
 
 export const GlobalContext = createContext(null);
 
@@ -77,10 +78,6 @@ const GlobalProvider = ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    fetchCartItems();
-    fetchAddress();
-  }, []);
 
 
   useEffect(() => {
@@ -120,6 +117,27 @@ const GlobalProvider = ({ children }) => {
       AxiosToastError(error)
     }
   }
+
+  const fetchOrder = async ()=>{
+    try {
+      const response =await Axios({
+        ...Api.orderHistory,
+      })
+      const {data:responseData} = response
+      if(responseData.success)
+      {
+        dispatch(setOrder(responseData.data))
+      }
+    } catch (error) {
+      AxiosToastError(error)
+    }
+  }
+
+    useEffect(() => {
+    fetchCartItems();
+    fetchAddress();
+    fetchOrder();
+  }, []);
 
   return (
     <GlobalContext.Provider value={{
