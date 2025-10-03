@@ -1,4 +1,3 @@
-// export const baseURL = 'http://localhost:5001'
 export const baseURL = 'https://blinkit-clone-7swg.onrender.com' 
  
 const Api = {
