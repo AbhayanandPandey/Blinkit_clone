@@ -1,6 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
@@ -12,11 +14,9 @@ import subCategoryRouter from './routes/subCategory.route.js';
 import productRouter from './routes/product.route.js';
 import cartRouter from './routes/cart.route.js';
 import addressRouter from './routes/address.route.js';
-import orderRouter from './routes/order.route.js ';
+import orderRouter from './routes/order.route.js';
 
 import './config/db.js';
-
-dotenv.config();
 
 const app = express();
 

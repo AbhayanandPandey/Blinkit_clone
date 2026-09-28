@@ -1,4 +1,4 @@
-import { request } from 'express';
+
 import CartProductModel from '../model/cartproduct.model.js'
 import UserModel from '../model/user.model.js'
 
@@ -80,12 +80,12 @@ export const getCartItems = async (req, res) => {
 
 export const updateItems = async (req, res) => {
     try {
-        const userId = request.userId;
+        const userId = req.userId;
         const { _id, qty } = req.body;
 
         if (!_id || !qty) {
-            res.status(400).json({
-                erroe: true,
+            return res.status(400).json({
+                error: true,
                 success: false,
                 message: 'Cart item ID and quantity are required'
             })
@@ -109,7 +109,7 @@ export const updateItems = async (req, res) => {
         return res.status(500).json({
             error: true,
             success: false,
-            message: ErrorEvent.message || erroe
+            message: error.message || error
         })
     }
 }

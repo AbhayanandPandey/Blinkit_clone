@@ -26,7 +26,9 @@ function App() {
   const fetchUser = async () => {
     try {
       const fetchUserData = await fetchUserDetails();
-      dispatch(setUserDetails(fetchUserData.data));
+      if (fetchUserData) {
+        dispatch(setUserDetails(fetchUserData.data));
+      }
     } catch (error) { }
   };
 

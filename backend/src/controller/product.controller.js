@@ -1,4 +1,6 @@
 import ProductModel from "../model/product.model.js";
+import CategoryModel from "../model/category.model.js";
+import SubCategoryModel from "../model/subCategory.model.js";
 
 export const uploadProduct = async (req, res) => {
   try {

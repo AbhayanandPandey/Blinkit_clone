@@ -4,7 +4,7 @@ export const AddSubCategory = async (req, res) => {
     try {
         const { name, image, category } = req.body;
 
-        if (!name && !image && !category[0]) {
+        if (!name || !image || !category[0]) {
             return res.status(400).json(
                 {
                     error: true,
@@ -34,7 +34,7 @@ export const AddSubCategory = async (req, res) => {
             {
                 success: false,
                 error: true,
-                error: error.message || error
+                message: error.message || error
             });
     }
 }
@@ -71,7 +71,7 @@ export const EditSubCategoryData = async (req, res) => {
     try {
         const { _id,name, image, category } = req.body;
 
-        if (!name && !image && !category[0]) {
+        if (!name || !image || !category[0]) {
             return res.status(400).json({
                 error: true,
                 success: false,
@@ -103,7 +103,7 @@ export const EditSubCategoryData = async (req, res) => {
         return res.status(500).json({
             success: false,
             error: true,
-            error: error.message || error
+            message: error.message || error
         });
     }
 }

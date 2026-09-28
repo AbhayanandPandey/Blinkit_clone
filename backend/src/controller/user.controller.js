@@ -122,6 +122,7 @@ export async function loginUser(req, res) {
 
     const cookieOptions = {
       httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
     };
 
@@ -288,7 +289,7 @@ export async function forgotPassword(req, res) {
             })
         }
         const OTP = genOtp()
-        const expTime = new Date() + 60 * 60 * 1000
+        const expTime = new Date(Date.now() + 60 * 60 * 1000)
         const update = await UserModel.findByIdAndUpdate(user._id, {
             forgot_password_otp: OTP,
             forgot_password_expiry: new Date(expTime).toISOString()
@@ -342,7 +343,7 @@ export async function verifyOtp(req, res) {
 
         const currentTime = new Date().toISOString();
 
-        if (new Date(user.forgot_password_expiry) < currentTime) {
+        if (new Date(user.forgot_password_expiry) < new Date()) {
             return res.status(400).json({
                 message: 'OTP expired',
                 error: true,
@@ -406,7 +407,7 @@ export async function resetPas(req, res) {
         const salt = await bcryptjs.genSalt(10);
         const hashPass = await bcryptjs.hash(newPassword, salt)
 
-        const update = await UserModel.findOneAndUpdate(user._id, {
+        const update = await UserModel.findByIdAndUpdate(user._id, {
             password: hashPass
         })
 
@@ -436,7 +437,7 @@ export async function verifyEmail(req, res) {
                 success: false
             })
         }
-        const updatedUser = await UserModel.updateOne({ id: code }, { verify_email: true })
+        const updatedUser = await UserModel.updateOne({ _id: code }, { verify_email: true })
 
         return res.json({
             message: "verification Succeeful",
