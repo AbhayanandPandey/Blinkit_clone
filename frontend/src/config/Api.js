@@ -1,5 +1,5 @@
 // Set VITE_API_URL in frontend/.env when using a deployed backend.
-export const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
+export const baseURL = import.meta.env.VITE_API_URL || 'https://blinkit-clone-7swg.onrender.com'
  
 const Api = {
     register: {
