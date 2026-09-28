@@ -34,7 +34,7 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, 
+  credentials: true,
 }));
 
 app.use(express.json());
@@ -50,7 +50,7 @@ app.use('/api/sub-category', subCategoryRouter);
 app.use('/api/product', productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/address', addressRouter);
-app.use('/api/order',orderRouter)
+app.use('/api/order', orderRouter)
 
 app.get('/', (req, res) => {
   res.send('Backend is running...');
