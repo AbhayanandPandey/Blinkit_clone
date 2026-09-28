@@ -22,6 +22,7 @@ const app = express();
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  'https://blinkit-3x9f.onrender.com',
   'http://localhost:5173',
 ];
 
